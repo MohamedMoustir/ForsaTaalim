@@ -12,11 +12,10 @@ ForsaTaalim is an innovative web platform that connects students looking for qua
 - 📝 **S'inscrire/Se connecter**: Register or log in to the platform.
 - 🔍 **Rechercher un Professeur**: Search for tutors based on personalized criteria.
 - 👤 **Consulter Profils**: View tutor profiles to find the best match.
-- 📅 **Réserver un Cours**: Book a session with a tutor.
+- 📅 **Réserver un Teacher**: Book a session with a tutor.
 - ⭐ **Laisser un Avis**: Leave feedback after a class.
 - 💳 **Payer le Cours**: Securely pay for reserved classes.
 - 🔔 **Suivi et Notifications**: Stay updated on reservations and receive notifications.
-- 📖 **Consulter les Cours Disponibles**: Browse all available courses.
 - ⚙️ **Ajouter des Préférences**: Set preferences for tutors and courses.
 - 📜 **Consulter l'Historique des Réservations**: Review your booking history.
 
