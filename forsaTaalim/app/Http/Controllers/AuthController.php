@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Session;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -49,29 +50,31 @@ class AuthController extends Controller
             'role' => $validated['role'],
             'isVerifie' => false,
         ]);
-      
+
+        $token = JWTAuth::fromUser($user);
         Session::put('lastInsertId', $user->id);
 
         Auth::login($user);
-        return response()->json(['message' => 'Utilisateur inscrit avec succès', 'user' => $user], 201);
+        return response()->json(['message' => 'Utilisateur inscrit avec succès', 'user' => $user ,'token'=>$token], 201);
     }
 
-
-
-    public function login(request $request)
+    public function login(Request $request)
     {
-        $data = $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = auth::User();
-            $token = $user->createToken('auth_token')->plainTextToken;
-            $request->session()->regenerate();
-            return response()->json(['message' => 'Connexion réussie', 'user' => Auth::user(), 'token' => $token]);
+        $credentials = $request->only('email', 'password');
+    
+        if ($token = JWTAuth::attempt($credentials)) {
+            $user = Auth::user();
+    
+            return response()->json([
+                'message' => 'Connexion réussie',
+                'user' => $user,
+                'token' => $token
+            ]);
         }
-        return response()->json(['message' => 'Identifiants incorrects'], 401);
+    
+        return response()->json(['error' => 'Non autorisé'], 401);
     }
+    
 
     public function logout(request $request)
     {

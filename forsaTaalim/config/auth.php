@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+        'driver' => 'jwt',
+        'provider' => 'users',
+    ],
     ],
 
     /*
@@ -89,6 +93,7 @@ return [
     | quickly generating a very large amount of password reset tokens.
     |
     */
+
 
     'passwords' => [
         'users' => [

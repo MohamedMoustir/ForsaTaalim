@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForsaTaalim - Subject Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="p-6">
+            <div class="text-xl font-bold text-red-400">
+                ForsaTaalim
+                <div class="w-20 h-0.5 bg-red-400 mt-1"></div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700">
+                    On ForsaTaalim you can teach over 1,000 subjects! Use the search engine to find the subject you teach and let the fun begin :)
+                </p>
+            </div>
+            
+            <!-- Right Side Subject Selection -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-2">
+                    Which <span class="text-red-400">subjects</span>
+                </h1>
+                <h1 class="text-3xl font-bold mb-8">do you teach?</h1>
+                
+                <!-- Search Bar -->
+                <div class="flex mb-12">
+                    <div class="relative flex-grow mr-4">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </span>
+                        <input type="text" placeholder="Try &quot;Math&quot;" class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400">
+                    </div>
+                    <button class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
+                </div>
+                
+                <!-- Subject List -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">Most taught subjects</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <span class="font-medium">Mathematics</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <span class="font-medium">Math</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer">
+                            <span class="font-medium">Development</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center justify-between mt-12">
+                    <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go back</button>
+                    <button class="px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForsaTaalim - Diploma Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="p-6">
+            <div class="text-xl font-bold text-red-400">
+                ForsaTaalim
+                <div class="w-48 h-0.5 bg-red-400 mt-1"></div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    Your title is the key to your teaching ad! It should be unique, attract attention and contain at least 12 words:
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>The subject you are teaching</li>
+                    <li>Your qualifications and teaching approach</li>
+                    <li>What sets you apart</li>
+                </ul>
+                
+                <h3 class="font-bold uppercase text-sm mb-3">What works</h3>
+                <p class="text-gray-700">
+                    • Engineering student teaches math and physics from middle school to high school in Los Angeles
+                </p>
+            </div>
+            
+            <!-- Right Side Diploma Entry -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-1">
+                    Title of your
+                </h1>
+                <h1 class="text-3xl font-bold text-red-400 mb-2">diplomes</h1>
+                <p class="text-sm text-gray-500 mb-6">(1 minimum words)</p>
+                
+                <!-- Diploma Entry Fields -->
+                <div class="space-y-4 mb-12">
+                    <!-- First Diploma Field -->
+                    <div class="flex">
+                        <input type="text" class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2" placeholder="Enter diploma title">
+                        <button class="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Second Diploma Field -->
+                    <div class="flex">
+                        <input type="text" class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2" placeholder="Enter another diploma title">
+                        <button class="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center justify-between mt-12">
+                    <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go back</button>
+                    <div class="px-6 py-3 bg-gray-100 rounded-full">
+                        1/1
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompetenceController;
 use App\Http\Controllers\ProfesseurController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,22 +18,62 @@ use App\Http\Controllers\CategorieMatiereController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+/*
+|--------------------------------------------------------------------------
+| API Auth
+|--------------------------------------------------------------------------
+*/
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout']);
 
+/*
+|--------------------------------------------------------------------------
+| API admin
+|--------------------------------------------------------------------------
+*/
 
-
-
+Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 Route::post('/categorie_matiere', [CategorieMatiereController::class, 'createCategorieMatiere']);
 Route::get('/categorie_matiere', [CategorieMatiereController::class, 'showcategorieMatiere']);
 Route::put('/categorie_matiere/{id}', [CategorieMatiereController::class, 'updateCategorieMatiere']);
 Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'destroycategorieMatiere']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| API Professeur
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/Professeur', [ProfesseurController::class, 'createProfile']);
+Route::patch('/Professeur/{id}', [ProfesseurController::class, 'updateProfile']);
+Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
+Route::get('/Professeur/{id}', [ProfesseurController::class, 'showProfile']);
+
+/*
+|--------------------------------------------------------------------------
+| API Competence
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/Competence', [CompetenceController::class, 'createCompetence']);
+Route::put('/Competence/{id}', [CompetenceController::class, 'updateCompetence']);
+Route::delete('/Competence/{id}', [CompetenceController::class, 'deleteCompetence']);
+Route::get('/Competence', [CompetenceController::class, 'showCompetence']);
 
 
-Route::post('/Professeur', [ProfesseurController::class, 'createProfesseur']);
+/*
+|--------------------------------------------------------------------------
+| API Announcment
+|--------------------------------------------------------------------------
+*/
+Route::post('/Announcment', [AnnouncementController::class, 'createAnnouncment']);
+Route::put('/Announcment/{id}', [AnnouncementController::class, 'updatesAnnouncment']);
+Route::delete('/Announcment/{id}', [AnnouncementController::class, 'deleteAnnouncment']);
+Route::get('/Announcment/{id}', [AnnouncementController::class, 'ShowAnnouncmentById']);
+Route::get('/Announcment', [AnnouncementController::class, 'ShowAnnouncment']);
 

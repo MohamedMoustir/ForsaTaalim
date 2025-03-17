@@ -46,7 +46,7 @@ class ProfesseurController extends Controller
         $lastInsertUser = User::latest()->first();
         $professeur = Professeur::create([
             'categorieMatiere_id' => $request->input('categorieMatiere_id'),
-            'user_id'=>$lastInsertUser->id,
+            'user_id' => $lastInsertUser->id,
             'diplomes' => $request->input('diplomes'),
             'experiences' => $request->input('experiences'),
             'tarifHoraire' => $request->input('tarifHoraire'),
@@ -65,14 +65,14 @@ class ProfesseurController extends Controller
      */
     public function AddCompetence(Request $request)
     {
-   
+
         $validateData = $request->validate([
             'competence_id' => 'required'
         ]);
 
         $competence = CompetenceProfesseur::create([
-            'professeur_id' =>Auth::id(),
-            'competence_id' =>$request->competence_id,
+            'professeur_id' => Auth::id(),
+            'competence_id' => $request->competence_id,
         ]);
         return response()->json(['message' => 'Competence created successfully!', 'Competence' => $competence], 201);
 
@@ -84,26 +84,26 @@ class ProfesseurController extends Controller
     public function showProfile($id)
     {
         $showProfile = DB::table('professeurs as p')
-        ->join('users as u','p.user_id','=','u.id')
-        ->join('categorie_matieres as c','p.categorieMatiere_id','=','c.id')
-        ->leftjoin('competence_professeurs as cp','u.id','=','cp.professeur_id')
-        ->leftjoin('competences as com','cp.competence_id','=','com.id')
-        ->select(
-            'p.*', 
-            'u.prenom', 
-            'u.email', 
-            'u.photo', 
-            'u.age', 
-            'u.telephone', 
-            'u.role', 
-            'u.email_verified_at',
-            'u.password',
-            'u.remember_token',
-            'c.nom as nom_matiere',
-            'com.name'
-        )
-        ->where('u.id','=',$id)
-        ->get();
+            ->join('users as u', 'p.user_id', '=', 'u.id')
+            ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
+            ->leftjoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
+            ->leftjoin('competences as com', 'cp.competence_id', '=', 'com.id')
+            ->select(
+                'p.*',
+                'u.prenom',
+                'u.email',
+                'u.photo',
+                'u.age',
+                'u.telephone',
+                'u.role',
+                'u.email_verified_at',
+                'u.password',
+                'u.remember_token',
+                'c.nom as nom_matiere',
+                'com.name'
+            )
+            ->where('u.id', '=', $id)
+            ->get();
         // $showProfile = Professeur::findOrFail($id);
         return response()->json(['message' => 'showProfile', 'Profile' => $showProfile]);
 
