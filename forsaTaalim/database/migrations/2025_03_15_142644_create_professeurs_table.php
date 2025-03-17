@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('professeurs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('categorieMatiere_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('diplomes');
             $table->string('experiences');
             $table->string('tarifHoraire');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->text('biographie');
             $table->string('video')->nullable();
             $table->foreign('categorieMatiere_id')->references('id')->on('categorie_matieres');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,7 +36,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('professeurs', function (Blueprint $table) {
-            $table->dropColumn(['diplomes', 'experiences', 'tarifHoraire', 'disponible', 'location', 'biographie', 'video']);
+            $table->dropForeign(['categorieMatiere_id']);
+            $table->dropForeign(['user_id']);
         });
+        
+        Schema::dropIfExists('professeurs');
     }
 };
