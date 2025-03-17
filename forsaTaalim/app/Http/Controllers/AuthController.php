@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -24,29 +25,32 @@ class AuthController extends Controller
             'telephone' => 'required|string|required|digits_between:10,15',
             'role' => 'required|in:tuteur,etudiant,parent,admin'
         ]);
+   
 
-        // if ($request->hasFile('photo')) {
-        //     $photo = $request->file('photo')->store('images', 'public');
-        // } else {
-        //     return response()->json(['error' => 'Photo upload failed'], 400);
-        // }
-        // $photo = $request->file('photo')->store('images', 'public');
-     
-            if ($request->age < 19) {
-                return response()->json(['message' => 'Vous devez avoir au moins 19 ans.'], 403);
-            }
-            
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo')->store('images', 'public');
+        } else {
+            return response()->json(['error' => 'Photo upload failed'], 400);
+        }
+        $photo = $request->file('photo')->store('images', 'public');
+
+        if ($request->age < 19) {
+            return response()->json(['message' => 'Vous devez avoir au moins 19 ans.'], 403);
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'prenom' => $validated['prenom'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'photo' => $validated['photo'],
+            'photo' => $photo,
             'age' => $validated['age'],
             'telephone' => $validated['telephone'],
             'role' => $validated['role'],
             'isVerifie' => false,
         ]);
+      
+        Session::put('lastInsertId', $user->id);
 
         Auth::login($user);
         return response()->json(['message' => 'Utilisateur inscrit avec succès', 'user' => $user], 201);

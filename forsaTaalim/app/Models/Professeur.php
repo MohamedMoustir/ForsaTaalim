@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Professeur extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['categorieMatiere_id','diplomes', 'experiences', 'tarifHoraire', 'disponible', 'location', 'biographie', 'video'];
 }
