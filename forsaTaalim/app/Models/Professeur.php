@@ -9,5 +9,5 @@ class Professeur extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['categorieMatiere_id','diplomes', 'experiences', 'tarifHoraire', 'disponible', 'location', 'biographie', 'video'];
+    protected $fillable = ['categorieMatiere_id','user_id','diplomes', 'experiences', 'tarifHoraire', 'disponible', 'location', 'biographie', 'video'];
 }
