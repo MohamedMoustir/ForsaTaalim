@@ -4,9 +4,13 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompetenceController;
 use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\SocialiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategorieMatiereController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +33,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout']);
+
+
+
+Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
+Route::get('login/google/callback', [SocialiteController::class, 'googleAuthentication']);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,4 +85,5 @@ Route::put('/Announcment/{id}', [AnnouncementController::class, 'updatesAnnouncm
 Route::delete('/Announcment/{id}', [AnnouncementController::class, 'deleteAnnouncment']);
 Route::get('/Announcment/{id}', [AnnouncementController::class, 'ShowAnnouncmentById']);
 Route::get('/Announcment', [AnnouncementController::class, 'ShowAnnouncment']);
+
 
