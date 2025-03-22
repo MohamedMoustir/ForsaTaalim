@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategorieMatiereRequests;
 use App\Models\CategorieMatiere;
+use App\Services\CategorieMatiereService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 class CategorieMatiereController extends Controller
 {
+    protected $categorieMatiereService;
+    public function __construct(CategorieMatiereService $categorieMatiereService)
+    {
+        $this->categorieMatiereService = $categorieMatiereService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -18,32 +25,27 @@ class CategorieMatiereController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createCategorieMatiere(request $request)
+    public function create(CategorieMatiereRequests $request)
     {
 
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-        ]);
-
-        $CategorieMatiere = CategorieMatiere::create($validated);
-
-        return response()->json(['message' => 'Category created successfully!', 'CategorieMatiere' => $CategorieMatiere], 201);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategorieMatiereRequests $request)
     {
-        //
+        $validated = $request->validated();
+        $CategorieMatiere = $this->categorieMatiereService->create($validated);
+        return response()->json(['message' => 'Category created successfully!', 'CategorieMatiere' => $CategorieMatiere], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function showcategorieMatiere()
+    public function show()
     {
-        $categorieMatiere = CategorieMatiere::all();
+        $categorieMatiere = $this->categorieMatiereService->getAll();
         return response()->json(['message' => 'All CategorieMatiere', 'AllCategorieMatiere' => $categorieMatiere]);
     }
 
@@ -58,25 +60,19 @@ class CategorieMatiereController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateCategorieMatiere(Request $request, $id)
+    public function update(CategorieMatiereRequests $request, $id)
     {
-        $validated = $request->validate([
-            'nom' => 'nullable|string|max:255',
-        ]);
-
-        $categorieMatiere = categorieMatiere::findorFail($id);
-        $categorieMatiere->nom = $validated['nom'];
-        $categorieMatiere->update();
-        return response()->json(['message' => 'Category updated successfully!', 'CategorieMatiere' => $categorieMatiere], 200);
+        $validated = $request->validated();
+        $categorieMatiere = $this->categorieMatiereService->update($id, $validated);
+        return response()->json(['message' => 'Category updated successfully!'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroycategorieMatiere($id)
+    public function destroy($id)
     {
-        $categorieMatiere = CategorieMatiere::findOrFail($id);
-        $categorieMatiere->delete();
+        $categorieMatiere = $this->categorieMatiereService->delete($id);
         return response()->json(['message' => 'Category deleted successfully!', 'CategorieMatiere' => $categorieMatiere], 200);
     }
 
