@@ -8,9 +8,8 @@ use App\Http\Controllers\SocialiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategorieMatiereController;
-use Laravel\Socialite\Facades\Socialite;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,10 +29,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 | API Auth
 |--------------------------------------------------------------------------
 */
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/logout',[AuthController::class,'logout']);
 
+Route::prefix('auth')->group(function () {
+
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
+    Route::middleware('auth:api')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+    });
+
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.reset');
+});
 
 
 Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
@@ -46,10 +57,10 @@ Route::get('login/google/callback', [SocialiteController::class, 'googleAuthenti
 */
 
 Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
-Route::post('/categorie_matiere', [CategorieMatiereController::class, 'createCategorieMatiere']);
-Route::get('/categorie_matiere', [CategorieMatiereController::class, 'showcategorieMatiere']);
-Route::put('/categorie_matiere/{id}', [CategorieMatiereController::class, 'updateCategorieMatiere']);
-Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'destroycategorieMatiere']);
+    Route::post('/categorie_matiere', [CategorieMatiereController::class, 'store']);
+    Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
+    Route::put('/categorie_matiere/{id}', [CategorieMatiereController::class, 'update']);
+    Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'destroy']);
 });
 
 /*
@@ -57,11 +68,14 @@ Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'de
 | API Professeur
 |--------------------------------------------------------------------------
 */
+Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 
-Route::post('/Professeur', [ProfesseurController::class, 'createProfile']);
-Route::patch('/Professeur/{id}', [ProfesseurController::class, 'updateProfile']);
-Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
-Route::get('/Professeur/{id}', [ProfesseurController::class, 'showProfile']);
+Route::post('/Professeur', [ProfesseurController::class, 'create']);
+Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
+Route::post('/Professeur/competence', [ProfesseurController::class, 'create']);
+Route::get('/Professeur/{id}', [ProfesseurController::class, 'show']);
+
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +101,5 @@ Route::get('/Announcment/{id}', [AnnouncementController::class, 'ShowAnnouncment
 Route::get('/Announcment', [AnnouncementController::class, 'ShowAnnouncment']);
 
 
+Route::post('messages/{id}', [\App\Http\Controllers\ChatController::class, 'message']);
+Route::get('messages/{id}', [\App\Http\Controllers\ChatController::class, 'getMessage']);
