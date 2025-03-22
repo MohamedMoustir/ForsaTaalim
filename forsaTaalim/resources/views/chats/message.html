@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="flex h-screen max-w-6xl mx-auto bg-white border border-gray-200 shadow-lg">
+        <!-- Left sidebar -->
+        <div class="w-80 border-r border-gray-200 flex flex-col">
+            <!-- Messages header -->
+            <div class="p-4 border-b border-gray-200">
+                <h1 class="text-lg font-bold text-blue-900">Messages</h1>
+
+                <!-- Search bar -->
+                <div class="mt-4 relative">
+                    <input type="text" placeholder="Search here..."
+                        class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none">
+                    <div class="absolute left-3 top-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Groups section -->
+            <div class="p-4 border-b border-gray-200">
+                <h2 class="text-sm font-medium text-gray-500 mb-2">Groups</h2>
+
+                <!-- Group item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">Class History VII-A</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                        <span
+                            class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mt-1">2</span>
+                    </div>
+                </div>
+
+                <!-- Group item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-orange-500 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">Class VII-A</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                        <span
+                            class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mt-1">2</span>
+                    </div>
+                </div>
+
+                <!-- Group item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-yellow-400 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">All Student VII</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chats section -->
+            <div class="p-4 border-b border-gray-200 flex-grow overflow-y-auto">
+                <h2 class="text-sm font-medium text-gray-500 mb-2">Chats</h2>
+
+                <!-- Chat item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer bg-gray-100">
+                    <div class="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">Samantha William</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                        <span
+                            class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mt-1">2</span>
+                    </div>
+                </div>
+
+                <!-- Chat item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">Tony Soap</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                        <span
+                            class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mt-1">2</span>
+                    </div>
+                </div>
+
+                <!-- Chat item -->
+                <div class="flex items-center py-2 px-1 hover:bg-gray-50 rounded-lg cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></div>
+                    <div class="ml-3 flex-grow">
+                        <p class="text-sm font-medium">Karen Hope</p>
+                        <p class="text-xs text-gray-400 truncate">Lorem ipsum dolor sit amet...</p>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs text-gray-400">12:45 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View more button -->
+            <div class="p-4">
+                <button class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-indigo-600 font-medium rounded-lg">View
+                    More</button>
+            </div>
+        </div>
+
+        <!-- Right content - Chat window -->
+        <div class="flex-grow flex flex-col">
+            <!-- Chat header -->
+            <div class="px-4 py-3 flex items-center border-b border-gray-200">
+                <div class="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></div>
+                <div class="ml-3">
+                    <p class="font-medium">Samantha William</p>
+                    <div class="flex items-center">
+                        <div class="w-2.5 h-2.5 bg-green-500 rounded-full mr-1"></div>
+                        <span class="text-xs text-gray-500">Online</span>
+                    </div>
+                </div>
+                <div class="ml-auto flex items-center space-x-4">
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat messages -->
+                <div class="flex-grow p-4 overflow-y-auto">
+                    <!-- Message from other person -->
+                    <div class="mb-4 max-w-xs">
+                        <div class="bg-gray-100 p-3 rounded-lg inline-block">
+                            <p class="text-sm">Hello Nabila!</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">12:45 PM</p>
+                    </div>
+
+                    <!-- Message from other person -->
+                    <div class="mb-4 max-w-xs">
+                        <div class="bg-gray-100 p-3 rounded-lg inline-block">
+                            <p class="text-sm">Can I see your history lesson homework?</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">12:45 PM</p>
+                    </div>
+
+                    <!-- Message from self -->
+                    <div class="mb-4 ml-auto max-w-xs">
+                        <div class="bg-indigo-600 p-3 rounded-lg inline-block text-white">
+                            <p class="text-sm">Hello Samantha!</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1 text-right">12:45 PM</p>
+                    </div>
+
+                    <!-- Message from self -->
+                    <div class="mb-4 ml-auto max-w-xs">
+                        <div class="bg-indigo-600 p-3 rounded-lg inline-block text-white">
+                            <p class="text-sm">I'm not finished yet, why don't work together to finish homework?</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1 text-right">12:45 PM</p>
+                    </div>
+                </div>
+            <!-- Chat input -->
+            <div class="p-3 border-t border-gray-200">
+                <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
+                    <input type="text" placeholder="Write your message..."
+                        class="flex-grow bg-transparent outline-none">
+                    <button class="text-gray-400 hover:text-gray-600 mx-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                        </svg>
+                    </button>
+                    <button
+                        class="bg-indigo-600 text-white rounded-full p-2 flex items-center justify-center hover:bg-indigo-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                        <span class="ml-1 font-medium text-sm">Send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

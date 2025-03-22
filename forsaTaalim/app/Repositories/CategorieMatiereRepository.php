@@ -1,7 +1,6 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Announcement;
 use App\Models\CategorieMatiere;
 use App\Models\User;
 use Auth;
@@ -10,23 +9,32 @@ use Session;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use function PHPUnit\Framework\returnArgument;
 
-class AnnouncementRepositories
+class CategorieMatiereRepository
 {
+
     protected $model;
-    public function __construct(Announcement $model)
+    public function __construct(CategorieMatiere $model)
     {
         $this->model = $model;
     }
+
     public function create($data)
     {
         return $this->model->create($data);
     }
+
     public function update($id ,$data){
-        return $this->model->findOrFail($id)->update($data);
+        $categorie = CategorieMatiere::findOrFail($id); 
+        $categorie->update($data);
     }
+
     public function delete($id)
     {
-        return  $this->model->findOrFail($id)->delete();
+
+      $categorie = CategorieMatiere::findOrFail($id);
+       $categorie->delete();
+  
+        return $categorie;
     }
 
 }

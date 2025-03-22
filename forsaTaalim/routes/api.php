@@ -73,32 +73,29 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 Route::post('/Professeur', [ProfesseurController::class, 'create']);
 Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
 Route::post('/Professeur/competence', [ProfesseurController::class, 'create']);
-Route::get('/Professeur/{id}', [ProfesseurController::class, 'show']);
-
-});
-
+Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
 /*
 |--------------------------------------------------------------------------
 | API Competence
 |--------------------------------------------------------------------------
 */
-
-Route::post('/Competence', [CompetenceController::class, 'createCompetence']);
-Route::put('/Competence/{id}', [CompetenceController::class, 'updateCompetence']);
-Route::delete('/Competence/{id}', [CompetenceController::class, 'deleteCompetence']);
-Route::get('/Competence', [CompetenceController::class, 'showCompetence']);
-
-
+Route::post('/Competence', [CompetenceController::class, 'create']);
+Route::put('/Competence/{id}', [CompetenceController::class, 'update']);
+Route::delete('/Competence/{id}', [CompetenceController::class, 'delete']);
+Route::get('/Competence', [CompetenceController::class, 'show']);
+Route::get('/Competence/{id}', [CompetenceController::class, 'getById']);
 /*
 |--------------------------------------------------------------------------
 | API Announcment
 |--------------------------------------------------------------------------
 */
-Route::post('/Announcment', [AnnouncementController::class, 'createAnnouncment']);
-Route::put('/Announcment/{id}', [AnnouncementController::class, 'updatesAnnouncment']);
-Route::delete('/Announcment/{id}', [AnnouncementController::class, 'deleteAnnouncment']);
-Route::get('/Announcment/{id}', [AnnouncementController::class, 'ShowAnnouncmentById']);
-Route::get('/Announcment', [AnnouncementController::class, 'ShowAnnouncment']);
+Route::post('/Announcment', [AnnouncementController::class, 'create']);
+Route::put('/Announcment/{id}', [AnnouncementController::class, 'update']);
+Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
+Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
+Route::get('/Announcment', [AnnouncementController::class, 'Show']);
+
+});
 
 
 Route::post('messages/{id}', [\App\Http\Controllers\ChatController::class, 'message']);
