@@ -19,21 +19,29 @@ class Message implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(
-        public string $username,
-        public string $message,
-        public int $receive_id
-    )
+    protected $username;
+    protected $message;
+    protected $receive_id;
+
+    public function __construct($username, $message, $receive_id)
     {
-        $newMessage = new chat();
-        $newMessage->sender_id = Auth::id();
-        $newMessage->receiver_id = $receive_id;
-        $newMessage->message = $message ;
-        $newMessage->seen = 0 ;
-        $newMessage->save();
+        $this->username = $username;
+        $this->message = $message;
+        $this->receive_id = $receive_id;
+
     }
 
-   
+    public function create()
+    {
+        
+        $newMessage = new chat();
+        $newMessage->sender_id = Auth::id();
+        $newMessage->receiver_id = $this->receive_id;
+        $newMessage->message = $$this->message;
+        $newMessage->seen = 0;
+        $newMessage->save();
+
+    }
     public function broadcastOn()
     {
         return [

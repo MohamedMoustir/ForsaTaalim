@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompetenceController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\SocialiteController;
@@ -31,6 +32,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 
 Route::prefix('auth')->group(function () {
+
+    
 
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -95,8 +98,9 @@ Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
 Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
 Route::get('/Announcment', [AnnouncementController::class, 'Show']);
 
+
 });
 
 
-Route::post('messages/{id}', [\App\Http\Controllers\ChatController::class, 'message']);
-Route::get('messages/{id}', [\App\Http\Controllers\ChatController::class, 'getMessage']);
+Route::post('messages/{id}', [ChatController::class, 'message']);
+Route::get('messages/{id}', [ChatController::class, 'getMessage']);
