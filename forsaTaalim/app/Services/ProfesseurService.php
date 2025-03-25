@@ -33,7 +33,8 @@ class professeurService implements CrudInterface
 
     public function getAll()
     {
-        return CategorieMatiere::all();
+        
+        return  $this->professeurRepositories->getAll();
     }
 
     public function getById($id)
@@ -58,5 +59,9 @@ class professeurService implements CrudInterface
     public function delete($id)
     {
         return $this->professeurRepositories->delete($id);
+    }
+
+    public function filter($résulter){
+        return $this->professeurRepositories->filter($résulter);
     }
 }

@@ -37,24 +37,24 @@ class ChatController extends Controller
     public function getMessage($id)
     {
 
-        $chats = DB::table('chat_users as chu')
-        ->join('chats as ch', 'chu.user_id1', '=', 'ch.sender_id')
-        ->where('chu.user_id1', '=', Auth::user()->id)
-        ->where('chu.user_id2', '=', $id)
-        ->select('chu.*', 'ch.*')
-        ->orderBy('ch.created_at', 'asc') 
-        ->get();
+        // $chats = DB::table('chat_users as chu')
+        // ->join('chats as ch', 'chu.user_id1', '=', 'ch.sender_id')
+        // ->where('chu.user_id1', '=', Auth::user()->id)
+        // ->where('chu.user_id2', '=', $id)
+        // ->select('chu.*', 'ch.*')
+        // ->orderBy('ch.created_at', 'asc') 
+        // ->get();
     
-        // $chats = Chat::where(function ($query) use ($id) {
-        //     $query->where('sender_id', Auth::user()->id)->where('receiver_id', $id);
-        // })->orWhere(function ($query) use ($id) {
-        //     $query->where('sender_id', $id)->where('receiver_id', Auth::user()->id);
-        // })->orderBy('created_at', 'asc')->get();
+        $chats = Chat::where(function ($query) use ($id) {
+            $query->where('sender_id', Auth::user()->id)->where('receiver_id', $id);
+        })->orWhere(function ($query) use ($id) {
+            $query->where('sender_id', $id)->where('receiver_id', Auth::user()->id);
+        })->orderBy('created_at', 'asc')->get();
 
         $conversation = $chats->map(function ($chat) {
             return [
                 'message' => $chat->message,
-                'sender' => $chat->sender_id == Auth::id() ? Auth::user()->role : false
+                'sender' => $chat->sender_id == Auth::id() ? Auth::user()->role : 'etudiant'
             ];
         });
 

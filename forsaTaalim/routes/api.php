@@ -32,9 +32,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 
 Route::prefix('auth')->group(function () {
-
-    
-
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::get('refresh', [AuthController::class, 'refresh']);
@@ -75,8 +72,12 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 
 Route::post('/Professeur', [ProfesseurController::class, 'create']);
 Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
-Route::post('/Professeur/competence', [ProfesseurController::class, 'create']);
+Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
 Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
+Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
+
+
 /*
 |--------------------------------------------------------------------------
 | API Competence
@@ -98,9 +99,13 @@ Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
 Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
 Route::get('/Announcment', [AnnouncementController::class, 'Show']);
 
-
+// Route::post('messages/{id}', [ChatController::class, 'message']);
+// Route::get('messages/{id}', [ChatController::class, 'getMessage']);
 });
 
+Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function () {
 
 Route::post('messages/{id}', [ChatController::class, 'message']);
 Route::get('messages/{id}', [ChatController::class, 'getMessage']);
+
+});

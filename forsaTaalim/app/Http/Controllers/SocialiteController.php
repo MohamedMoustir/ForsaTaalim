@@ -24,11 +24,6 @@ class SocialiteController extends Controller
             return response()->json(['error' => 'There was an error: ' . $e->getMessage()]);
         }
     }
-    
-    
-
-
-    
 
     public function googleAuthentication()
     {

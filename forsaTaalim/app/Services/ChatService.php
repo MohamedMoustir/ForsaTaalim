@@ -7,7 +7,7 @@ use App\Repositories\CategorieMatiereRepository;
 use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\ChatRepositories;
-use Illuminate\Support\Facades\Log;
+
 
 class ChatService 
 {

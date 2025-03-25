@@ -66,4 +66,51 @@ class ProfesseurRepositories
             return $showProfile;
     }
 
+    public function getAll(){
+        return  DB::table('professeurs as p')
+        ->join('users as u', 'p.user_id', '=', 'u.id')
+        ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
+        ->leftjoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
+        ->leftjoin('competences as com', 'cp.competence_id', '=', 'com.id')
+        ->select(
+            'p.*',
+            'u.prenom',
+            'u.email',
+            'u.photo',
+            'u.age',
+            'u.telephone',
+            'u.role',
+            'u.email_verified_at',
+            'u.password',
+            'u.remember_token',
+            'c.nom as nom_matiere',
+            'com.name'
+        )->paginate(6);
+    
+
+    }
+
+    public function filter ($value){
+        $filterPar = DB::table('professeurs as p')
+        ->join('users as u', 'p.user_id', '=', 'u.id')
+        ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
+        ->leftjoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
+        ->leftjoin('competences as com', 'cp.competence_id', '=', 'com.id')
+        ->where('com.name' ,'like','%',$value,'%')
+        ->select(
+            'p.*',
+            'u.prenom',
+            'u.email',
+            'u.photo',
+            'u.age',
+            'u.telephone',
+            'u.role',
+            'u.email_verified_at',
+            'u.password',
+            'u.remember_token',
+            'c.nom as nom_matiere',
+            'com.name'
+        )->paginate(6);
+    }
+
 }

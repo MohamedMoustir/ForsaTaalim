@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "proxy": "http://localhost:3000"
     },
     "devDependencies": {
         "axios": "^1.6.4",
@@ -11,6 +12,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "laravel-echo": "^2.0.2",
         "pusher-js": "^8.4.0"
     }

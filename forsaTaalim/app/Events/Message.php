@@ -37,7 +37,7 @@ class Message implements ShouldBroadcast
         $newMessage = new chat();
         $newMessage->sender_id = Auth::id();
         $newMessage->receiver_id = $this->receive_id;
-        $newMessage->message = $$this->message;
+        $newMessage->message = $this->message;
         $newMessage->seen = 0;
         $newMessage->save();
 
