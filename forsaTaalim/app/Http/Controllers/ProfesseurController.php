@@ -51,9 +51,9 @@ class ProfesseurController extends Controller
 
         $competence = CompetenceProfesseur::create([
             'professeur_id' => Auth::id(),
-            'competence_id' => $request->competence_id,
+            'competence_id' => $request->competence_id
         ]);
-        return response()->json(['message' => 'Competence created successfully!', 'Competence' => $competence], 201);
+        return response()->json(['message' => 'Competence created successfully!'], 201);
 
     }
 
@@ -62,7 +62,7 @@ class ProfesseurController extends Controller
      */
     public function getById($id)
     {
-        
+     
        $showProfile= $this->professeurService->getById($id);
         return response()->json(['message' => 'showProfile', 'Profile' => $showProfile]);
 
@@ -71,9 +71,11 @@ class ProfesseurController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Professeur $professeur)
+    public function getAll()
     {
-        //
+        $AllProfileProfesseur = $this->professeurService->getAll();
+        return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
+
     }
 
     /**
@@ -94,5 +96,11 @@ class ProfesseurController extends Controller
     {
         $professeurService = $this->professeurService->delete($id);
         return response()->json(['message' => 'professeur deleted successfully!', 'CategorieMatiere' => $professeurService], 200);
+    }
+
+    public function filter($filter){
+     
+        $filter = $this->professeurService->filter($filter);
+        return response()->json(['message' => 'filter ajoute successfully!', 'filter' => $filter], 200);
     }
 }
