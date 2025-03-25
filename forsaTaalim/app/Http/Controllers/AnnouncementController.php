@@ -24,7 +24,6 @@ class AnnouncementController extends Controller
         $announcement = $this->announcementService->create($validateData);
         return response()->json(['message' => 'Annonce créée avec succès', 'Announcment' => $announcement]);
     }
-
     public function Show()
     {
         $announcement = $this->announcementService->getAll();
