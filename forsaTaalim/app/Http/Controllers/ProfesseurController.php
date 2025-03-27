@@ -56,7 +56,6 @@ class ProfesseurController extends Controller
         return response()->json(['message' => 'Competence created successfully!'], 201);
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -68,19 +67,12 @@ class ProfesseurController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function getAll()
     {
         $AllProfileProfesseur = $this->professeurService->getAll();
         return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
 
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ProfesseurRequests $request, $id)
     {
         $validate = $request->validated();
@@ -88,10 +80,6 @@ class ProfesseurController extends Controller
         return response()->json(['message' => 'Professeur created successfully!', 'Professeur' => $profile], 200);
 
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $professeurService = $this->professeurService->delete($id);

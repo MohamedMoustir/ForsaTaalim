@@ -4,8 +4,11 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompetenceController;
+use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\ResevationController;
 use App\Http\Controllers\SocialiteController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategorieMatiereController;
@@ -44,7 +47,10 @@ Route::prefix('auth')->group(function () {
 
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.reset');
+
+
 });
+
 
 
 Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
@@ -70,42 +76,64 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 */
 Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 
-Route::post('/Professeur', [ProfesseurController::class, 'create']);
-Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
-Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
-Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
-Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
-Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
+    Route::post('/Professeur', [ProfesseurController::class, 'create']);
+    Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
+    Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
+    Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
+    Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+    Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
 
 
-/*
-|--------------------------------------------------------------------------
-| API Competence
-|--------------------------------------------------------------------------
-*/
-Route::post('/Competence', [CompetenceController::class, 'create']);
-Route::put('/Competence/{id}', [CompetenceController::class, 'update']);
-Route::delete('/Competence/{id}', [CompetenceController::class, 'delete']);
-Route::get('/Competence', [CompetenceController::class, 'show']);
-Route::get('/Competence/{id}', [CompetenceController::class, 'getById']);
-/*
-|--------------------------------------------------------------------------
-| API Announcment
-|--------------------------------------------------------------------------
-*/
-Route::post('/Announcment', [AnnouncementController::class, 'create']);
-Route::put('/Announcment/{id}', [AnnouncementController::class, 'update']);
-Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
-Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
-Route::get('/Announcment', [AnnouncementController::class, 'Show']);
+    /*
+    |--------------------------------------------------------------------------
+    | API Competence
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/Competence', [CompetenceController::class, 'create']);
+    Route::put('/Competence/{id}', [CompetenceController::class, 'update']);
+    Route::delete('/Competence/{id}', [CompetenceController::class, 'delete']);
+    Route::get('/Competence', [CompetenceController::class, 'show']);
+    Route::get('/Competence/{id}', [CompetenceController::class, 'getById']);
+    /*
+    |--------------------------------------------------------------------------
+    | API Announcment
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/Announcment', [AnnouncementController::class, 'create']);
+    Route::put('/Announcment/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
+    Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
+    Route::get('/Announcment', [AnnouncementController::class, 'Show']);
 
-// Route::post('messages/{id}', [ChatController::class, 'message']);
+    // Route::post('messages/{id}', [ChatController::class, 'message']);
 // Route::get('messages/{id}', [ChatController::class, 'getMessage']);
+
+Route::get('/Reservation/approved/{id}', [ResevationController::class, 'updateStatusReservationsToApproved']);
+
 });
 
 Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function () {
+    Route::post('messages/{id}', [ChatController::class, 'message']);
+    Route::get('messages/{id}', [ChatController::class, 'getMessage']);
+    Route::get('/Reservation/refuser/{id}', [ResevationController::class, 'updateStatusReservationsTorefuser']);
+    Route::delete('/Reservation/{id}', [ResevationController::class, 'deleteReservations']);
 
-Route::post('messages/{id}', [ChatController::class, 'message']);
-Route::get('messages/{id}', [ChatController::class, 'getMessage']);
+});
 
+Route::group(['middleware' => ['auth:api', 'role:etudiant']], function () {
+    Route::post('/Etudiant', [EtudiantController::class, 'create']);
+    Route::patch('/Etudiant/{id}', [EtudiantController::class, 'update']);
+    Route::get('/Etudiant/{id}', [EtudiantController::class, 'getById']);
+    Route::get('/Etudiant', [EtudiantController::class, 'getAll']);
+    Route::delete('/Etudiant/{id}', [EtudiantController::class, 'destroy']);
+    Route::post('Etudiant/pay/{id}', [ResevationController::class, 'createReservations']);
+    Route::get('payment/success', [ResevationController::class, 'success']);
+    Route::get('error', [ResevationController::class, 'error']);
+});
+
+
+Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
+    Route::get('/Reservation', [ResevationController::class, 'getAllReservations']);
+    Route::get('/Reservation/{id}', [ResevationController::class, 'getByIdReservations']);
+    Route::get('/professeur/Reservation', [ResevationController::class, 'reserverProfesseur']);
 });
