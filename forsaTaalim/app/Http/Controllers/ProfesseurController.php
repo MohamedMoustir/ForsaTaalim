@@ -19,29 +19,16 @@ class ProfesseurController extends Controller
     {
         $this->professeurService = $professeurService;
     }
-
-
-    /**
-     * Display a listing of the resource.
-     */
-
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(ProfesseurRequests $request)
     {
         $validated = $request->validated();
         $professeur = $this->professeurService->create($validated);
         return response()->json(['message' => 'Professeur created successfully!', 'Professeur' => $professeur], 201);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
     public function AddCompetence(Request $request)
     {
 
@@ -56,9 +43,6 @@ class ProfesseurController extends Controller
         return response()->json(['message' => 'Competence created successfully!'], 201);
 
     }
-    /**
-     * Display the specified resource.
-     */
     public function getById($id)
     {
      
@@ -66,7 +50,6 @@ class ProfesseurController extends Controller
         return response()->json(['message' => 'showProfile', 'Profile' => $showProfile]);
 
     }
-
     public function getAll()
     {
         $AllProfileProfesseur = $this->professeurService->getAll();
@@ -85,7 +68,6 @@ class ProfesseurController extends Controller
         $professeurService = $this->professeurService->delete($id);
         return response()->json(['message' => 'professeur deleted successfully!', 'CategorieMatiere' => $professeurService], 200);
     }
-
     public function filter($filter){
      
         $filter = $this->professeurService->filter($filter);

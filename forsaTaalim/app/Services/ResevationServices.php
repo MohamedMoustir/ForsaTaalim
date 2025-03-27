@@ -22,19 +22,15 @@ class ResevationServices implements ResevationInterface
     {
         $this->resevationRepositories = $resevationRepositories;
     }
-
     public function createReservations($data, $id)
     {
         return $this->resevationRepositories->createReservations($data, $id);
     }
-
     public function success($request)
     {
         return $this->resevationRepositories->success($request);
 
     }
-
-
     public function getAllReservations()
     {
         return $this->resevationRepositories->getAllReservations();

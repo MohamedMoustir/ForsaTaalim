@@ -18,30 +18,22 @@ class AnnouncementService implements CrudInterface
     {
         $this->AnnouncementRepository = $AnnouncementRepository;
     }
-
-
     public function create(array $data)
     {
         return $this->AnnouncementRepository->create($data );
     }
-
-
     public function getAll()
     {
         return Announcement::all();
     }
-
     public function getById($id)
     {
         return Announcement::findOrFail($id);
     }
-
-
     public function update($id, array $data)
     {
         return $this->AnnouncementRepository->update($id, $data);
     }
-
     public function delete($id)
     {
         return $this->AnnouncementRepository->delete($id);

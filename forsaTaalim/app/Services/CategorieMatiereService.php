@@ -16,32 +16,24 @@ class CategorieMatiereService implements CrudInterface
     {
         $this->categorieMatiereRepository = $categorieMatiereRepository;
     }
-
-
     public function create(array $data)
     {
         return $this->categorieMatiereRepository->create($data);
     }
-
-
     public function getAll()
     {
         return CategorieMatiere::all();
     }
-
     public function getById($id)
     {
         return CategorieMatiere::findOrFail($id);
     }
-
-
     public function update($id, array $data)
     {
 
         return $this->categorieMatiereRepository->update($id, $data);
 
     }
-
     public function delete($id)
     {
         return $this->categorieMatiereRepository->delete($id);

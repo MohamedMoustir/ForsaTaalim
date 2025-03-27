@@ -23,7 +23,6 @@ class ResevationRepositories
         $this->model = $model;
 
     }
-
     public function createReservations($data, $id)
     {
         try {
@@ -93,7 +92,6 @@ class ResevationRepositories
             return response()->json(['message' => 'An error occurred while processing the payment.', 'error' => $e->getMessage()], 500);
         }
     }
-
     public function getAllReservations()
     {
         return DB::table('reservations as r')
@@ -114,7 +112,6 @@ class ResevationRepositories
                 'u.role'
             )->get();
     }
-
     public function getByIdReservations($id)
     {
         return DB::table('reservations as r')
@@ -136,7 +133,6 @@ class ResevationRepositories
             ->where('r.id', '=', $id)
             ->get();
     }
-
     public function updateStatusReservationsToApproved($id)
     {
         $reservation = Reservation::findOrFail($id);
@@ -145,7 +141,6 @@ class ResevationRepositories
             'reservation' => $reservation
         ];
     }
-
     public function updateStatusReservationsTorefuser($id)
     {
        
@@ -160,7 +155,6 @@ class ResevationRepositories
     {
         return $this->model->findOrFail($id)->delete();
     }
-
     public function reserverProfesseur()
     {
         return DB::table('reservations as r')

@@ -19,17 +19,14 @@ class ProfesseurRepositories
     {
         $this->model = $model;
     }
-
     public function create($data)
     {
         return $this->model->create($data );
     }
-
     public function update($id ,$data){
         $profile = Professeur::findOrFail($id);
         return $profile->update($data);
     }
-
     public function delete($id)
     {
 
@@ -38,7 +35,6 @@ class ProfesseurRepositories
   
         return $Professeur;
     }
-
     public function getById($id){
 
         $showProfile = DB::table('professeurs as p')
@@ -65,7 +61,6 @@ class ProfesseurRepositories
 
             return $showProfile;
     }
-
     public function getAll(){
         return  DB::table('professeurs as p')
         ->join('users as u', 'p.user_id', '=', 'u.id')
@@ -89,7 +84,6 @@ class ProfesseurRepositories
     
 
     }
-
     public function filter ($value){
         $filterPar = DB::table('professeurs as p')
         ->join('users as u', 'p.user_id', '=', 'u.id')

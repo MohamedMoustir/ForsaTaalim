@@ -20,7 +20,6 @@ class AuthService
     {
         $this->AuthRepository = $AuthRepository;
     }
-
     public function register(array $data, $file)
     {
         $photo = $file->store('images', 'public');
@@ -28,7 +27,6 @@ class AuthService
         $user = $this->AuthRepository->create($data);
         return $user;
     }
-
     public function login(array $credentials)
     {
         if (Auth::attempt($credentials)) {
@@ -44,14 +42,11 @@ class AuthService
         return 'message Invalid credentials';
 
     }
-
-
     public function logout()
     {
         Auth::user()->tokens()->delete();
         return true;
     }
-
     public function refresh()
     {
         try {
@@ -70,7 +65,6 @@ class AuthService
             return null;
         }
     }
-
 
     // public function forgotPassword($email)
     // {

@@ -34,20 +34,15 @@ class EtudiantServices implements CrudInterface
     {
         return $this->etudiantRepositories->getById($id);
     }
-
-
     public function update($id, array $data)
     {
         return $this->etudiantRepositories->update($id, $data);
 
     }
-
-
     public function delete($id)
     {
         return $this->etudiantRepositories->delete($id);
     }
-
     public function filter($résulter)
     {
         return $this->etudiantRepositories->filter($résulter);

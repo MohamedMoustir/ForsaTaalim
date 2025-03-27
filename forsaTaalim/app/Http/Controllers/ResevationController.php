@@ -62,8 +62,6 @@ class ResevationController
         return response()->json(['message' => 'reservation ajoute successfully!', 'reservation' => $reservation], 200);
        
     }
-
-    // 
     public function historiqueReservations()
     {
         return response()->json([]);

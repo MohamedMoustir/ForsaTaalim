@@ -14,13 +14,10 @@ use Auth;
 class ChatService 
 {
     protected $chatRepositories;
-
     public function __construct(ChatRepositories $chatRepositories)
     {
         $this->chatRepositories = $chatRepositories;
     }
-
-
     public function create(array $data , $sender_id ,$id)
     {
         $chat_user = Chat_user::create([

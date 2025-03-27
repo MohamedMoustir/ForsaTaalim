@@ -22,7 +22,6 @@ class ChatRepositories
     {
         $this->model = $model;
     }
-
     public function create($data)
     {
         // Create the Pusher instance

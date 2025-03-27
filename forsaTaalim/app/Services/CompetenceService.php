@@ -20,32 +20,23 @@ class CompetenceService implements CrudInterface
     {
         $this->competenceRepository = $competenceRepository;
     }
-
-
     public function create(array $data)
     {
         return $this->competenceRepository->create($data);
     }
-
-
     public function getAll()
     {
         return Competence::all();
     }
-
     public function getById($id)
     {
         return  $this->competenceRepository->getById($id);
     }
-
-
     public function update($id, array $data)
     {
         return $this->competenceRepository->update($id, $data);
 
     }
-
- 
     public function delete($id)
     {
         return $this->competenceRepository->delete($id);

@@ -19,18 +19,14 @@ class EtudiantRepositories
     {
         $this->model = $model;
     }
-
-
     public function create($data)
     {
         return $this->model->create($data);
     }
-
     public function update($id, $data)
     {
          return Etudiant::findOrFail($id)->update($data);
     }
-
     public function delete($id)
     {
 
@@ -38,7 +34,6 @@ class EtudiantRepositories
 
         
     }
-
     public function getById($id)
     {
 
@@ -62,7 +57,6 @@ class EtudiantRepositories
 
         return $showProfile;
     }
-
     public function getAll()
     {
         return DB::table('etudiants as e')

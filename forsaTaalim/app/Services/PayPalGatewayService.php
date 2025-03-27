@@ -15,7 +15,6 @@ class PayPalGatewayService implements PaymentGatewayInterface
         $this->gateway->setSecret(env('PAYPAL_SECRET'));
         $this->gateway->setTestMode(true);
     }
-
     public function getGateway()
     {
         return $this->gateway;

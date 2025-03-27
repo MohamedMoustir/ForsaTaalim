@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class SocialiteController extends Controller
 {
-
-    /**
-     * 
-    
-     */
     public function redirectToGoogle()
     {
         try {
@@ -24,7 +19,6 @@ class SocialiteController extends Controller
             return response()->json(['error' => 'There was an error: ' . $e->getMessage()]);
         }
     }
-
     public function googleAuthentication()
     {
         try {
@@ -62,6 +56,4 @@ dd();
             return redirect()->back()->withErrors(['google' => 'Une erreur est survenue lors de la connexion avec Google.']);
         }
     }
-
-
 }

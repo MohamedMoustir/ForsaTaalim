@@ -17,17 +17,14 @@ class CategorieMatiereRepository
     {
         $this->model = $model;
     }
-
     public function create($data)
     {
         return $this->model->create($data);
     }
-
     public function update($id ,$data){
         $categorie = CategorieMatiere::findOrFail($id); 
         $categorie->update($data);
     }
-
     public function delete($id)
     {
 

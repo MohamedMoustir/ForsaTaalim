@@ -15,8 +15,6 @@ class AuthRepository
     {
         $this->model = $model;
     }
-
-
     public function create(array $data)
     {
         $user = $this->model->create($data);

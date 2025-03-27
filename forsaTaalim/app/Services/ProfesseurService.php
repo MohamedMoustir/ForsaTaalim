@@ -18,8 +18,6 @@ class professeurService implements CrudInterface
     {
         $this->professeurRepositories = $professeurRepositories;
     }
-
-
     public function create(array $data)
     {
         $lastInsertUser = User::latest()->first();
@@ -29,20 +27,15 @@ class professeurService implements CrudInterface
         $video->move(public_path('videos'), $videoPath);
         return $this->professeurRepositories->create($data);
     }
-
-
     public function getAll()
     {
         
         return  $this->professeurRepositories->getAll();
     }
-
     public function getById($id)
     {
         return  $this->professeurRepositories->getById($id);
     }
-
-
     public function update($id, array $data)
     {
         // if (!$data['video'] == null) {
@@ -54,13 +47,10 @@ class professeurService implements CrudInterface
         return $this->professeurRepositories->update($id, $data);
 
     }
-
- 
     public function delete($id)
     {
         return $this->professeurRepositories->delete($id);
     }
-
     public function filter($résulter){
         return $this->professeurRepositories->filter($résulter);
     }

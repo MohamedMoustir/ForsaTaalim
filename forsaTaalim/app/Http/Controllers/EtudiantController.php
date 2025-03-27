@@ -14,7 +14,6 @@ class EtudiantController extends Controller
     {
         $this->etudiantServices = $etudiantServices;
     }
-
     public function create(AuthEtudiantRequist $request)
     {
         $validateData = $request->validated();

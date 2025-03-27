@@ -20,23 +20,19 @@ class CompetenceRepository
     {
         $this->model = $model;
     }
-
     public function create($data)
     {
         return $this->model->create($data );
     }
-
     public function update($id ,$data){
         $profile = Competence::findOrFail($id);
         return $profile->update($data);
     }
-
     public function delete($id)
     {
         return $this->model->findOrFail($id)->delete();  
        
     }
-
     public function getById($id){
             return $this->model->findOrFail($id);
     }
