@@ -39,9 +39,9 @@ class AdminServices implements CrudInterface
     {
         return $this->adminRepositories->delete($id);
     }
-    public function sospande($id)
+    public function suspended($id)
     {
-        return $this->adminRepositories->sospande($id);
+        return $this->adminRepositories->suspended($id);
     }
     public function TotalUser(){
         return $this->adminRepositories->TotalUser();
@@ -51,7 +51,7 @@ class AdminServices implements CrudInterface
     }
     public function TotalUserActive(){
         return $this->adminRepositories->TotalUserActive();
-    } public function TotalUserSospande(){
-        return $this->adminRepositories->TotalUserSospande();
+    } public function TotalUsersuspended(){
+        return $this->adminRepositories->TotalUsersuspended();
     }
 }

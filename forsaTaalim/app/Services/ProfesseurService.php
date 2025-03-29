@@ -27,10 +27,15 @@ class professeurService implements CrudInterface
         $video->move(public_path('videos'), $videoPath);
         return $this->professeurRepositories->create($data);
     }
-    public function getAll()
+    public function getAllAndSerch($data)
     {
-        
+        if ($data) {
+        return  $this->professeurRepositories->getAll($data);
+        }else{
         return  $this->professeurRepositories->getAll();
+
+        }
+      
     }
     public function getById($id)
     {
@@ -54,4 +59,6 @@ class professeurService implements CrudInterface
     public function filter($résulter){
         return $this->professeurRepositories->filter($résulter);
     }
+
+    public function getAll(){}
 }

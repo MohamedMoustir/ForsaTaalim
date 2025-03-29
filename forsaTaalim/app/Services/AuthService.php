@@ -20,13 +20,12 @@ class AuthService
     {
         $this->AuthRepository = $AuthRepository;
     }
-    public function register(array $data, $file)
-    {
-        $photo = $file->store('images', 'public');
-        $data['photo'] = $photo;
-        $user = $this->AuthRepository->create($data);
-        return $user;
+    public function register(array $data)
+    { 
+        $data['photo'] = $data['photo']->store('images', 'public');
+        return $this->AuthRepository->create($data);
     }
+    
     public function login(array $credentials)
     {
         if (Auth::attempt($credentials)) {

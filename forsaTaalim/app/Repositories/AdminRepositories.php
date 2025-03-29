@@ -23,22 +23,14 @@ class AdminRepositories
     {
         return $this->model->findOrFail($id)->delete();
     }
-    public function sospande($id)
+    public function suspended($id)
     {
         $update = $this->model->findOrFail($id)->update(['isActive' => 0]);
-        $users = User::all();
-
-        foreach ($users as $user) {
-            if ($user->isActive = 0) {
-
-                Mail::to('itsmoustir@gmail.com')->send(new WelcomeEmailNotification($user));
-            }
-        }
         return $update;
     }
     public function TotalUser()
     {
-        return $this->model->count();
+        return $this->model->where('role','=','etudiant')->count();
     }
     public function TotalAnnonce()
     {
@@ -46,15 +38,15 @@ class AdminRepositories
     }
     public function TotalUserActive()
     {
-        return DB::table('users ')
+        return DB::table('users')
             ->select(DB::raw('COUNT(*) as total_sold'))
             ->where('isActive', '=', 1)
             ->get();
 
     }
-    public function TotalUserSospande()
+    public function TotalUsersuspended()
     {
-        return DB::table('users ')
+        return DB::table('users')
             ->select(DB::raw('COUNT(*) as total_sold'))
             ->where('isActive', '=', 0)
             ->get();

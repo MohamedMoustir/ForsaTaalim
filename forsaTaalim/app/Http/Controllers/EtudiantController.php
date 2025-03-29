@@ -50,4 +50,11 @@ class EtudiantController extends Controller
     {
         return response()->json([]);
     }
+
+    // public function serch(request $request)
+    // {
+    //     $data = $this->$request->validated();
+    //     $serch = $this->etudiantServices->serch($data);
+    //     return response()->json(['message' => 'serch ajoute successfully!', 'serch' => $serch]);
+    // }
 }

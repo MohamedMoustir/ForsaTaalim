@@ -26,14 +26,12 @@ class AuthController extends Controller
     use HasApiTokens;
     public function register(authRejecterRequist $request)
     {
-      
         $validate = $request->validated();
         if ($request->age < 19) {
             return response()->json(['message' => 'Vous devez avoir au moins 19 ans.'], 403);
         }
         $user = $this->authServices->register(
-            $validate,
-            $request->file('photo')
+            $validate
         );
 
         return response()->json(['message' => 'Utilisateur inscrit avec succès', 'user' => $user], 201);

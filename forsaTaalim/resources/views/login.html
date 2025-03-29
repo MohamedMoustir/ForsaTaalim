@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ForsaTaalim - Sign In</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/index.js"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-white">
@@ -14,8 +16,14 @@
             <header class="flex justify-between items-center">
                 <div class="text-xl font-bold text-red-400">ForsaTaalim</div>
                 <div class="flex items-center gap-6">
-                    <a href="#" class="text-sm text-gray-700 hover:text-gray-900">Become a Tutor</a>
-                    <a href="#" class="text-sm text-gray-700 hover:text-gray-900">Log In</a>
+                    <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
+                   
+                        <div class="flex gap-4 items-center">
+                            <a href="#" class="text-gray-600 rounded-full bg-slate-50 px-2 py-2  hover:text-gray-800">?</a>
+                            <a href="#" class="bg-white px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
+                            <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Rejister</a>
+                        </div>
+                    </nav>
                 </div>
             </header>
             
@@ -26,7 +34,7 @@
                     <form>
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="email" placeholder="Username or Email ID" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400">
+                            <input  type="email" id="email" placeholder="Username or Email ID" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400">
                         </div>
                         
                         <div class="mb-6">

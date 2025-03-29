@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->enum('role', ['tuteur', 'etudiant', 'parent', 'admin']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('isActive')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

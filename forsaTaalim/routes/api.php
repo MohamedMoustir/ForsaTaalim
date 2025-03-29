@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvisController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompetenceController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\ResevationController;
 use App\Http\Controllers\SocialiteController;
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\CategorieMatiereController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -67,6 +68,17 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
     Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
     Route::put('/categorie_matiere/{id}', [CategorieMatiereController::class, 'update']);
     Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'destroy']);
+
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+    Route::put('/users/{id}/role', [AdminController::class, 'update']);
+    Route::patch('/users/{id}/suspend', [AdminController::class, 'sospande']);
+
+    Route::get('/users/total', [AdminController::class, 'TotalUser']);
+    Route::get('/users/total-active', [AdminController::class, 'TotalUserActive']);
+    Route::get('/users/total-suspended', [AdminController::class, 'TotalUserSospande']);
+
+    Route::get('/announcements/total', [AdminController::class, 'TotalAnnonce']);
+
 });
 
 /*
@@ -82,7 +94,6 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
     Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
     Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
     Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
-
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +119,7 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
     // Route::post('messages/{id}', [ChatController::class, 'message']);
 // Route::get('messages/{id}', [ChatController::class, 'getMessage']);
 
-Route::get('/Reservation/approved/{id}', [ResevationController::class, 'updateStatusReservationsToApproved']);
+    Route::get('/Reservation/approved/{id}', [ResevationController::class, 'updateStatusReservationsToApproved']);
 
 });
 
@@ -129,6 +140,11 @@ Route::group(['middleware' => ['auth:api', 'role:etudiant']], function () {
     Route::post('Etudiant/pay/{id}', [ResevationController::class, 'createReservations']);
     Route::get('payment/success', [ResevationController::class, 'success']);
     Route::get('error', [ResevationController::class, 'error']);
+
+    Route::post('/avis', [AvisController::class, 'poster']);
+    Route::put('/avis/{id}', [AvisController::class, 'edit']);
+    Route::delete('/avis/{id}', [AvisController::class, 'delete']);
+    Route::get('/avis/{id}', [AvisController::class, 'getById']);
 });
 
 
@@ -137,3 +153,7 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
     Route::get('/Reservation/{id}', [ResevationController::class, 'getByIdReservations']);
     Route::get('/professeur/Reservation', [ResevationController::class, 'reserverProfesseur']);
 });
+
+
+
+

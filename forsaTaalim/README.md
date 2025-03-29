@@ -41,22 +41,5 @@ Database: MySQL
 How to Contribute 🤝
 Clone the repository:
 git clone https://github.com/your-repository-url.git
-About
-"ForsaTaalim" est une plateforme qui connecte les jeunes à la recherche d'emploi avec des parents à la recherche de professeurs qualifiés pour leurs enfants. Elle facilite les échanges, offre des opportunités et contribue à l'éducation.
 
-Resources
- Readme
- Activity
-Stars
- 0 stars
-Watchers
- 1 watching
-Forks
- 0 forks
-Releases
-No releases published
-Create a new release
-Packages
-No packages published
-Publish your first package
-Footer
+

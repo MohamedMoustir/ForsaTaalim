@@ -45,21 +45,27 @@ class ProfesseurController extends Controller
     }
     public function getById($id)
     {
-     
-       $showProfile= $this->professeurService->getById($id);
+
+        $showProfile = $this->professeurService->getById($id);
         return response()->json(['message' => 'showProfile', 'Profile' => $showProfile]);
 
     }
-    public function getAll()
+    
+    // you want test
+    public function getAll(request $request)
     {
-        $AllProfileProfesseur = $this->professeurService->getAll();
-        return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
-
+        if ($request->all()) {
+            $AllProfileProfesseur = $this->professeurService->getAll($request->all());
+            return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
+        } else {
+            $AllProfileProfesseur = $this->professeurService->getAll();
+            return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
+        }
     }
     public function update(ProfesseurRequests $request, $id)
     {
         $validate = $request->validated();
-        $profile=$this->professeurService->update($id,$validate );
+        $profile = $this->professeurService->update($id, $validate);
         return response()->json(['message' => 'Professeur created successfully!', 'Professeur' => $profile], 200);
 
     }
@@ -68,8 +74,9 @@ class ProfesseurController extends Controller
         $professeurService = $this->professeurService->delete($id);
         return response()->json(['message' => 'professeur deleted successfully!', 'CategorieMatiere' => $professeurService], 200);
     }
-    public function filter($filter){
-     
+    public function filter($filter)
+    {
+
         $filter = $this->professeurService->filter($filter);
         return response()->json(['message' => 'filter ajoute successfully!', 'filter' => $filter], 200);
     }
