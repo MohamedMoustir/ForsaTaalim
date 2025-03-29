@@ -27,21 +27,14 @@ class AdminController extends Controller
         $upadetrole = $this->adminServices->Update($id, $validateData);
         return response()->json(['message' => 'role updated successfully!', 'role' => $upadetrole], 200);
     }
-    public function sospande($id)
+    public function suspended($id)
     {
-        $sospande = $this->adminServices->sospande($id);
-        return response()->json(['message' => 'sospande updated successfully!', 'sospande' => $sospande], 200);
+        $suspended = $this->adminServices->suspended($id);
+        return response()->json(['message' => 'suspended updated successfully!', 'suspended' => $suspended], 200);
     }
     public function TotalUser()
     {
         $topUser = $this->adminServices->TotalUser();
-
-        if ($topUser->isEmpty()) {
-            return response()->json([
-                "message" => "Aucun User vendu trouvé"
-            ], 404);
-        }
-
         return response()->json([
             "message" => "User les plus vendus",
             "top_sold_User" => $topUser
@@ -55,12 +48,12 @@ class AdminController extends Controller
             "TotalActive" => $topUser
         ], 200);
     }
-    public function TotalUserSospande()
+    public function TotalUsersuspended()
     {
-        $topUser = $this->adminServices->TotalUserSospande();
+        $topUser = $this->adminServices->TotalUsersuspended();
         return response()->json([
-            "message" => "TotalUserSospande les plus vendus",
-            "TotalUserSospande" => $topUser
+            "message" => "TotalUsersuspended les plus vendus",
+            "TotalUsersuspended" => $topUser
         ], 200);
     }
     //   Gestion Annonuce
