@@ -56,7 +56,7 @@ class AdminController extends Controller
             "TotalUsersuspended" => $topUser
         ], 200);
     }
-    //   Gestion Annonuce
+
     public function TotalAnnonce()
     {
         $Announce = $this->adminServices->TotalAnnonce();
@@ -66,4 +66,27 @@ class AdminController extends Controller
         ], 200);
     }
 
+    // you want test 
+    public function generateActivityReport()
+    {
+        $generate = $this->adminServices->generateActivityReport();
+        return response()->json([
+            'total_users' => $generate['totalUsers'],
+            'total_Announcement' => $generate['totalAnnouncement'],
+            'total_reviews' => $generate['totalReviews'],
+        ]);
+    }
+
+    public function generatePerformanceReport()
+    {
+        $averageRating = $this->adminServices->generatePerformanceReport();
+        return response()->json([
+            'average_teacher_rating' => $averageRating,
+        ]);
+    }
+
+  
 }
+
+
+
