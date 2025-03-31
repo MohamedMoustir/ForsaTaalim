@@ -1,0 +1,39 @@
+<?php
+namespace App\Services;
+
+use App\Models\CategorieMatiere;
+use App\Models\Competence;
+use App\Models\Professeur;
+use App\Models\User;
+use App\Repositories\CategorieMatiereRepository;
+use App\Interface\CrudInterface;
+use App\Repositories\AuthRepository;
+use App\Repositories\disponibiliteRepositories;
+use App\Repositories\ProfesseurRepositories;
+use Illuminate\Support\Facades\Log;
+
+class DisponibiliteServices 
+{
+    protected $disponibiliteRepositories;
+
+    public function __construct(DisponibiliteRepositories $disponibiliteRepositories)
+    {
+        $this->disponibiliteRepositories = $disponibiliteRepositories;
+    }
+    public function store($data){
+        return $this->disponibiliteRepositories->store($data);
+    }
+    public function index()
+    {
+        return $this->disponibiliteRepositories->index();
+    }
+    public function update($id, array $data)
+    {
+        return $this->disponibiliteRepositories->update($id, $data);
+
+    }
+    public function delete($id)
+    {
+        return $this->disponibiliteRepositories->delete($id);
+    }
+}
