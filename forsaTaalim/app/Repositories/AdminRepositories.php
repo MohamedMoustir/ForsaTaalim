@@ -3,8 +3,10 @@ namespace App\Repositories;
 
 use App\Models\Announcement;
 use App\Models\CategorieMatiere;
+use App\Models\Comment;
 use App\Models\User;
 use DB;
+use Illuminate\Console\Command;
 use Mail;
 
 
@@ -52,4 +54,23 @@ class AdminRepositories
             ->get();
 
     }
+    public function generateActivityReport(){
+        $totalUsers = User::count();
+        $totalAnnouncement = Announcement::count();
+        $totalReviews = Comment::count();
+
+        return response()->json([
+            'totalUsers' => $totalUsers,
+            'totalBookings' => $totalAnnouncement,
+            'totalReviews' => $totalReviews,
+        ]);
+    }
+
+    public function generatePerformanceReport(){
+        return  DB::table('users u')
+        ->join('comments c','c.tuteur_id','=','u.id')
+        ->select(DB::AVG('c.rating'))
+        ->get();
+    }
+    
 }
