@@ -54,4 +54,12 @@ class AdminServices implements CrudInterface
     } public function TotalUsersuspended(){
         return $this->adminRepositories->TotalUsersuspended();
     }
+
+    public function generateActivityReport(){
+        return $this->adminRepositories->generateActivityReport();
+    }
+    public function generatePerformanceReport(){
+        return $this->adminRepositories->generatePerformanceReport();
+    }
+    
 }
