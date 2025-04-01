@@ -28,7 +28,8 @@
             ForsaTaalim
         </div>
         <div class="flex gap-4 items-center ">
-            <a href="#" class="bg-red-400 border border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl">M</a>
+            <a href="#"
+                class="bg-red-400 border border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl">M</a>
         </div>
         <button data-collapse-toggle="navbar-hamburger" type="button"
             class="inline-flex items-center justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg  absolute right-[180px] "
@@ -38,36 +39,37 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M1 1h15M1 7h15M1 13h15" />
             </svg>
-            
+
         </button>
-        <ul class=" hidden z-2 flex flex-col font-medium mt-4 w-32 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center absolute right-[8%] bottom-[65%]">
-        <li>
-          <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600" aria-current="page">Sort
-            bye</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            id="p1">Priority</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
-            id="triparTiter">title</a>
-        </li>
-        <li>
-          <a href="#"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            id="triparDate_limite">date limite</a>
-        </li>
-      </ul>
+        <ul class="menu hidden flex flex-col font-medium mt-4 w-[200px]  bg-white shadow-sm dark:bg-red-400 dark:border-red-400 text-center absolute right-[8%] bottom-[65%]"
+            style="z-index: 1;">
+            <li>
+                <a href="#" class="block py-2 px-3 text-white bg-red-400  dark:bg-blue-600" aria-current="page">Sort
+                    bye</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="p1">Priority</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="triparTiter">title</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="triparDate_limite">date limite</a>
+            </li>
+        </ul>
         <button class="absolute top-4 right-[225px] p-1 rounded-full bg-white/80 hover:bg-white">
             <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path
                     d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                 </path>
             </svg>
-    
+
     </nav>
 
 
@@ -80,16 +82,16 @@
             </h1>
 
             <div class="flex items-center text-sm text-gray-500 mb-6 ">
-                <ul
-                    class="border  border-black hover:border-red-400 relative  lg:ml-10 mr-10 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
+                <ul id="1" onclick="openChoix(this.id)"
+                    class="border cursor-pointer   border-black hover:border-red-400 relative  lg:ml-10 mr-10 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
                     Type of class
                 </ul>
-                <ul
-                    class="border  border-black hover:border-red-400 relative -ml-8 lg:ml-1 lg:mr-1 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
+                <ul id="2" onclick="openChoix(this.id)"
+                    class="border cursor-pointer   border-black hover:border-red-400 relative -ml-8 lg:ml-1 lg:mr-1 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
                     Distance
                 </ul>
-                <ul
-                    class="border  border-black hover:border-red-400 relative ml-2 -lg:ml-2 lg:mr-2 lg:m-0 text-black px-2 py-2 rounded-lg w-24 text-center hover:bg-red-400 hover:text-white transition">
+                <ul id="3" onclick="openChoix(this.id)"
+                    class="border cursor-pointer   border-black hover:border-red-400 relative ml-2 -lg:ml-2 lg:mr-2 lg:m-0 text-black px-2 py-2 rounded-lg w-24 text-center hover:bg-red-400 hover:text-white transition">
                     Rate
                 </ul>
                 <div class="flex relative left-[500px]">
@@ -110,12 +112,30 @@
                     <button
                         class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
                 </div>
+                <ul class=" container hidden flex flex-col font-medium mt-4 w-[150px] border rounded  bg-white shadow-sm dark:bg-red-400 dark:border-red-400  absolute left-[227px] bottom-[55%] "
+                    style="z-index: 1;">
+                    <li>
+                        <a href="#" id="title" class="block py-2 px-3 text-white bg-red-400 rounded  dark:bg-blue-600"
+                            aria-current="page">Type of class</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900  hover:bg-red-50 rounded dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                            id="choix1">Online</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900  hover:bg-red-50 rounded dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                            id="choix2">Presonsiale</a>
+                    </li>
+                </ul>
+
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Tutor Card 1 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover">
+                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -149,7 +169,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover">
+                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -183,7 +203,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%]">
+                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -217,7 +237,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%]">
+                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -251,7 +271,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%]">
+                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -285,7 +305,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%]">
+                        <img src="../image/images (8).jpg" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -322,6 +342,34 @@
         </div>
     </section>
 
+    <script>
+        let menu = document.getElementsByClassName('menu');
+        let choix1 = document.getElementById('choix1');
+        let choix2 = document.getElementById('choix2');
+        let title = document.getElementById('title');
+        let container = document.getElementsByClassName('container');
+
+        function OpenMnue() {
+            menu[0].classList.toggle('hidden')
+        }
+
+        function openChoix(id) {
+            container[0].classList.toggle('hidden')
+            if (id == 2) {
+                title.innerHTML = 'this title'
+                choix1.innerHTML = 'choix1'
+                choix2.innerHTML = 'choix2'
+            } else if (id == 3) {
+                title.innerHTML = 'this title'
+                choix1.innerHTML = 'choix1 3'
+                choix2.innerHTML = 'choix2 3'
+            } else {
+                title.innerHTML = 'Type of class'
+                choix1.innerHTML = 'Online'
+                choix2.innerHTML = 'Presonsiale'
+            }
+        }
+    </script>
 
 </body>
 
