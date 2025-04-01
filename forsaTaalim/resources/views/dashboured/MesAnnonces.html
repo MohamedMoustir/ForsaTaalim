@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="../../js/index.js"></script>
+
+    <style>
+        input,
+        select {
+            outline: none;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <nav class="bg-black py-3">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="text-white space-x-8">
+                    <a href="#" class="text-gray-300">Tableau de bord</a>
+                    <a href="#" class="text-gray-300">Mes Messages</a>
+                    <a href="#" class="text-red-400">Mes Annonces</a>
+                    <a href="#" class="text-white font-medium">Mon Compte</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="border-b bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex space-x-8 py-4">
+                <a href="#" class="text-black font-medium text-red-400">Mes Annonces</a>
+                <a href="#" class="text-gray-500">Statistiques</a>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class=" flex justify-around m-10 mt-24 ">
+            <div class="grid grid-cols-3 gap-10">
+                <span class=" text-sm bg-red-400 text-white p-2 h-10  w-[100%] text-center  rounded  cursor-pointer">Toutes les annonces</span>
+                <span class="text-sm bg-[#DEDEDE] text-black p-2  h-10 w-[100%]  text-center  rounded  cursor-pointer"> Annonces actives</span>
+                <span class=" text-sm bg-[#DEDEDE] text-black p-2  h-10 w-[100%]  text-center  rounded  cursor-pointer">Annonces expirées</span>
+            </div>
+            <div>
+                <span class=" text-red-500 text-sm bg-red-400 text-white p-2 h-10 w-[60%]  text-center  rounded  cursor-pointer"> + Créer une annonce</span>  
+            </div>
+        </div>
+    </section>
+    <section class="bg-gray-50">
+        <div class="max-w-6xl mx-auto p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
+                    <div class="relative h-48 bg-gray-200">
+                        <img src="../../image/Frame 427319048.png" alt="" class="w-[100%] h-[100%] bg-cover">
+                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
+                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-3">
+                            <div class="">
+                                <span class="text-black text-sm ml-1">Cours de Mathématiques</span>
+                                <p class="text-gray-500 pt-1 text-sm ml-1">This annonce is avliabel to ...</p>
+                            </div>
+                           
+                        </div>
+                        <div class="">
+                            <h1 class=" w-full h-8font-bold text-gray-400">Lycée • 20€/h</h1>
+                           <span class="text-red-400">En ligne</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
+                    <div class="relative h-48 bg-gray-200">
+                        <img src="../../image/Frame 42731904.png" alt="" class="w-[100%] h-[100%] bg-cover">
+                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
+                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-3">
+                            <div class="">
+                                <span class="text-black text-sm ml-1">Cours de Mathématiques</span>
+                                <p class="text-gray-500 pt-1 text-sm ml-1">This annonce is avliabel to ...</p>
+                            </div>
+                           
+                        </div>
+                        <div class="">
+                            <h1 class=" w-full h-8font-bold text-gray-400">Lycée • 20€/h</h1>
+                           <span class="text-red-400">En ligne</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
+                    <div class="relative h-48 bg-gray-200">
+                        <img src="../../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover">
+                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
+                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-3">
+                            <div class="">
+                                <span class="text-black text-sm ml-1">Cours de Mathématiques</span>
+                                <p class="text-gray-500 pt-1 text-sm ml-1">This annonce is avliabel to ...</p>
+                            </div>
+                           
+                        </div>
+                        <div class="">
+                            <h1 class=" w-full h-8font-bold text-gray-400">Lycée • 20€/h</h1>
+                           <span class="text-red-400">En ligne</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</body>
+
+</html>
