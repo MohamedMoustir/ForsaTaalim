@@ -1,26 +1,13 @@
 <?php
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Disponibilite extends Migration
+class Disponibilite extends Model
 {
-    public function up()
-    {
-        Schema::create('disponibilites', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('teacher_id');
-            $table->timestamp('available_from');
-            $table->timestamp('available_to');
-            $table->boolean('is_walkin')->default(true);
-            $table->timestamps();
+    use HasFactory;
+    protected $fillable = ['tuteur_id','available_from','available_to','is_walkin'];
 
-            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
-        });
-    }
-
-    public function down()
-    {
-        Schema::dropIfExists('disponibilites');
-    }
 }

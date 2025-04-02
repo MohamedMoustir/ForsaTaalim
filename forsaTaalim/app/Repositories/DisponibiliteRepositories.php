@@ -14,16 +14,15 @@ class DisponibiliteRepositories
     {
         $this->model = $model;
     }
-    public function index($data)
+    public function index()
     {
-        return  Disponibilite::all();
+        return  $this->model->all();
     }
     public function store($data){
         return $this->model->create($data);
     }
     public function update($id ,$data){
-        $Disponibilite = Disponibilite::findOrFail($id);
-        return $Disponibilite->update($data);
+        return $this->model->findOrFail($id)->update($data);
     }
     public function delete($id)
     {

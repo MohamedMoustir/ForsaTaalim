@@ -24,7 +24,6 @@ class DisponibiliteController extends Controller
        $disponibilites= $this->disponibiliteServices->index();
         return response()->json($disponibilites);
     }
-
     public function store(DisponibilitesRequest $request)
     {
         $validated = $request->validated();

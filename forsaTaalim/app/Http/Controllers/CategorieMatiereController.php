@@ -14,14 +14,6 @@ class CategorieMatiereController extends Controller
     {
         $this->categorieMatiereService = $categorieMatiereService;
     }
-    public function index()
-    {
-        //
-    }
-    public function create(CategorieMatiereRequests $request)
-    {
-
-    }
     public function store(CategorieMatiereRequests $request)
     {
         $validated = $request->validated();
@@ -33,10 +25,7 @@ class CategorieMatiereController extends Controller
         $categorieMatiere = $this->categorieMatiereService->getAll();
         return response()->json(['message' => 'All CategorieMatiere', 'AllCategorieMatiere' => $categorieMatiere]);
     }
-    public function edit()
-    {
-
-    }
+ 
     public function update(CategorieMatiereRequests $request, $id)
     {
         $validated = $request->validated();

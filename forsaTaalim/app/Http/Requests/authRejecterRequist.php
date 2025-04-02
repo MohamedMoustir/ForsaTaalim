@@ -21,8 +21,6 @@ class authRejecterRequist extends FormRequest
      */
     public function rules(): array
     {
-
-
         return [
             'name' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
