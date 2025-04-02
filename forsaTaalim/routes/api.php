@@ -34,7 +34,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 | API Auth
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -155,5 +154,16 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 });
 
 
+Route::get('reports/activity', [AdminController::class, 'generateActivityReport']);
+Route::get('reports/performance', [AdminController::class, 'generatePerformanceReport']);
 
 
+Route::post('/Tag', [CategorieMatiereController::class, 'store']);
+Route::get('/Tag', [CategorieMatiereController::class, 'show']);
+Route::put('/Tag/{id}', [CategorieMatiereController::class, 'update']);
+Route::delete('/Tag/{id}', [CategorieMatiereController::class, 'destroy']);
+
+// Route::resource('categories', CategoryControlle::class);
+// Route::resource('tags', TagController::class);
+
+// Route::get('statistics', [StatisticsController::class, 'show']);
