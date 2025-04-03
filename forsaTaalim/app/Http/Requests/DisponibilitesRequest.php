@@ -24,9 +24,8 @@ class DisponibilitesRequest extends FormRequest
     public function rules()
     {
         return [
-            'teacher_id' => 'required|exists:teachers,id',
             'available_from' => 'required|date',
-            'available_to' => 'required|date|after:available_from',
+            'available_to' => 'required|date',
             'is_walkin' => 'required|boolean',
         ];
     }
