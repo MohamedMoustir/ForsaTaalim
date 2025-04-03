@@ -1,9 +1,5 @@
 <?php
-
-
-// app/Http/Controllers/Api/DisponibiliteController.php
-
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DisponibilitesRequest;
@@ -26,6 +22,7 @@ class DisponibiliteController extends Controller
     }
     public function store(DisponibilitesRequest $request)
     {
+      
         $validated = $request->validated();
        $disponibilite = $this->disponibiliteServices->store($validated);
         return response()->json($disponibilite, 201);
