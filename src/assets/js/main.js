@@ -1,0 +1,93 @@
+let inputSerch = document.getElementById('inputSerch');
+let input_2 = document.getElementById('input_2');
+let subjects = document.getElementsByClassName('.subjects');
+let nextEtap = document.getElementById('Next');
+
+function getSubjects(subject, targat) {
+    console.log(subject);
+    
+    inputSerch.value = subject
+    targat.classList.toggle('subjects bg-red-400  flex items-center justify-between p-4 bg-gray-50 rounded-md  cursor-pointer text-white')
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let currentStep = 1;
+    const totalSteps = 8
+
+    function updateStep(step) {
+
+        document.querySelectorAll('.step-content').forEach((content) => {
+            content.classList.toggle('hidden', content.dataset.step != step);
+        });
+        document.querySelectorAll('.step').forEach((el) => {
+            el.classList.toggle('bg-red-400', el.dataset.step == step);
+            el.classList.toggle('text-white', el.dataset.step == step);
+            el.classList.toggle('bg-white/10', el.dataset.step != step);
+        });
+        currentStep = step;
+    }
+
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                if (currentStep == 7) {
+                    updateStep(currentStep + 1);
+                }
+                if (currentStep == 6) {
+                    updateStep(currentStep + 1);
+                }
+
+                updateStep(currentStep + 1);
+            }
+        });
+    });
+
+    document.querySelectorAll('.prev-btn').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                updateStep(currentStep - 1);
+            }
+        });
+    });
+
+    updateStep(currentStep);
+});
+
+function addOrder() {
+    const container = document.getElementById('orders-container');
+    const div = document.createElement('div');
+    div.classList.add('order-group', 'mb-4', 'flex', 'gap-2');
+
+    div.innerHTML = `
+              <input type="text"
+                    class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                    placeholder="Enter diploma title">
+                <button onclick="addOrder()"
+                    class="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4v16m8-8H4" />
+                    </svg>
+                </button> `;
+
+    container.appendChild(div);
+    updateRemoveButtons();
+}
+
+function removeOrder(button) {
+    button.parentElement.remove();
+    updateRemoveButtons();
+}
+
+function updateRemoveButtons() {
+    const removeButtons = document.querySelectorAll('.remove-order');
+    removeButtons.forEach(button => {
+        button.classList.toggle('hidden', removeButtons.length === 1);
+    });
+}
+
+updateRemoveButtons();
