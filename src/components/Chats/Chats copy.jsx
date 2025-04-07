@@ -25,8 +25,6 @@ function App() {
   })
 
   .then((response) => {    
-    console.log(response.data.message);
-    
       setMessages(response.data.message);
   })
 

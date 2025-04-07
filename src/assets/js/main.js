@@ -5,19 +5,28 @@ let nextEtap = document.getElementById('Next');
 
 function getSubjects(subject, targat) {
     console.log(subject);
-    
+
     inputSerch.value = subject
     targat.classList.toggle('subjects bg-red-400  flex items-center justify-between p-4 bg-gray-50 rounded-md  cursor-pointer text-white')
 }
 
 
+// input_2.onclick = function getNextEtap () {
+//     if (value) {
+//         nextEtap.innerHTML = 'Next';
+//         nextEtap.classList = 'next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition'
+//     } else {
+//         nextEtap.innerHTML = '1/1'
+//         nextEtap.classList = 'next-btn px-6 py-3 bg-gray-100 rounded-full'
+//     }
+// }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let currentStep = 1;
-    const totalSteps = 8
+    const totalSteps = 7
 
     function updateStep(step) {
-
         document.querySelectorAll('.step-content').forEach((content) => {
             content.classList.toggle('hidden', content.dataset.step != step);
         });
@@ -25,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
             el.classList.toggle('bg-red-400', el.dataset.step == step);
             el.classList.toggle('text-white', el.dataset.step == step);
             el.classList.toggle('bg-white/10', el.dataset.step != step);
+            el.classList.toggle('hidden', el.dataset.step != step);
+
         });
         currentStep = step;
     }
@@ -38,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (currentStep == 6) {
                     updateStep(currentStep + 1);
                 }
-
                 updateStep(currentStep + 1);
             }
         });
