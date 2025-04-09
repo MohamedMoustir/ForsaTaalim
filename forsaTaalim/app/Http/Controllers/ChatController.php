@@ -21,29 +21,31 @@ class ChatController extends Controller
     public function message(ChatRequests $request, $id)
     {
         $validatedata = $request->validated();
-
-        $this->chatService->create($validatedata,  auth::user()->id,$id);
+        $this->chatService->create($validatedata, auth::user()->id, $id);
         event(new Message($request->input('username'), $request->input('message'), $id));
         return [];
     }
     public function getMessage($id)
     {
-        $chats = DB::table('chats')
-        ->join('users as senders', 'chats.sender_id', '=', 'senders.id')
-        ->join('users as receivers', 'chats.receiver_id', '=', 'receivers.id')
+        
+        $chats = DB::table('chat_users as cha_u')
+        ->join('users as senders', 'cha_u.user_id1', '=', 'senders.id')
+        ->join('users as receivers', 'cha_u.user_id2', '=', 'receivers.id')
+        ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
         ->select(
-            'chats.message',
-            'chats.created_at',
+            'ch.message',
+            'ch.created_at',
             'senders.name as sender_name',
             'senders.role as sender_role',
             'receivers.name as receiver_name',
             'receivers.role as receiver_role'
         )
-        // ->where('chats.sender_id', '=', Auth::id())
-        // ->where('chats.receiver_id', '=', $id)
-        ->orderBy('chats.created_at', 'asc')
+        ->where('cha_u.user_id1', '=', Auth::id())
+        ->where('cha_u.user_id2', '=', $id)
+        ->orderBy('ch.created_at', 'asc')
         ->get();
     
+
         $conversation = $chats->map(function ($chat) {
             return [
                 'message' => $chat->message,
@@ -51,11 +53,11 @@ class ChatController extends Controller
                 'receiver' => $chat->receiver_role,
             ];
         });
-        
+
 
         return response()->json([
             'message' => $conversation,
-            'sender' => $chats
+            'sender' => $chats,
         ]);
 
     }
