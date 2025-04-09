@@ -19,5 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
-Route::get('login/google/callback', [SocialiteController::class, 'googleAuthentication']);
+Route::get('/login/google', [SocialiteController::class, 'redirectToGoogle']);
+Route::get('/login/google/callback', [SocialiteController::class, 'googleAuthentication']);
