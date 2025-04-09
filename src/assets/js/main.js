@@ -101,3 +101,45 @@ function updateRemoveButtons() {
 }
 
 updateRemoveButtons();
+
+
+
+
+document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        document.querySelectorAll('.faq-content').forEach(content => content.classList.add('hidden'));
+        item.nextElementSibling.classList.remove('hidden');
+    });
+
+    item.addEventListener('mouseleave', () => {
+        item.nextElementSibling.classList.add('hidden');
+    });
+});
+let menu = document.getElementsByClassName('menu');
+let choix1 = document.getElementById('choix1');
+let choix2 = document.getElementById('choix2');
+let title = document.getElementById('title');
+let container = document.getElementsByClassName('container');
+let ber = document.getElementById('ber');
+
+// ber.addEventListener('click', () => {
+//     alert();
+//     menu[0].classList.toggle('hidden')
+
+// });
+function openChoix(id) {
+    container[0].classList.toggle('hidden')
+    if (id == 2) {
+        title.innerHTML = 'this title'
+        choix1.innerHTML = 'choix1'
+        choix2.innerHTML = 'choix2'
+    } else if (id == 3) {
+        title.innerHTML = 'this title'
+        choix1.innerHTML = 'choix1 3'
+        choix2.innerHTML = 'choix2 3'
+    } else {
+        title.innerHTML = 'Type of class'
+        choix1.innerHTML = 'Online'
+        choix2.innerHTML = 'Presonsiale'
+    }
+}
