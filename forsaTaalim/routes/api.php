@@ -57,17 +57,18 @@ Route::prefix('auth')->group(function () {
 
 
 
-Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
-Route::get('login/google/callback', [SocialiteController::class, 'googleAuthentication']);
+// Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
+// Route::get('login/google/callback', [SocialiteController::class, 'googleAuthentication']);
 
 /*
 |--------------------------------------------------------------------------
 | API admin
 |--------------------------------------------------------------------------
 */
+Route::post('/categorie_matiere', [CategorieMatiereController::class, 'store']);
 
 Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
-    Route::post('/categorie_matiere', [CategorieMatiereController::class, 'store']);
+    // Route::post('/categorie_matiere', [CategorieMatiereController::class, 'store']);
     Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
     Route::put('/categorie_matiere/{id}', [CategorieMatiereController::class, 'update']);
     Route::delete('/categorie_matiere/{id}', [CategorieMatiereController::class, 'destroy']);
@@ -87,15 +88,18 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 /*
 |--------------------------------------------------------------------------
 | API Professeur
-|--------------------------------------------------------------------------
+|-----
+---------------------------------------------------------------------
 */
+// Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+
 Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 
     Route::post('/Professeur', [ProfesseurController::class, 'create']);
     Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
     Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
     Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
-    Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+    // Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
     Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
 
     /*
@@ -138,6 +142,8 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function ()
     Route::post('/notification', [NotificationController::class, 'create']);
     Route::get('/notification', [NotificationController::class, 'show']);
     Route::delete('/notification/{id}', [NotificationController::class, 'destroy']);
+    Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
+    Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
 
 });
 
