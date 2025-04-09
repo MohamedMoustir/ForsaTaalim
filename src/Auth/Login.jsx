@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../assets/js/index';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
+const user = localStorage.getItem('user');
+const parsedToken = JSON.parse(user);
+
+
 const Login = () => {
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isPopupOpen, setPopupOpen] = useState(true);
+  const navigate = useNavigate();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,11 +27,18 @@ const Login = () => {
         password: password
       });
       const token = response.data.token;
-      const user = response.data.user; 
+      const user = response.data.user;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+
+      setEmail('');
       setPassword('');
-     setPopupOpen(true)
+      
+      if (parsedToken.role == 'etudiant') {
+        navigate('/home');
+      }
+
+      alert('User login successfully');
     } catch (err) {
       setError('erorr login');
       console.error(err);
@@ -36,24 +47,19 @@ const Login = () => {
   };
   const google = (e) => {
     e.preventDefault();
-    try {
-   
-    axios.get(`${API_URL}/login/google`, {
-      headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-      }
-  })
+    window.location.href = "http://127.0.0.1:8000/login/google";
+  };
 
-    } catch (err) {
-      setError('erorr login');
-      console.error(err);
-    }
-  }
+//   useEffect(() => {
+//     if (!token) {
+//         navigate("/login");
+//     } else if (parsedToken && parsedToken.role === "tuteur") {
+//         navigate("/login");
+//     }
 
-  
+// }, [token, user, navigate]);
   return (
-    
+
     <div className="bg-white">
       {error && <p>{error}</p>}
       <div className="flex min-h-screen">
@@ -113,7 +119,7 @@ const Login = () => {
                     <span className="ml-2 text-sm">Facebook</span>
                   </a>
 
-                  <button onClick={google}  className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50">
+                  <button onClick={google} className="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24">
                       <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" fill="#EA4335 #4285F4 #FBBC05 #34A853" />
                     </svg>
@@ -142,13 +148,13 @@ const Login = () => {
             className="h-full w-full object-cover" />
         </div>
       </div>
- 
+
     </div>
   );
 
 };
 
-    
+
 
 
 export default Login;
