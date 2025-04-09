@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'login/google/callback'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:3000'], // Remplacez par votre origine frontend
+    'allowed_origins' => ['http://localhost:3000','http://127.0.0.1:8000'], // Remplacez par votre origine frontend
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'expose_headers' => [],
     'max_age' => 0,
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 ];
