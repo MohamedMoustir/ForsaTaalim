@@ -1,16 +1,13 @@
 <?php
 namespace App\Repositories;
 
-use CreateDisponibilitesTable;
 use Disponibilite;
-
-
 
 class DisponibiliteRepositories
 {
 
     protected $model;
-    public function __construct(Disponibilite $model)
+    public function __construct(\App\Models\Disponibilite $model)
     {
         $this->model = $model;
     }

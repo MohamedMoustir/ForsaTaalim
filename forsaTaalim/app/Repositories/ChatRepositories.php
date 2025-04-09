@@ -34,13 +34,14 @@ class ChatRepositories
                 'useTLS' => true
             ]
         );
+       
         // Trigger the Pusher event with current timestamp
         $pusher->trigger('forsaTaalm-development', 'message', [
             'message' => $data['message'],
             'sender' => Auth::user()->role,
             'timestamp' => now()->format('h:i A'),
         ]);
-
+  
         return $this->model->create($data);
     }
 

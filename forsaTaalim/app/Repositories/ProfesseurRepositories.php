@@ -73,18 +73,25 @@ class ProfesseurRepositories
             ->leftjoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
             ->leftjoin('competences as com', 'cp.competence_id', '=', 'com.id')
             ->select(
-                'p.*',
-                'u.prenom',
-                'u.email',
-                'u.photo',
-                'u.age',
-                'u.telephone',
-                'u.role',
-                'u.email_verified_at',
-                'u.password',
-                'u.remember_token',
-                'c.nom as nom_matiere',
-                'com.name'
+           'p.id',
+            'p.diplomes',
+            'p.experiences',
+            'p.tarifHoraire',
+            'p.disponible',
+            'p.location',
+            'p.biographie',
+            'p.video',
+            'u.prenom',
+            'u.email',
+            'u.photo',
+            'u.age',
+            'u.telephone',
+            'u.role',
+            'u.email_verified_at',
+            'u.password',
+            'u.remember_token',
+            'c.nom as nom_matiere',
+            'com.name as competencesName'
             );
 
         if ($data['search'] || $data['sear']) {
@@ -101,6 +108,37 @@ class ProfesseurRepositories
 
 
 
+    }
+    public function getAllwithout(){
+        return  DB::table('professeurs as p')
+        ->join('users as u', 'p.user_id', '=', 'u.id')
+        ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
+        ->leftjoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
+        ->leftjoin('competences as com', 'cp.competence_id', '=', 'com.id')
+        ->leftjoin('comments as comme1',  'u.id', '=', 'comme1.tuteur_id')
+        ->select(
+            'p.id',
+            'p.diplomes',
+            'p.experiences',
+            'p.tarifHoraire',
+            'p.disponible',
+            'p.location',
+            'p.biographie',
+            'p.video',
+            'u.prenom',
+            'u.email',
+            'u.photo',
+            'u.age',
+            'u.telephone',
+            'u.role',
+            'u.email_verified_at',
+            'u.password',
+            'u.remember_token',
+            'c.nom as nom_matiere',
+            'com.name as competencesName',
+            DB::COUNT('comme1.rating') ,
+        )
+        ->get();
     }
     public function filter($value)
     {
