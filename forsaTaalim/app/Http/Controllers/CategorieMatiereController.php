@@ -23,7 +23,7 @@ class CategorieMatiereController extends Controller
     public function show()
     {
         $categorieMatiere = $this->categorieMatiereService->getAll();
-        return response()->json(['message' => 'All CategorieMatiere', 'AllCategorieMatiere' => $categorieMatiere]);
+        return response()->json(['AllCategorieMatiere' => $categorieMatiere]);
     }
  
     public function update(CategorieMatiereRequests $request, $id)
