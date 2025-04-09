@@ -55,7 +55,7 @@ class ProfesseurController extends Controller
     public function getAll(request $request)
     {
         if ($request->all()) {
-            $AllProfileProfesseur = $this->professeurService->getAll($request->all());
+            $AllProfileProfesseur = $this->professeurService->getAllAndSerch($request->all());
             return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
         } else {
             $AllProfileProfesseur = $this->professeurService->getAll();
