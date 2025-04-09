@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('diplomes');
             $table->string('experiences');
             $table->string('tarifHoraire');
-            $table->boolean('disponible')->default(true);
+            // $table->boolean('disponible')->default(true);
             $table->string('location');
             $table->text('biographie');
             $table->string('video')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+
    
 
     /**
