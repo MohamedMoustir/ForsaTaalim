@@ -6,7 +6,18 @@ import '../assets/js/main';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
+let token = ''; 
+
+// const storedData = localStorage.getItem('user');
+// if (storedData) {
+//     const parsedData = JSON.parse(storedData);
+//     token = parsedData.original.token; 
+// }else{
+//     console.log('ee');
+    
+// }
+
+console.log(token);
 
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
@@ -41,23 +52,39 @@ const RejisterPro = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+
+            if (response.status === 200) {
+                alert('User registered successfully');
+            } else {
+                alert('Error during registration');
+            }
+
         } catch (error) {
-            setError('erorr login');
+            setError('Error registering user');
             console.error(error);
         }
-    }
-    
+    };
+
+
     useEffect(() => {
-        axios.get(`${API_URL}/categorie_matiere`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => {
-                setCategorieMatiere(response.data.AllCategorieMatiere);
+        if (!token) {
+            console.log("No token, redirecting to login...");
+        } else {
+            axios.get(`${API_URL}/categorie_matiere`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
             })
-    }, []);
+                .then((response) => {
+                    setCategorieMatiere(response.data.AllCategorieMatiere);
+                })
+                .catch((error) => {
+                    console.error("Error fetching categories", error);
+                });
+        }
+    }, [token]);
+
 
     return (
         <div className="min-h-screen ">
@@ -131,7 +158,7 @@ const RejisterPro = () => {
 
                         <div className="flex items-center justify-between mt-12">
                             <div
-                                className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                                className="next-btn cursor-pointer px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
                         </div>
                     </div>
                 </div>
@@ -165,8 +192,8 @@ const RejisterPro = () => {
                         <div id="orders-container" className="  space-y-4 mb-12">
                             <div className="flex">
                                 <input value={diplome} onChange={(e) => setDiplomes(e.target.value)}
-                                    type="text" id="input_2" 
-                                className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                                    type="text" id="input_2"
+                                    className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="Enter diploma title" />
                                 <button
                                     className="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
