@@ -36,6 +36,7 @@ function App() {
       cluster: 'eu'
     });
 
+
     const channel = pusher.subscribe('forsaTaalm-development');
     channel.bind('message', function (data) {
       setMessages(prevMessages => [...prevMessages, data]);
