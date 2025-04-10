@@ -3,7 +3,8 @@ import Pusher from "pusher-js";
 import '../assets/js/index';
 import axios from 'axios';
 
-const API_URL = 'http://localhost/api';
+const API_URL = 'http://127.0.0.1:8000/api';
+
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
