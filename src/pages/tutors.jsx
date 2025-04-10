@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import index from '.';
-import { Page } from 'openai/src/pagination.js';
 
 
 
@@ -22,32 +21,25 @@ const Tutors = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [profileslength, setprofileslength] = useState(6);
-    const [links, setlinks] = useState([]);
-
+    const [search, setSearch] = useState('');
+    const [filterByLocation, setFilterByLocation] = useState('All');
 
 
     const fetchProfesseurs = async (page) => {
-        
-        const res = await axios.get(`${API_URL}/Professeur?page=${page  }`);
+        const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
         setprofileslength(res.data.AllProfile.total);
-        setprofiles(res.data.AllProfile.data); 
-      };
-    
+        setprofiles(res.data.AllProfile.data);
+    };
+
+    console.log(filterByLocation);
     const navigate = useNavigate();
     useEffect(() => {
-        fetchProfesseurs(currentPage);
-        // if (!token) {
-        //     navigate("/login");
-        // } else if (parsedToken && parsedToken.role === "tuteur") {
-        //     navigate("/login");
-        // }
 
+        fetchProfesseurs(currentPage);
         if (token) {
             setUserAuth(true);
         }
-    }, [token, user, navigate,currentPage]);
- 
-
+    }, [token, user, navigate, currentPage]);
 
     function handleClick() {
         setIsMenuHidden(false);
@@ -64,10 +56,6 @@ const Tutors = () => {
     for (let i = 0; i < profileslength / itemsPerPage; i++) {
         pages.push(i);
     }
-
-
-console.log(itemsPerPage);
-
     return (
         <>
             {!isUserAuth && (
@@ -192,17 +180,17 @@ console.log(itemsPerPage);
                 </h1>
 
                 <div class="flex items-center text-sm text-gray-500 mb-6 ">
-                    <ul id="1" onclick="openChoix(this.id)"
+                    <ul id="" onClick={(e) => setFilterByLocation(e.target.id)}
                         class="border cursor-pointer   border-black hover:border-red-400 relative  lg:ml-10 mr-10 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
-                        Type of class
+                        All
                     </ul>
-                    <ul id="2" onclick="openChoix(this.id)"
+                    <ul id="Distance" onClick={(e) => setFilterByLocation(e.target.id)}
                         class="border cursor-pointer   border-black hover:border-red-400 relative -ml-8 lg:ml-1 lg:mr-1 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
                         Distance
                     </ul>
-                    <ul id="3" onclick="openChoix(this.id)"
+                    <ul id="Online" onClick={(e) => setFilterByLocation(e.target.id)}
                         class="border cursor-pointer   border-black hover:border-red-400 relative ml-2 -lg:ml-2 lg:mr-2 lg:m-0 text-black px-2 py-2 rounded-lg w-24 text-center hover:bg-red-400 hover:text-white transition">
-                        Rate
+                        Online
                     </ul>
                     <div class="flex relative left-[500px]">
                         <div class="relative flex-grow mr-4">
@@ -213,40 +201,32 @@ console.log(itemsPerPage);
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </span>
-                            <input id="inputSerch" type="hidden" placeholder="ESL tutors nearby"
+                            {/* <input id="inputSerch" type="hidden" placeholder="ESL tutors nearby"
+                                class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" /> */}
+                            <input value={filterByLocation} onChange={(e) => setFilterByLocation(e.target.value)} id="" type="hidden" placeholder="ESL tutors nearby"
                                 class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
-
-                            <input type="text" placeholder="ESL tutors nearby"
+                            <input onChange={(e) => setSearch(e.target.value)} id="inputSerch" type="text" placeholder="ESL tutors nearby"
                                 class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
                         </div>
                         <button
                             class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
                     </div>
-                    <div class="relative">
-                        <button id="dropdownButton" class="px-4 py-2 bg-red-400 text-white rounded">
-                            Select Class Type
-                        </button>
-
-                        <ul id="dropdownMenu" class="hidden absolute left-0 mt-2 w-40 border rounded bg-white shadow-sm dark:bg-red-400 dark:border-red-400 z-10">
-                            <li>
-                                <a href="#" class="block py-2 px-3 text-white bg-red-400 rounded-t dark:bg-blue-600" aria-current="page">Type of class</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Online</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Presential</a>
-                            </li>
-                        </ul>
-                    </div>
-
+        
 
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                     {
 
-                        profiles.map((prof, index) => {
+                        profiles.filter((item) => {
+                            console.log(filterByLocation);
+
+                            if (search) {
+                                return search.toLowerCase() === '' ? item : item.prenom.toLowerCase().includes(search);
+                            }
+                            return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
+
+                        }).map((prof, index) => {
                             return (
                                 <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                     <div className="relative h-48 bg-gray-200">
@@ -306,50 +286,49 @@ console.log(itemsPerPage);
             </div>
 
             {
-               <nav aria-label="Page navigation example">
-               <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
-                 <li>
-                   <button
-                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                     className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                   >
-                     <span className="sr-only">Previous</span>
-                     <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
-                     </svg>
-                   </button>
-                 </li>
-             
-                 {pages.map((pageIndex) => (
-                    
-                   <li key={pageIndex}>
-                     <button
-                       onClick={() => setCurrentPage(pageIndex + 1)}
-                       className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 ${
-                         currentPage === pageIndex + 1
-                           ? 'bg-blue-600 text-white'
-                           : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'
-                       }`}
-                     >
-                       {pageIndex + 1}
-                     </button>
-                   </li>
-                 ))}
-             
-                 <li>
-                   <button
-                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
-                     className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                   >
-                     <span className="sr-only">Next</span>
-                     <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
-                     </svg>
-                   </button>
-                 </li>
-               </ul>
-             </nav>
-             
+                <nav aria-label="Page navigation example">
+                    <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                            >
+                                <span className="sr-only">Previous</span>
+                                <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
+                                </svg>
+                            </button>
+                        </li>
+
+                        {pages.map((pageIndex) => (
+
+                            <li key={pageIndex}>
+                                <button
+                                    onClick={() => setCurrentPage(pageIndex + 1)}
+                                    className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 ${currentPage === pageIndex + 1
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                                        }`}
+                                >
+                                    {pageIndex + 1}
+                                </button>
+                            </li>
+                        ))}
+
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
+                                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                            >
+                                <span className="sr-only">Next</span>
+                                <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+
             }
         </>
     );
