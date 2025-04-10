@@ -120,9 +120,11 @@ let choix1 = document.getElementById('choix1');
 let choix2 = document.getElementById('choix2');
 let title = document.getElementById('title');
 let container = document.getElementsByClassName('container');
-let ber = document.getElementById('ber');
+let ber = document.getElementsByClassName('hamburger');
+console.log(ber[0]);
 
-// ber.addEventListener('click', () => {
+
+// ber[0].addEventListener('click', () => {
 //     alert();
 //     menu[0].classList.toggle('hidden')
 
