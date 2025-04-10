@@ -3,18 +3,20 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import '../assets/js/index';
 import '../assets/js/main';
+import { useNavigate } from 'react-router-dom';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-let token = ''; 
+let token = '';
 
-// const storedData = localStorage.getItem('user');
+const storedData = localStorage.getItem('user');
+
 // if (storedData) {
 //     const parsedData = JSON.parse(storedData);
-//     token = parsedData.original.token; 
-// }else{
+//     token = parsedData.original.token;
+// } else {
 //     console.log('ee');
-    
+
 // }
 
 console.log(token);
@@ -29,6 +31,7 @@ const RejisterPro = () => {
     const [aboutyou, setAboutyou] = useState('');
     const [rate, setRate] = useState('');
     const [video, setVideo] = useState('');
+    const navigate = useNavigate();
 
 
 
@@ -83,7 +86,16 @@ const RejisterPro = () => {
                     console.error("Error fetching categories", error);
                 });
         }
-    }, [token]);
+
+
+        if (!token) {
+            navigate("/login");
+        } else if (parsedToken && parsedToken.role === "tuteur") {
+            navigate("/login");
+        }
+
+
+    }, [token, navigate]);
 
 
     return (
