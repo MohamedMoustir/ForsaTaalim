@@ -39,6 +39,11 @@ const Tutors = () => {
         if (token) {
             setUserAuth(true);
         }
+        if (!token) {
+            navigate("/login");
+        } else if (parsedToken && parsedToken.role === "tuteur") {
+            navigate("/login");
+        }
     }, [token, user, navigate, currentPage]);
 
     function handleClick() {
@@ -47,6 +52,7 @@ const Tutors = () => {
     function handleClickFlase() {
         setIsMenuHidden(true);
     }
+
 
 
     const lastItemsIndex = currentPage * itemsPerPage;
@@ -211,7 +217,7 @@ const Tutors = () => {
                         <button
                             class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
                     </div>
-        
+
 
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
