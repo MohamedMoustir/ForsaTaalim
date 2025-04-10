@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
+const users = localStorage.getItem('user');
+const parsedToken = JSON.parse(users);
 
 
 const Login = () => {
@@ -28,17 +28,27 @@ const Login = () => {
       });
       const token = response.data.token;
       const user = response.data.user;
+      console.log(user);
+      
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
       setEmail('');
       setPassword('');
-      
-      if (parsedToken.role == 'etudiant') {
-        navigate('/home');
+
+      if (user) {
+        if (user.role === 'etudiant') {
+          navigate('/home');
+        } else if (user.role === 'tuteur') {
+          navigate('/dashboard-tuteur');
+        } else if (user.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/login'); 
+        }
       }
 
-      alert('User login successfully');
+      
     } catch (err) {
       setError('erorr login');
       console.error(err);
@@ -50,14 +60,22 @@ const Login = () => {
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
 
-//   useEffect(() => {
-//     if (!token) {
-//         navigate("/login");
-//     } else if (parsedToken && parsedToken.role === "tuteur") {
-//         navigate("/login");
-//     }
+  useEffect(() => {
+    // if (!token) {
+    //     navigate("/login");
+    // } else if (parsedToken && parsedToken.role === "tuteur") {
+    //     navigate("/login");
+    // }
+    if (parsedToken) {
 
-// }, [token, user, navigate]);
+      if (parsedToken.role == 'etudiant') {
+        navigate('/home');
+      } else {
+        navigate('/login');
+      }
+    }
+
+  }, [parsedToken, navigate]);
   return (
 
     <div className="bg-white">
