@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
+import Login from "../Auth/Login";
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -9,11 +10,14 @@ const parsedToken = JSON.parse(user);
 const detiles = () => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [detile, setDetilesprofiles] = useState([]);
+    const [comment, setComment] = useState([]);
     const [content, setContent] = useState('');
     const [rating, setRating] = useState('');
     const [error, setError] = useState('');
-    const [tutor, setTutors] = useState();
+    const [tutor, setTutors] = useState(null);
     const [popUp, setPopUp] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [isFormVisible, setIsFormVisible] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams()
 
@@ -29,47 +33,83 @@ const detiles = () => {
                 setTutors(response.data.Profile.profe_id);
             })
     };
+    const fetchComment = async (tutor) => {
+        axios.get(`${API_URL}/avis/${tutor}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((response) => {
+                setComment(response.data.comments);
 
+            })
+    };
 
     const handleAvis = async (e) => {
         e.preventDefault();
-
         try {
+            let response;
+            let data;
             const formData = new FormData();
             formData.append("content", content);
             formData.append("rating", rating);
             formData.append("tuteur_id", tutor);
 
-            const response = await axios.post(`${API_URL}/avis`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            if (editId) {
+                formData.append("_method", 'PUT');
 
-            if (response.status === 200) {
-                alert('comment ajoute successfully');
+                response = await axios.post(`${API_URL}/avis/${editId}`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': "multipart/from-data",
+                    },
+
+                });
+                console.log(response)
             } else {
-                alert('Error during ajoute');
-            }
 
+                response = await axios.post(`${API_URL}/avis`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.status === 200) {
+                    alert('Commentaire ajouté avec succès');
+                    fetchComment(tutor);
+                    setIsFormVisible(false);
+                } else {
+                    l
+                    alert('Erreur lors de l\'ajout');
+                }
+            }
         } catch (error) {
-            setError('Error comment user');
+            setError('Erreur lors de l\'ajout ou modification du commentaire');
             console.error(error);
         }
     };
+
+    useEffect(() => {
+        if (tutor) {
+            fetchComment(tutor);
+        }
+
+    }, [tutor])
+
     useEffect(() => {
         fetchProfesseurs(id);
+
         if (token) {
             setUserAuth(true);
         }
+
         if (!token) {
             navigate("/login");
         } else if (parsedToken && parsedToken.role === "tuteur") {
             navigate("/login");
         }
-
-    }, [])
+    }, [id]);
     function openPopUp() {
         setPopUp(true)
     }
@@ -77,6 +117,44 @@ const detiles = () => {
         setPopUp(false)
     }
 
+    const deleteComment = async (comment_id) => {
+        try {
+            const response = await axios.delete(`${API_URL}/avis/${comment_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-type': 'application/json'
+                }
+            });
+            if (response.status === 200) {
+                alert('Annonce supprimée avec succès');
+                setComment((prev) => prev.filter((a) => a.id !== comment_id));
+            } else {
+                alert('Une erreur est survenue');
+            }
+        } catch (error) {
+            console.error("Erreur lors de la suppression:", error);
+            throw error;
+        }
+    };
+    const handleDelete = async (comment_id) => {
+        try {
+            await deleteComment(comment_id);
+        } catch (error) {
+            console.error("Erreur lors de la suppression:", error);
+        }
+    }
+    const handleEdit = (id) => {
+        const comments = comment.filter((a) => a.id == id)
+        setContent(comments[0].content)
+        setRating(comments[0].rating)
+        setPopUp(true)
+        setEditId(id);
+        setIsFormVisible(true);
+    };
+
+     const handleContact = () => { 
+     navigate(`/contactTutors/${tutor}`)
+    }
 
     return (
 
@@ -150,7 +228,7 @@ const detiles = () => {
                             </div>
                         </div>
 
-                        <button className="w-full bg-red-400 hover:bg-red-500 text-white py-3 rounded-md flex justify-center items-center mb-3">
+                        <button onClick={handleContact} className="w-full bg-red-400 hover:bg-red-500 text-white py-3 rounded-md flex justify-center items-center mb-3">
                             <i className="far fa-envelope mr-2"></i>
                             Contact
                         </button>
@@ -183,7 +261,7 @@ const detiles = () => {
                 </div>
                 <h1>Ma vidéo</h1>
                 <video width="640" height="360" controls>
-                    {/* <source src={`http://127.0.0.1:8000/storage/app/${detile.video}`} type="video/mp4" /> */}
+                    <source src={`http://127.0.0.1:8000/storage/videos/1744326299_video.mp4`} type="video/oog" />
                 </video>
             </div>
             <div className="mt-12">
@@ -199,24 +277,67 @@ const detiles = () => {
                 </div>
 
                 <div className="space-y-4">
-                    <div className="bg-white rounded-lg shadow p-4">
-                        <div className="flex items-center mb-2">
-                            <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white mr-2">K</div>
-                            <span className="font-medium">Kirsty</span>
-                            <div className="ml-auto flex">
-                                <i className="fas fa-star text-yellow-400"></i>
-                                <span className="ml-1">5</span>
+                    {comment.map((item, index) => (
+
+                        <div
+                            key={index}
+                            className="bg-white rounded-2xl shadow-md p-4 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+                        >
+                            <div className="flex items-center mb-2">
+                                <div className="w-9 h-9 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                    {detile.prenom.charAt(0).toUpperCase()}
+                                </div>
+
+                                <div>
+                                    <span className="font-semibold text-gray-800">{detile.prenom}</span>
+                                </div>
+
+                                <div className="ml-auto flex items-center space-x-3 text-sm">
+                                    <div className="flex items-center text-yellow-500">
+                                        <i className="fas fa-star mr-1"></i>
+                                        <span>{item.rating}  <span className="text-yellow-400">★</span></span>
+                                    </div>
+                                    {item.user_id === parsedToken.id && (
+                                        <>
+                                            <button
+                                                onClick={() => handleEdit(item.id)}
+                                                className="text-blue-500 hover:text-blue-700 transition"
+                                                title="Edit"
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleDelete(item.id)}
+                                                className="text-red-500 hover:text-red-700 transition"
+                                                title="Delete"
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    )}
+
+
+                                </div>
                             </div>
+
+                            <p className="text-gray-700">{item.content}</p>
                         </div>
-                        <p><span className="font-medium">Perfect!</span> Davayne is great!</p>
-                    </div>
+                    ))}
+
                     <div className="text-center">
-                        <button onClick={openPopUp} className="text-gray-600 text-sm flex items-center mx-auto bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
+                        <button
+                            onClick={openPopUp}
+                            className="text-sm flex items-center mx-auto bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                        >
                             Add Review
-                            <i className="fas fa-plus ml-1"></i>
+                            <i className="fas fa-plus ml-2"></i>
                         </button>
                     </div>
                 </div>
+
+
+
                 {popUp && (
 
                     <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 ">
@@ -232,8 +353,15 @@ const detiles = () => {
                                     <textarea value={content} onChange={((e) => setContent(e.target.value))} id="review" rows="4" className="w-full p-2 border border-gray-300 rounded"></textarea>
                                 </div>
                                 <div className="flex justify-between">
-                                    <button onClick={closePopUp} type="button" className="text-gray-500" onclick="togglePopup()">Cancel</button>
-                                    <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">Submit</button>
+                                    <button onClick={closePopUp} type="button" className="text-gray-500" >Cancel</button>
+                                    {isFormVisible && (
+                                        <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">Update</button>
+                                    )
+                                    }
+                                    {!isFormVisible && (
+                                        <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">submit</button>
+                                    )
+                                    }
                                 </div>
                             </form>
                         </div>
