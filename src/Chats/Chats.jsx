@@ -14,7 +14,7 @@ function App() {
   const [username, setUsername] = useState('mohamed');
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const [receive_id, setreceive_id] = useState(45);
+  const [receive_id, setreceive_id] = useState(20);
   const [sender, setSender] = useState(parsedToken.role);
 
   useEffect(() => {
