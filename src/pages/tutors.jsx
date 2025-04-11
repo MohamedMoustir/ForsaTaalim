@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import index from '.';
+
 
 
 
@@ -240,7 +240,7 @@ const Tutors = () => {
                                 <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                     <div className="relative h-48 bg-gray-200">
                                         <img
-                                            key={prof.id}
+                                            key={prof.profe_id}
                                             onClick={() => handleClickProfessor(prof.id)}
                                             src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                             alt={prof.prenom}
