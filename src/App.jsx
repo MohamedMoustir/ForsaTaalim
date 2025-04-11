@@ -9,6 +9,8 @@ import Index from "./pages/index";
 import '../../forsaTaalim-front/src/assets/js/index';
 import Tutors from "./pages/tutors"
 import DetilesTutor from "./pages/detilesTutor"
+import ContactTutors from "./pages/contactTutors"
+import Reservation from "./pages/reservation"
 
 
 
@@ -34,6 +36,11 @@ function App() {
         <Route path="/Chat" element={<Chat />} />
         <Route path="/tutors" element={<Tutors />} />
         <Route path="/detilesTutor/:id" element={<DetilesTutor />} />
+        <Route path="/contactTutors/:id" element={<ContactTutors />} />
+        <Route path="/reservation/:id" element={<Reservation />} />
+
+
+
 
 
       </Routes>
