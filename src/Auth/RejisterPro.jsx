@@ -7,17 +7,13 @@ import { useNavigate } from 'react-router-dom';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-let token = '';
+// let token = '';
 
 const storedData = localStorage.getItem('user');
 
-// if (storedData) {
-//     const parsedData = JSON.parse(storedData);
-//     token = parsedData.original.token;
-// } else {
-//     console.log('ee');
-
-// }
+ const token = localStorage.getItem('token');
+const user = localStorage.getItem('user');
+const parsedToken = JSON.parse(user);
 
 console.log(token);
 
@@ -68,11 +64,10 @@ const RejisterPro = () => {
         }
     };
 
+     console.log(token);
 
     useEffect(() => {
-        if (!token) {
-            console.log("No token, redirecting to login...");
-        } else {
+     
             axios.get(`${API_URL}/categorie_matiere`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -85,14 +80,14 @@ const RejisterPro = () => {
                 .catch((error) => {
                     console.error("Error fetching categories", error);
                 });
-        }
+  
 
 
-        if (!token) {
-            navigate("/login");
-        } else if (parsedToken && parsedToken.role === "tuteur") {
-            navigate("/login");
-        }
+        // if (!token) {
+        //     navigate("/login");
+        // } else if (parsedToken && parsedToken.role === "tuteur") {
+        //     navigate("/login");
+        // }
 
 
     }, [token, navigate]);
