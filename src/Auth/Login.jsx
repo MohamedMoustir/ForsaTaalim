@@ -9,7 +9,6 @@ const API_URL = 'http://127.0.0.1:8000/api';
 const users = localStorage.getItem('user');
 const parsedToken = JSON.parse(users);
 
-
 const Login = () => {
 
 
@@ -29,7 +28,7 @@ const Login = () => {
       const token = response.data.token;
       const user = response.data.user;
       console.log(user);
-      
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
@@ -38,17 +37,18 @@ const Login = () => {
 
       if (user) {
         if (user.role === 'etudiant') {
+          alert()
           navigate('/home');
         } else if (user.role === 'tuteur') {
           navigate('/dashboard-tuteur');
         } else if (user.role === 'admin') {
           navigate('/admin/dashboard');
         } else {
-          navigate('/login'); 
+          navigate('/login');
         }
       }
 
-      
+
     } catch (err) {
       setError('erorr login');
       console.error(err);
@@ -59,23 +59,23 @@ const Login = () => {
     e.preventDefault();
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
+ 
+  // useEffect(() => {
+  //   // if (!token) {
+  //   //     navigate("/login");
+  //   // } else if (parsedToken && parsedToken.role === "tuteur") {
+  //   //     navigate("/login");
+  //   // }
+  //   // if (parsedToken) {
+  //   //   if (parsedToken.role == 'etudiant') {
+  //   //     navigate('/home');
+  //   //   } else {
+  //   //     navigate('/login');
+  //   //   }
+  //   // }
 
-  useEffect(() => {
-    // if (!token) {
-    //     navigate("/login");
-    // } else if (parsedToken && parsedToken.role === "tuteur") {
-    //     navigate("/login");
-    // }
-    if (parsedToken) {
+  // }, [parsedToken, navigate,email]);
 
-      if (parsedToken.role == 'etudiant') {
-        navigate('/home');
-      } else {
-        navigate('/login');
-      }
-    }
-
-  }, [parsedToken, navigate]);
   return (
 
     <div className="bg-white">
