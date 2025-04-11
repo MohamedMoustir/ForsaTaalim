@@ -38,8 +38,6 @@ const ContactTutors = () => {
                 setDetilesprofiles(response.data.Profile);
                 setAddress(response.data.Profile.location)
                 setPhoneNumber(response.data.Profile.telephone)
-
-
             })
     };
     console.log(Detilesprofiles.profe_id);
@@ -106,7 +104,7 @@ const ContactTutors = () => {
                                     <i className="fas fa-star"></i>
                                     <i className="fas fa-star"></i>
                                 </div>
-                                <span className="ml-1">5 (104 reviews)</span>
+                                <span className="ml-1">{Detilesprofiles.total_ratings} ({Detilesprofiles.total_ratings} reviews)</span>
                             </div>
                             <div className="text-xs text-red-400">1st lesson is free</div>
                         </div>
@@ -190,7 +188,7 @@ const ContactTutors = () => {
                 <button
                     className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 rounded-md flex items-center justify-center transition-colors"
                 >
-                    Next
+                  Complte Reservation
                     <i className="fas fa-arrow-right ml-2"></i>
                 </button>
             </form>
