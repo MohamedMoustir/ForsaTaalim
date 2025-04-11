@@ -272,7 +272,7 @@ const detiles = () => {
                     </h2>
                     <div className="flex items-center">
                         <i className="fas fa-star text-yellow-400 mr-1"></i>
-                        <span>5 (104 reviews)</span>
+                        <span>{detile.total_ratings} ({detile.total_ratings} reviews)</span>
                     </div>
                 </div>
 
