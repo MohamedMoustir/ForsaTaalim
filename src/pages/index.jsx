@@ -17,7 +17,7 @@ const index = () => {
     const [profiles, setprofiles] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);
     const navigate = useNavigate();
-
+    // const { login } = useAuth();
     useEffect(() => {
         axios.get(`${API_URL}/Professeur`, {
             headers: {
@@ -34,9 +34,10 @@ const index = () => {
         // } else if (parsedToken && parsedToken.role === "tuteur") {
         //     navigate("/login");
         // }
+
         if (!token) {
             navigate("/login");
-            return; 
+            return;
         }
         if (token) {
             setUserAuth(true);
@@ -59,6 +60,23 @@ const index = () => {
         navigate(`/detilesTutor/${id}`);
     };
 
+    const hanleLogout = async (e) => {
+        try {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            const response = await axios.post(`${API_URL}/auth/logout`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+
+            navigate('/login')
+        } catch (err) {
+
+        }
+    }
     return (
 
         <div className="bg-[#FFF1F1]">
@@ -158,7 +176,7 @@ const index = () => {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                onClick={hanleLogout}
                                 className="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                                 id="triparDate_limite"
                             >
@@ -303,7 +321,7 @@ const index = () => {
                                     <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                         <div className="relative h-48 bg-gray-200">
                                             <img
-                                                key={prof.id}
+                                                key={prof.profe_id}
                                                 onClick={() => handleClickProfessor(prof.id)}
                                                 src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                                 alt={prof.prenom}
