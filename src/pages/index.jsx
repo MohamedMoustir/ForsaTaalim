@@ -17,6 +17,7 @@ const index = () => {
     const [profiles, setprofiles] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);
     const navigate = useNavigate();
+
     useEffect(() => {
         axios.get(`${API_URL}/Professeur`, {
             headers: {
@@ -33,13 +34,15 @@ const index = () => {
         // } else if (parsedToken && parsedToken.role === "tuteur") {
         //     navigate("/login");
         // }
-
+        if (!token) {
+            navigate("/login");
+            return; 
+        }
         if (token) {
             setUserAuth(true);
         }
 
     }, [token, user, navigate]);
-
     function BecomeTutor() {
         navigate('/RejisterPro')
     }
@@ -49,9 +52,13 @@ const index = () => {
     function handleClickFlase() {
         setIsMenuHidden(true);
     }
-    function handleMoreTuter(){
+    function handleMoreTuter() {
         navigate('/Tutors');
     }
+    const handleClickProfessor = (id) => {
+        navigate(`/detilesTutor/${id}`);
+    };
+
     return (
 
         <div className="bg-[#FFF1F1]">
@@ -294,55 +301,57 @@ const index = () => {
                             profiles.map((prof, index) => {
                                 return (
                                     <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                                    <div className="relative h-48 bg-gray-200">
-                                        <img
-                                            src={`http://127.0.0.1:8000/storage/${prof.photo}`}
-                                            alt={prof.prenom}
-                                            className="w-full h-full object-cover cursor-pointer"
-                                        />
-                                        <button className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-all">
-                                            <svg
-                                                className="w-5 h-5 text-gray-600 hover:text-red-500"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                            >
-                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div className="p-4">
-                                        <div className="flex justify-between items-center mb-3">
-                                            <h2 className="text-xl font-semibold text-gray-800">{prof.prenom}</h2>
-                                            <p className="text-sm text-gray-600">{prof.location}</p>
+                                        <div className="relative h-48 bg-gray-200">
+                                            <img
+                                                key={prof.id}
+                                                onClick={() => handleClickProfessor(prof.id)}
+                                                src={`http://127.0.0.1:8000/storage/${prof.photo}`}
+                                                alt={prof.prenom}
+                                                className="w-full h-full object-cover cursor-pointer"
+                                            />
+                                            <button className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-all">
+                                                <svg
+                                                    className="w-5 h-5 text-gray-600 hover:text-red-500"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                >
+                                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                                </svg>
+                                            </button>
                                         </div>
-                                
-                                        <p className="text-sm text-gray-600 mb-3">
-                                            Matière: <span className="font-semibold">{prof.nom_matiere}</span>
-                                        </p>
-                                        
-                                        <div className="flex items-center mb-3">
-                                            <div className="flex items-center">
-                                                <span className="text-yellow-400">★</span>
-                                                <span className="ml-1">{prof.total_ratings}</span>
-                                                <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
+                                        <div className="p-4">
+                                            <div className="flex justify-between items-center mb-3">
+                                                <h2 className="text-xl font-semibold text-gray-800">{prof.prenom}</h2>
+                                                <p className="text-sm text-gray-600">{prof.location}</p>
                                             </div>
-                                            <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
-                                        </div>
-                                
-                                        <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
-                                
-                                        <div className="flex items-center justify-between">
-                                            <div className="text-gray-900">
-                                                <span className="font-semibold">${prof.tarifHoraire}</span>
-                                                <span className="text-sm">/h</span>
+
+                                            <p className="text-sm text-gray-600 mb-3">
+                                                Matière: <span className="font-semibold">{prof.nom_matiere}</span>
+                                            </p>
+
+                                            <div className="flex items-center mb-3">
+                                                <div className="flex items-center">
+                                                    <span className="text-yellow-400">★</span>
+                                                    <span className="ml-1">{prof.total_ratings}</span>
+                                                    <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
+                                                </div>
+                                                <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
                                             </div>
-                                            <span className="text-red-500 text-sm font-medium">1st lesson free</span>
+
+                                            <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
+
+                                            <div className="flex items-center justify-between">
+                                                <div className="text-gray-900">
+                                                    <span className="font-semibold">${prof.tarifHoraire}</span>
+                                                    <span className="text-sm">/h</span>
+                                                </div>
+                                                <span className="text-red-500 text-sm font-medium">1st lesson free</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                
+
                                 )
                             })
                         }
@@ -350,7 +359,7 @@ const index = () => {
                     </div>
                 </div>
                 <div onClick={handleMoreTuter} className="flex items-center justify-around">
-                    <span 
+                    <span
                         className="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-48 text-center mt-4 rounded-3xl">See more tutors</span>
                 </div>
             </section>
@@ -557,7 +566,7 @@ const index = () => {
                         <p className="text-gray-600 mb-6">
                             Join us and conquer math, one equation at a time, with a private math className
                         </p>
-                        <button 
+                        <button
                             className="inline-flex items-center gap-2 bg-red-400 text-white px-6 py-3 rounded-lg hover:bg-red-500 transition-colors">
                             See more tutors
                             <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Pusher from "pusher-js";
-import '../../assets/js/index';
+import '../assets/js/index';r
 import axios from 'axios';
 
-const API_URL = 'http://localhost/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
+
 
 function App() {
 
@@ -16,19 +17,17 @@ function App() {
   const [receive_id, setreceive_id] = useState(45);
   const [sender, setSender] = useState(parsedToken.role);
 
-  useEffect(() => {
+  const getchats = () => {
     axios.get(`${API_URL}/messages/${receive_id}`, {
       headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       }
-  })
+    })
 
-  .then((response) => {    
-    console.log(response.data.message);
-    
-      setMessages(response.data.message);
-  })
+      .then((response) => {
+        setMessages(response.data.message);
+      })
 
     Pusher.logToConsole = true;
     const pusher = new Pusher('622537c1842edf6db17e', {
@@ -43,37 +42,40 @@ function App() {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  },[]);
+  }
+  useEffect(() => {
+    getchats()
+  }, []);
 
   const submit = async e => {
     e.preventDefault();
-  
+
     try {
-        const response = await fetch(`${API_URL}/messages/${receive_id}`, {
-            method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                sender,
-                message,
-                receiver_id: receive_id  
-            })
-        });
+      const response = await fetch(`${API_URL}/messages/${receive_id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          sender,
+          message,
+          receiver_id: receive_id
+        })
+      });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Something went wrong');
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Something went wrong');
+      }
 
-        const data = await response.json();    
-        setMessage('');
+      const data = await response.json();
+      setMessage('');
     } catch (error) {
-        console.error('Erreur lors de l\'envoi du message:', error);
+      console.error('Erreur lors de l\'envoi du message:', error);
     }
-};
+  };
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">
       <div className="flex h-[600px] w-full max-w-6xl mx-auto bg-white border border-gray-200 shadow-lg">
@@ -197,9 +199,8 @@ function App() {
           </div>
         </div>
 
-        {/* Chat Area */}
         <div className="flex-grow flex flex-col">
-          {/* Chat Header */}
+
           <div className="px-4 py-3 flex items-center border-b border-gray-200">
             <div className="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></div>
             <div className="ml-3">
@@ -249,48 +250,48 @@ function App() {
 
           {/* Messages */}
           <div className="flex-grow p-4 overflow-y-auto">
-      {messages.map((msg, index) => {        
-    if (msg.sender == 'etudiant') {
-      return (
-        <div
-          key={index}
-          className={`mb-4 w-28 ml-auto`}
-        >
-          <div
-            className={`p-3 w-20 rounded-lg bg-indigo-600 text-left text-white`}
-          >
-            <p className={`text-left`}>
-              {msg.message}
-            </p>
+            {messages.map((msg, index) => {
+              if (msg.sender == 'etudiant') {
+                return (
+                  <div
+                    key={index}
+                    className={`mb-4 w-28 ml-auto`}
+                  >
+                    <div
+                      className={`p-3 w-20 rounded-lg bg-indigo-600 text-left text-white`}
+                    >
+                      <p className={`text-left`}>
+                        {msg.message}
+                      </p>
+                    </div>
+                    <p className={`text-xs text-gray-400  text-left`}>
+                      {msg.timestamp || '12:45 PM'}
+                    </p>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={index}
+                    className={`mb-4 w-28  mr-auto`}
+                  >
+                    <div
+                      className={`p-3 rounded-lg bg-gray-100`}
+                    >
+                      <p className={`text-sm text-right`}>
+                        {msg.message}
+                      </p>
+                    </div>
+                    <p className={`text-xs text-gray-400 mt-1text-right `}>
+                      {msg.timestamp || '12:45 PM'}
+                    </p>
+                  </div>
+                );
+              }
+
+            })}
           </div>
-          <p className={`text-xs text-gray-400  text-left`}>
-            {msg.timestamp || '12:45 PM'}
-          </p>
-        </div>
-      );
-    }else{
-        return (
-          <div
-            key={index}
-            className={`mb-4 w-28  mr-auto`}
-          >
-            <div
-              className={`p-3 rounded-lg bg-gray-100`}
-            >
-              <p className={`text-sm text-right`}>
-                {msg.message}
-              </p>
-            </div>
-            <p className={`text-xs text-gray-400 mt-1text-right `}>
-              {msg.timestamp || '12:45 PM'}
-            </p>
-          </div>
-        );
-    }
-    
-      })}
-    </div>
-  
+
 
           {/* Input Area */}
           <form onSubmit={submit} className="p-4 border-t border-gray-200">
@@ -302,7 +303,7 @@ function App() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
-             
+
               <button
                 type="submit"
                 className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-full"

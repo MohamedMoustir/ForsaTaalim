@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@jitsi/react-sdk": "^1.4.4",
     "@react-oauth/google": "^0.12.1",
     "@tailwindcss/postcss": "^4.0.14",
@@ -21,6 +22,7 @@
     "pusher-js": "^8.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-paginate": "^8.3.0",
     "react-router-dom": "^6.30.0",
     "react-scripts": "^5.0.1",
     "reactjs-popup": "^2.0.6",

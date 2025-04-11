@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +28,8 @@ const Tutors = () => {
         const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
         setprofileslength(res.data.AllProfile.total);
         setprofiles(res.data.AllProfile.data);
+        console.log(res.data.AllProfile.data);
+
     };
 
     console.log(filterByLocation);
@@ -39,7 +40,7 @@ const Tutors = () => {
         if (token) {
             setUserAuth(true);
         }
-        if (!token) {
+        if (!parsedToken.role ) {
             navigate("/login");
         } else if (parsedToken && parsedToken.role === "tuteur") {
             navigate("/login");
@@ -52,7 +53,9 @@ const Tutors = () => {
     function handleClickFlase() {
         setIsMenuHidden(true);
     }
-
+    const handleClickProfessor = (id) => {
+        navigate(`/detilesTutor/${id}`);
+      };
 
 
     const lastItemsIndex = currentPage * itemsPerPage;
@@ -237,6 +240,8 @@ const Tutors = () => {
                                 <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                     <div className="relative h-48 bg-gray-200">
                                         <img
+                                            key={prof.id}
+                                            onClick={() => handleClickProfessor(prof.id)}
                                             src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                             alt={prof.prenom}
                                             className="w-full h-full object-cover cursor-pointer"

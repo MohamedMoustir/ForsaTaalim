@@ -8,6 +8,7 @@ import RejisterPro from "./Auth/RejisterPro";
 import Index from "./pages/index";
 import '../../forsaTaalim-front/src/assets/js/index';
 import Tutors from "./pages/tutors"
+import DetilesTutor from "./pages/detilesTutor"
 
 
 
@@ -32,6 +33,8 @@ function App() {
         <Route path="/Rejister" element={<Rejister />} />
         <Route path="/Chat" element={<Chat />} />
         <Route path="/tutors" element={<Tutors />} />
+        <Route path="/detilesTutor/:id" element={<DetilesTutor />} />
+
 
       </Routes>
     </Router>
