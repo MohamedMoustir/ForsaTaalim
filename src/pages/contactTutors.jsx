@@ -27,8 +27,6 @@ const ContactTutors = () => {
     const [err, setError] = useState("");
     const navigate = useNavigate();
 
-
-
     const fetchProfesseurs = async (tutor_id) => {
         axios.get(`${API_URL}/Professeur/${tutor_id}`, {
             headers: {
@@ -75,8 +73,6 @@ const ContactTutors = () => {
 
         }
     }
-
-
 
     return (
         <div className="min-h-screen w-[70%] relative left-[15%]">
