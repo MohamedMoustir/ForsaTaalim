@@ -29,16 +29,17 @@ class SocialiteController extends Controller
             if ($users) {
                 Auth::login($users);
             } else {
-
                 $existingUser = User::where('email', $Googleuser->email)->first();
                 if ($existingUser) {
-                   
                     $existingUser['google_id'] = $Googleuser->id;
                     $existingUser->save();
                     Auth::login($existingUser);
 
                     if ($existingUser->role == 'tuteur') {
-                        return redirect("http://localhost:3000");
+                        return [
+                            redirect("http://localhost:3000"),
+                            'user' => $existingUser
+                        ];
                     } else {
                         return redirect("http://localhost:3000/login");
                     }
@@ -56,8 +57,8 @@ class SocialiteController extends Controller
             }
 
             return redirect("http://localhost:3000/login?user=" . urlencode(json_encode([
-                'name' => $Googleuser->name,
-                'email' => $Googleuser->email,
+                'data' => $Googleuser,
+               
             ])));
 
         } catch (\Exception $e) {
