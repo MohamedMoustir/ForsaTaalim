@@ -18,28 +18,33 @@ class professeurService implements CrudInterface
     {
         $this->professeurRepositories = $professeurRepositories;
     }
-    public function create(array $data)
+    public function create(array $data )
     {
         $lastInsertUser = User::latest()->first();
         $data['user_id'] = $lastInsertUser->id;
-        $video = $data['video'];
-        $videoPath = time() . '_' . $video->getClientOriginalName();
-        $video->move(public_path('videos'), $videoPath);
+    
+        if (isset($data['video'])) {
+            $video = $data['video'];
+            $videoName = time() . '_' . $video->getClientOriginalName();
+    
+            $videoPath = $video->storeAs('videos', $videoName, 'public');
+    
+            $data['video'] = $videoPath;
+        }
+    
         return $this->professeurRepositories->create($data);
     }
+    
     public function getAllAndSerch($data)
     {
         if ($data) {
-        return  $this->professeurRepositories->getAll($data);
-        }else{
-        return  $this->professeurRepositories->getAll();
-
+            return $this->professeurRepositories->getAll($data);
         }
-      
+
     }
     public function getById($id)
     {
-        return  $this->professeurRepositories->getById($id);
+        return $this->professeurRepositories->getById($id);
     }
     public function update($id, array $data)
     {
@@ -56,9 +61,13 @@ class professeurService implements CrudInterface
     {
         return $this->professeurRepositories->delete($id);
     }
-    public function filter($résulter){
+    public function filter($résulter)
+    {
         return $this->professeurRepositories->filter($résulter);
     }
 
-    public function getAll(){}
+    public function getAll()
+    {
+        return $this->professeurRepositories->getAllwithout();
+    }
 }
