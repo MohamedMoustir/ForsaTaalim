@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -34,5 +35,19 @@ class NewPasswordController extends Controller
         
             return response()->json(['message' => 'Password has been successfully changed.'], 200);
         }
-        
-}
+       
+        public function deleteAccount()
+        {
+          
+            $user = User::findOrFail(Auth::id());
+    
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+    
+            $user->delete();
+    
+            return response()->json(['message' => 'Account deleted successfully'], 200);
+        }
+    }
+
