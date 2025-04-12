@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 const user = localStorage.getItem('user');
 const token = localStorage.getItem('token');
-function ProfileEtudiant() {
+function Content() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,11 +13,10 @@ function ProfileEtudiant() {
     const [successMessage, setSuccessMessage] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [current_password, setCurrent_password] = useState("");
+    const [isChecked, setIsChecked] = useState("");
     const [password, setPasswordConfirmation] = useState("");
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
-
-
-
 
     useEffect(() => {
 
@@ -30,6 +30,7 @@ function ProfileEtudiant() {
                 setLoading(false);
             }
         } else {
+            navigate('/rejister')
             setLoading(false);
             setError("Aucun utilisateur connecté.");
         }
@@ -51,9 +52,10 @@ function ProfileEtudiant() {
 
             const data = await response.json();
 
+            console.log(data);
 
             setUserData(data.Profile[0]);
-            setEmail(data.Profile[0].email)
+            // setEmail(data.Profile[0].email)
             setFormData({
                 name: data.name || "",
                 prenom: data.prenom || "",
@@ -71,11 +73,6 @@ function ProfileEtudiant() {
             setError("Erreur lors de la récupération des données depuis le serveur.");
         }
     };
-
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -83,7 +80,6 @@ function ProfileEtudiant() {
             [name]: value
         }));
     };
-
     const handleSubmit = async () => {
         if (!userData) return;
 
@@ -107,7 +103,7 @@ function ProfileEtudiant() {
             const updatedData = await response.json();
 
 
-            alert()
+
 
             const user = localStorage.getItem('user');
             if (user) {
@@ -125,7 +121,9 @@ function ProfileEtudiant() {
         }
     };
 
-
+    function PgeHome() {
+        navigate('/')
+    }
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
@@ -135,7 +133,7 @@ function ProfileEtudiant() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ current_password, password: password, email }),
         });
-        console.log(token, email, password, password);
+        console.log(email, password, password);
 
         const data = await response.json();
         if (response.ok) {
@@ -150,6 +148,37 @@ function ProfileEtudiant() {
     };
 
 
+    const handleDeleteAccount = async () => {
+        if (!isChecked) {
+            setError("Vous devez cocher la case pour confirmer.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${API_URL}/user/delete`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.ok) {
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                navigate('/rejister')
+                alert("Votre compte a été supprimé avec succès.");
+            } else {
+                throw new Error("Erreur lors de la suppression de votre compte.");
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -164,17 +193,14 @@ function ProfileEtudiant() {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-between items-center">
                         <div className="text-white space-x-8">
-                            <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                            <a href="#" className=" cursor-pointer text-gray-300 hover:text-white transition-colors">
                                 Tableau de bord
                             </a>
-                            <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                            <a href="#" className="cursor-pointer  text-gray-300 hover:text-white transition-colors">
                                 Mes Messages
                             </a>
-                            <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                                Mes Annonces
-                            </a>
-                            <a href="#" className="text-white font-medium">
-                                Mon Compte
+                            <a onClick={PgeHome} className="cursor-pointer text-gray-300 hover:text-white transition-colors">
+                                Home
                             </a>
                         </div>
                     </div>
@@ -188,9 +214,6 @@ function ProfileEtudiant() {
                             Mon Profil
                         </a>
                         <a href="#" className="text-gray-500 hover:text-black transition-colors">
-                            Mes Avis
-                        </a>
-                        <a href="#" className="text-gray-500 hover:text-black transition-colors">
                             Mes paiements
                         </a>
                     </div>
@@ -200,11 +223,7 @@ function ProfileEtudiant() {
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
-                {successMessage && (
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                        {successMessage}
-                    </div>
-                )}
+
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -370,7 +389,7 @@ function ProfileEtudiant() {
                                             onChange={(e) => setCurrent_password(e.target.value)}
                                         />
                                         <input
-                                            type="text  "
+                                            type="text"
                                             className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4"
                                             placeholder="Confirmation du mot de passe"
                                             value={password}
@@ -403,17 +422,27 @@ function ProfileEtudiant() {
                                 </h3>
                             </div>
                             <p className="text-gray-600 text-sm mb-4">
-                                ATTENTION! Toutes vos données (contacts, paramètres, emails,...) seront supprimées et ne pourront pas
-                                être restaurées.
+                                ATTENTION! Toutes vos données (contacts, paramètres, emails,...) seront supprimées et ne pourront pas être restaurées.
                             </p>
                             <div className="flex items-center space-x-2 mb-4">
-                                <input type="checkbox" id="delete-account" className="rounded border-gray-300" />
+                                <input
+                                    type="checkbox"
+                                    id="delete-account"
+                                    className="rounded border-gray-300"
+                                    checked={isChecked}
+                                    onChange={(e) => setIsChecked(e.target.checked)}
+                                />
                                 <label htmlFor="delete-account" className="text-gray-600 text-sm">
                                     Supprimer mon compte
                                 </label>
                             </div>
-                            <button className="w-full bg-gray-300 hover:bg-gray-400 text-white py-2 rounded-md transition-colors">
-                                Supprimer mon compte
+                            {error && <p className="text-red-500 text-sm">{error}</p>}
+                            <button
+                                className="w-full bg-gray-300 hover:bg-gray-400 text-white py-2 rounded-md transition-colors"
+                                onClick={handleDeleteAccount}
+                                disabled={loading}
+                            >
+                                {loading ? 'Suppression en cours...' : 'Supprimer mon compte'}
                             </button>
                         </div>
                     </div>
@@ -477,4 +506,4 @@ function ProfileEtudiant() {
 }
 
 
-export default ProfileEtudiant;
+export default Content;
