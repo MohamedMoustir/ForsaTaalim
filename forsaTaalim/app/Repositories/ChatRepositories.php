@@ -35,7 +35,6 @@ class ChatRepositories
             ]
         );
        
-        // Trigger the Pusher event with current timestamp
         $pusher->trigger('forsaTaalm-development', 'message', [
             'message' => $data['message'],
             'sender' => Auth::user()->role,
