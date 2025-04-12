@@ -10,6 +10,7 @@ use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\disponibiliteRepositories;
 use App\Repositories\ProfesseurRepositories;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class DisponibiliteServices 
@@ -21,6 +22,7 @@ class DisponibiliteServices
         $this->disponibiliteRepositories = $disponibiliteRepositories;
     }
     public function store($data){
+        $data['tuteur_id'] = Auth::id();
         return $this->disponibiliteRepositories->store($data);
     }
     public function index()
