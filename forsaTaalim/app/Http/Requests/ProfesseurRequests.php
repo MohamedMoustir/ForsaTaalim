@@ -28,10 +28,9 @@ class ProfesseurRequests extends FormRequest
             'diplomes' => 'required|string|max:255',
             'experiences' => 'required|string|max:255',
             'tarifHoraire' => 'required|string|max:255',
-            'disponible' => 'required|boolean',
             'location' => 'required|string|max:255',
             'biographie' => 'required|string',
-            'video' => 'file' 
+            'video' => 'nullable|file',
         ];
     }
 
