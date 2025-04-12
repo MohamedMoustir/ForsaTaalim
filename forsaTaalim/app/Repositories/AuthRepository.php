@@ -20,7 +20,12 @@ class AuthRepository
         $user = $this->model->create($data);
         Session::put('lastInsertId', $user->id);
         Auth::login($user);
-        return $user;
+        $token = JWTAuth::fromUser($user);
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
+       
     }
 
 }
