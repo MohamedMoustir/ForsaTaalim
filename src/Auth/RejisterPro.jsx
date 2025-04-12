@@ -7,13 +7,19 @@ import { useNavigate } from 'react-router-dom';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-// let token = '';
-
-const storedData = localStorage.getItem('user');
-
- const token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
+
+if (user) {
+    try {
+        const parsedUser = JSON.parse(user);
+        console.log(parsedUser);
+    } catch (error) {
+        console.error('user:', error);
+    }
+} else {
+    console.log('dont found localStorage');
+}
 
 console.log(token);
 
@@ -64,23 +70,23 @@ const RejisterPro = () => {
         }
     };
 
-     console.log(token);
+    console.log(token);
 
     useEffect(() => {
-     
-            axios.get(`${API_URL}/categorie_matiere`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
+
+        axios.get(`${API_URL}/categorie_matiere`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                setCategorieMatiere(response.data.AllCategorieMatiere);
             })
-                .then((response) => {
-                    setCategorieMatiere(response.data.AllCategorieMatiere);
-                })
-                .catch((error) => {
-                    console.error("Error fetching categories", error);
-                });
-  
+            .catch((error) => {
+                console.error("Error fetching categories", error);
+            });
+
 
 
         // if (!token) {
