@@ -6,6 +6,7 @@ use App\Http\Requests\AuthEtudiantRequist;
 use App\Http\Requests\authRejecterRequist;
 use App\Services\EtudiantServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EtudiantController extends Controller
 {
@@ -21,10 +22,10 @@ class EtudiantController extends Controller
         return response()->json(['message' => 'Etudiant created successfully!', 'Etudiant' => $Etudiant], 201);
     }
 
-    public function getById($id)
+    public function getById()
     {
 
-        $showProfile = $this->etudiantServices->getById($id);
+        $showProfile = $this->etudiantServices->getById(Auth::id());
         return response()->json(['message' => 'showProfile', 'Profile' => $showProfile]);
 
     }
@@ -51,10 +52,9 @@ class EtudiantController extends Controller
         return response()->json([]);
     }
 
-    // public function serch(request $request)
-    // {
-    //     $data = $this->$request->validated();
-    //     $serch = $this->etudiantServices->serch($data);
-    //     return response()->json(['message' => 'serch ajoute successfully!', 'serch' => $serch]);
-    // }
+    public function Myfavorites()
+    {
+        $serch = $this->etudiantServices->favorites(Auth::id());
+        return response()->json(['message' => 'favorites ajoute successfully!', 'favorites' => $serch]);
+    }
 }
