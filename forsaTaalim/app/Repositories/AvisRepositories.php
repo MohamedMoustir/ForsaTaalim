@@ -24,12 +24,12 @@ class AvisRepositories
     }
     public function update($id, $data)
     {
-        return $this->model->findOrFail($id)->update($data);
+        $dat = $this->model->findOrFail($id)->update($data);
+        return $dat;
     }
     public function getById($id, $etudiant_id)
     {
-        return $this->model->where('user_id', '=', $etudiant_id)
-        ->where('tuteur_id', '=', $id)->get();
+        return $this->model  ->where('tuteur_id', '=', $id)->get();
     }
 
 
