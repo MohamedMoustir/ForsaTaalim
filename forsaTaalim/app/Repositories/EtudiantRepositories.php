@@ -38,11 +38,13 @@ class EtudiantRepositories
     {
 
         $showProfile = DB::table('etudiants as e')
-            ->join('users as u', 'e.user_id', '=', 'u.id')
+            ->leftjoin('users as u', 'e.user_id', '=', 'u.id')
             ->where('u.role', '=', 'etudiant')
             ->select(
                 'e.*',
                 'u.prenom',
+                'u.name',
+                'u.google_id',
                 'u.email',
                 'u.photo',
                 'u.age',
@@ -77,5 +79,6 @@ class EtudiantRepositories
 
 
     }
+
 
 }
