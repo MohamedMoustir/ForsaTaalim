@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import Login from "../Auth/Login";
+import MainLayout from "../components/MainLayout.jsX";
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -18,6 +19,8 @@ const detiles = () => {
     const [popUp, setPopUp] = useState(false);
     const [editId, setEditId] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
     const { id } = useParams()
 
@@ -29,6 +32,7 @@ const detiles = () => {
             }
         })
             .then((response) => {
+                setLoading(false)
                 setDetilesprofiles(response.data.Profile);
                 setTutors(response.data.Profile.profe_id);
             })
@@ -93,17 +97,16 @@ const detiles = () => {
     useEffect(() => {
         if (tutor) {
             fetchComment(tutor);
+            setLoading(false);
         }
 
     }, [tutor])
 
     useEffect(() => {
         fetchProfesseurs(id);
-
         if (token) {
-            setUserAuth(true);
+            setUserAuth(true);   
         }
-
         if (!token) {
             navigate("/login");
         } else if (parsedToken && parsedToken.role === "tuteur") {
@@ -116,7 +119,6 @@ const detiles = () => {
     function closePopUp() {
         setPopUp(false)
     }
-
     const deleteComment = async (comment_id) => {
         try {
             const response = await axios.delete(`${API_URL}/avis/${comment_id}`, {
@@ -151,13 +153,20 @@ const detiles = () => {
         setEditId(id);
         setIsFormVisible(true);
     };
-
      const handleContact = () => { 
      navigate(`/contactTutors/${tutor}`)
     }
 
-    return (
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+            </div>
+        );
+    }
+    return (
+        <MainLayout > 
         <div className="container px-4 py-8 max-w-7xl mx-auto  ">
 
             <div className="flex flex-wrap gap-2 mb-6">
@@ -370,6 +379,7 @@ const detiles = () => {
             </div>
 
         </div>
+        </MainLayout> 
     );
 
 }
