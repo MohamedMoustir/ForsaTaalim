@@ -7,29 +7,32 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use PharIo\Manifest\Email;
 // error
 class NewPasswordController extends Controller
 {
     public function store(Request $request)
     {
-               $request->validate([
-            'email' => 'required',
-            'token' => 'required',
-            'password' => 'required|string|min:8',
-        ]);
-       
+      
+            $request->validate([
+                'current_password' => 'required|string',
+                'password' => 'required|string',
+                'email' => 'required',
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password),
-                ])->save();
+            ]);
+        
+            $user = User::where('email',$request->email)->first();
+        
+           
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json(['message' => 'Please enter the correct current password.'], 400);
             }
-        );
-
-        return $status === Password::PASSWORD_RESET
-            ? response()->json(['message' => __($status)], 200)
-            : response()->json(['message' => __($status)], 400);
-    }
+        
+        
+            $user->password = Hash::make($request->password);
+            $user->save();
+        
+            return response()->json(['message' => 'Password has been successfully changed.'], 200);
+        }
+        
 }
