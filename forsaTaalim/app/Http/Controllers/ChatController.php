@@ -25,54 +25,84 @@ class ChatController extends Controller
         event(new Message($request->input('username'), $request->input('message'), $id));
         return [];
     }
+    // public function getMessage($id)
+    // {
+    //     $authId = Auth::id();
+
+    //     $chats = DB::table('chat_users as cha_u')
+    //         ->join('users as senders', 'cha_u.user_id1', '=', 'senders.id')
+    //         ->join('users as receivers', 'cha_u.user_id2', '=', 'receivers.id')
+    //         ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
+    //         ->select(
+    //             'ch.message',
+    //             'ch.created_at',
+    //             'senders.name as sender_name',
+    //             'senders.role as sender_role',
+    //             'receivers.name as receiver_name',
+    //             'receivers.role as receiver_role'
+    //         )
+    //         ->where(function ($query) use ($authId, $id) {
+    //             $query->where('cha_u.user_id1', $authId)
+    //                 ->where('cha_u.user_id2', $id);
+    //         })
+    //         ->orWhere(function ($query) use ($authId, $id) {
+    //             $query->where('cha_u.user_id1', $id)
+    //                 ->where('cha_u.user_id2', $authId);
+    //         })
+    //         ->orderBy('ch.created_at', 'asc')
+    //         ->get();
+
+    //     if ($chats->isEmpty()) {
+    //         return response()->json([
+    //             'error' => 'Aucune conversation trouvée.',
+    //         ], 404);
+    //     }
+
+
+    //     $conversation = $chats->map(function ($chat) {
+    //         return [
+    //             'message' => $chat->message,
+    //             'sender' => $chat->sender_role,
+    //             'receiver' => $chat->receiver_role,
+
+    //             'timestamp' => now()->format('h:i A')
+    //         ];
+    //     });
+
+
+    //     // 'message' => $data['message'],
+    //     // 'sender' => Auth::user()->role,
+    //     // 'timestamp' => now()->format('h:i A'),
+
+    //     return response()->json([
+    //         'message' => $conversation,
+    //         'sender' => $chats,
+    //     ]);
+
+    // }
     public function getMessage($id)
     {
-        $authId = Auth::id();
-
+        $authId = Auth::id(); 
+    
         $chats = DB::table('chat_users as cha_u')
-            ->join('users as senders', 'cha_u.user_id1', '=', 'senders.id')
-            ->join('users as receivers', 'cha_u.user_id2', '=', 'receivers.id')
             ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
-            ->select(
-                'ch.message',
-                'ch.created_at',
-                'senders.name as sender_name',
-                'senders.role as sender_role',
-                'receivers.name as receiver_name',
-                'receivers.role as receiver_role'
-            )
-            ->where(function ($query) use ($authId, $id) {
-                $query->where('cha_u.user_id1', $authId)
-                      ->where('cha_u.user_id2', $id);
-            })
-            ->orWhere(function ($query) use ($authId, $id) {
-                $query->where('cha_u.user_id1', $id)
-                      ->where('cha_u.user_id2', $authId);
-            })
-            ->orderBy('ch.created_at', 'asc')
+            ->join('users as role1', 'cha_u.user_id1', '=', 'role1.id')
+            ->select('ch.message', 'role1.role as sender', 'ch.seen', 'ch.created_at')
             ->get();
     
-        if ($chats->isEmpty()) {
-            return response()->json([
-                'error' => 'Aucune conversation trouvée.',
-            ], 404);
-        }
-    
-
-        $conversation = $chats->map(function ($chat) {
-            return [
-                'message' => $chat->message,
-                'sender' => $chat->sender_role,
-                'receiver' => $chat->receiver_role,
-            ];
-        });
-
-
+            $conversation = $chats->map(function ($chat) {
+                        return [
+                            'message' => $chat->message,
+                            'sender' => $chat->sender,
+                            'timestamp' => now()->format('h:i A')
+                        ];
+                    });
         return response()->json([
-            'message' => $conversation,
-            'sender' => $chats,
+            'messages' => $chats,
         ]);
-
     }
+    
+    
+    
 }
 
