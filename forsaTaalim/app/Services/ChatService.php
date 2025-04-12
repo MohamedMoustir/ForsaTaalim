@@ -4,30 +4,68 @@ namespace App\Services;
 
 use App\Models\CategorieMatiere;
 use App\Models\Chat_user;
+use App\Models\Chat;
+
 use App\Repositories\CategorieMatiereRepository;
 use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\ChatRepositories;
 use Auth;
+use Spatie\ErrorSolutions\Solutions\Laravel\GenerateAppKeySolution;
 
 
-class ChatService 
+class ChatService
 {
     protected $chatRepositories;
+    protected int $id_chat = 1;
+
     public function __construct(ChatRepositories $chatRepositories)
     {
         $this->chatRepositories = $chatRepositories;
     }
-    public function create(array $data , $sender_id ,$id)
+    public function create(array $data, $sender_id, $id)
     {
-        $chat_user = Chat_user::create([
-            'user_id1' => $sender_id,
-            'user_id2' => $id,
-        ]);
+
+        // $chat_users = Chat::all();
+        // foreach ($chat_users as $key ) {
+        //  if ($data['chat_user_id']) {
+        //    return 'eeeeeeeeeeeeee';
+        //  }
+        // }
+
+        $chat_user = Chat_user::where(function ($query) use ($sender_id, $id) {
+            $query->where('user_id1', $sender_id)
+                ->where('user_id2', $id);
+        })
+            ->orWhere(function ($query) use ($sender_id, $id) {
+                $query->where('user_id1', $id)
+                    ->where('user_id2', $sender_id);
+            })
+            ->first();
+
+        if (!$chat_user) {
+            $chat_user = Chat_user::create([
+                'user_id1' => $sender_id,
+                'user_id2' => $id,
+            ]);
+        }
 
         $chat_user_id = $chat_user->id;
-        $data['chat_user_id'] = $chat_user_id;
-        $data['sender_id'] = $sender_id;
+
+        $chat_count = Chat::where('chat_user_id', $chat_user_id)->count();
+
+        if ($chat_count > 0) {
+            $chats = Chat::where('chat_user_id', $chat_user_id)->first();
+            $data['chat_user_id'] = $chats->chat_user_id;
+            $data['sender_id'] = $sender_id;
+        } else {
+            $data['chat_user_id'] = $chat_user_id;
+            $data['sender_id'] = $sender_id;
+        }
+
+
+
+
 
         return $this->chatRepositories->create($data);
     }
