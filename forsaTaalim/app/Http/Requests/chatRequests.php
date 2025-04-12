@@ -21,9 +21,11 @@ class ChatRequests extends FormRequest
      *
      * @return array
      */
+    
     public function rules()
     {
         return [
+
             "username"=>'required',
             'message'=> 'required|string',
             'receiver_id'=> 'required'
