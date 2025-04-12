@@ -48,9 +48,9 @@ class EtudiantServices implements CrudInterface
         return $this->etudiantRepositories->filter($résulter);
     }
 
-    // public function serch($data){
-    //     return $this->etudiantRepositories->serch($data);
-    // }
+    public function favorites($id){
+        return $this->etudiantRepositories->favorites($id);
+    }
 
 
 
