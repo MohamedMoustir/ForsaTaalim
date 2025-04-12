@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import { useUser } from '../components/UserContext';
+import MainLayout from '../components/MainLayout.jsX';
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
-const users = localStorage.getItem('user');
-const parsedToken = JSON.parse(users);
+
 
 const Login = () => {
 
@@ -15,10 +15,13 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useUser();
   const navigate = useNavigate();
 
 
   const handleLogin = async (e) => {
+
+
     e.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -27,18 +30,19 @@ const Login = () => {
       });
       const token = response.data.token;
       const user = response.data.user;
-      console.log(user);
+
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
       setEmail('');
       setPassword('');
-
+      login(user);
+      console.log(login);
+      
       if (user) {
         if (user.role === 'etudiant') {
-          alert()
-          navigate('/home');
+          navigate('/');
         } else if (user.role === 'tuteur') {
           navigate('/dashboard-tuteur');
         } else if (user.role === 'admin') {
@@ -59,7 +63,7 @@ const Login = () => {
     e.preventDefault();
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
- 
+
   // useEffect(() => {
   //   // if (!token) {
   //   //     navigate("/login");
@@ -80,21 +84,12 @@ const Login = () => {
 
     <div className="bg-white">
       {error && <p>{error}</p>}
+
       <div className="flex min-h-screen">
         <div className="w-full lg:w-1/2 flex flex-col p-8">
-          <header className="flex justify-between items-center">
-            <div className="text-xl font-bold text-red-400">ForsaTaalim</div>
-            <div className="flex items-center gap-6">
-              <nav className="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
-
-                <div className="flex gap-4 items-center">
-                  <a href="#" className="text-gray-600 rounded-full bg-slate-50 px-2 py-2  hover:text-gray-800">?</a>
-                  <a href="#" className="bg-white px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
-                  <a href="#" className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Rejister</a>
-                </div>
-              </nav>
-            </div>
-          </header>
+                <MainLayout > 
+                  </MainLayout > 
+          
 
           <div className="flex-grow flex items-center justify-center">
             <div className="w-full max-w-md">
