@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import MainLayout from '../components/MainLayout.jsX';
 
 
 
@@ -40,7 +41,6 @@ const ContactTutors = () => {
                 setPhoneNumber(response.data.Profile.telephone)
             })
     };
-    console.log(Detilesprofiles.profe_id);
     useEffect(() => {
         fetchProfesseurs(id);
     }, [id])
@@ -62,7 +62,7 @@ const ContactTutors = () => {
             });
 
             if (response) {
-                navigate(`/reservation/${id}`)
+                navigate(`/chat/${id}`)
             }
             const user = response.data.user;
 
@@ -73,6 +73,7 @@ const ContactTutors = () => {
     }
 
     return (
+      <MainLayout> 
         <div className="min-h-screen w-[70%] relative left-[15%]">
             <form onSubmit={handleMessage}>
                 <h2 className="text-xl font-bold mb-1">Schedule</h2>
@@ -193,6 +194,7 @@ const ContactTutors = () => {
                 </button>
             </form>
         </div>
+         </MainLayout > 
     );
 
 }
