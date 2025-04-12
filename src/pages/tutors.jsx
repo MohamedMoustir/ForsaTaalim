@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import MainLayout from "../components/MainLayout.jsX";
 
 
 
@@ -22,17 +23,19 @@ const Tutors = () => {
     const [profileslength, setprofileslength] = useState(6);
     const [search, setSearch] = useState('');
     const [filterByLocation, setFilterByLocation] = useState('All');
-
+    const [userId, setUserId] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const fetchProfesseurs = async (page) => {
         const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
         setprofileslength(res.data.AllProfile.total);
         setprofiles(res.data.AllProfile.data);
+        if (res) {
+            setLoading(false);
+        }
         console.log(res.data.AllProfile.data);
-
     };
 
-    console.log(filterByLocation);
     const navigate = useNavigate();
     useEffect(() => {
 
@@ -40,22 +43,45 @@ const Tutors = () => {
         if (token) {
             setUserAuth(true);
         }
-        if (!parsedToken.role ) {
-            navigate("/login");
+        if (!parsedToken.role) {
+            // navigate("/login");
         } else if (parsedToken && parsedToken.role === "tuteur") {
             navigate("/login");
         }
     }, [token, user, navigate, currentPage]);
-
+    useEffect(() => {
+        fetchProfesseurs(currentPage);
+    }, [currentPage]);
     function handleClick() {
         setIsMenuHidden(false);
     };
-    function handleClickFlase() {
-        setIsMenuHidden(true);
+
+    function handlegetUser(userId) {
+
+        fetch(`${API_URL}/favorites`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id2: userId,
+            }),
+        })
+            .then((response) => response.json())
+            .then(() => {
+              alert('done');
+            });
     }
-    const handleClickProfessor = (id) => {
-        navigate(`/detilesTutor/${id}`);
-      };
+
+    // function handleClickFlase() {
+    //     setIsMenuHidden(true);
+    // }
+    // const handleClickProfessor = (id) => {
+    //     navigate(`/detilesTutor/${id}`);
+    //   };
+
+
 
 
     const lastItemsIndex = currentPage * itemsPerPage;
@@ -65,124 +91,18 @@ const Tutors = () => {
     for (let i = 0; i < profileslength / itemsPerPage; i++) {
         pages.push(i);
     }
+
+    if (loading ) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+            </div>
+        );
+    }
     return (
         <>
-            {!isUserAuth && (
-                <nav className="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto ">
-                    <div className="text-2xl font-bold text-pink-500">
-                        ForsaTaalim
-                    </div>
-                    <div className="flex gap-4 items-center">
-                        <a href="#" className="text-gray-600 rounded-full bg-slate-50 w-10 py-2 text-center  hover:text-gray-800">?</a>
-                        <a className="bg-white cursor-pointer px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
-                        <a href="#" className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Log In</a>
-                    </div>
-                </nav>
-            )}
-
-            {isUserAuth && (
-
-                <nav className="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
-                    <div className="text-2xl font-bold text-pink-500">
-                        ForsaTaalim
-                    </div>
-                    <div className="flex gap-4 items-center ">
-                        <a href="#"
-                            className="bg-red-400 border border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl absolute right-[100px]">M</a>
-                    </div>
-                    {isMenuHidden && (
-                        <button id="" onClick={handleClick} data-collapse-toggle="navbar-hamburger" type="button"
-                            className=" hamburger inline-flex itemsenter justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg absolute right-[180px] "
-                            aria-controls="navbar-hamburger" aria-expanded="false" >
-                            <span className="sr-only">Open main menu</span>
-                            <svg className="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M1 1h15M1 7h15M1 13h15" />
-                            </svg>
-                        </button>
-                    )}
-                    {!isMenuHidden && (
-                        <button
-                            id="close-btn"
-                            onClick={handleClickFlase}
-                            type="button"
-                            className="inline-flex items-center justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg absolute right-[180px] top-2"
-                            aria-label="Close menu"
-                        >
-                            <span className="sr-only">Close menu</span>
-                            <svg
-                                className="w-[110px] h-[110px] "
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-
-                    )}
-
-
-                    <ul
-                        className={`menu ${isMenuHidden ? 'hidden' : ''} 
-                        flex flex-col font-medium mt-4 w-[200px] bg-white shadow-sm dark:bg-red-400 dark:border-red-400 text-center absolute right-[8%] bottom-[65%] 
-                        rounded-lg border border-gray-200 dark:border-gray-600`}
-                        style={{ zIndex: 1 }}>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-white bg-red-400 dark:bg-blue-600 rounded-t-lg hover:bg-red-500 dark:hover:bg-blue-700 transition-colors"
-                                aria-current="page"
-                            >
-                                My Dashboard
-
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="p1"
-                            >
-                                Priority
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="triparTiter"
-                            >
-                                My Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="triparDate_limite"
-                            >
-                                Log Out
-                            </a>
-                        </li>
-                    </ul>
-
-                    <button className="absolute top-4 right-[225px] p-1 rounded-full bg-white/80 hover:bg-white" />
-                    <svg className="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-
-                </nav>
-            )}
-
+           
+        <MainLayout >
             <div class="max-w-6xl mx-auto p-6">
                 <h1 class="text-2xl font-bold mb-8">
                     Trouvez le professeur idéal pour vous accompagner
@@ -228,7 +148,6 @@ const Tutors = () => {
                     {
 
                         profiles.filter((item) => {
-                            console.log(filterByLocation);
 
                             if (search) {
                                 return search.toLowerCase() === '' ? item : item.prenom.toLowerCase().includes(search);
@@ -246,7 +165,10 @@ const Tutors = () => {
                                             alt={prof.prenom}
                                             className="w-full h-full object-cover cursor-pointer"
                                         />
-                                        <button className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-all">
+                                        <button
+                                            onClick={() => handlegetUser(prof.profe_id)}
+                                            className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-all"
+                                        >
                                             <svg
                                                 className="w-5 h-5 text-gray-600 hover:text-red-500"
                                                 viewBox="0 0 24 24"
@@ -257,6 +179,7 @@ const Tutors = () => {
                                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                             </svg>
                                         </button>
+
                                     </div>
                                     <div className="p-4">
                                         <div className="flex justify-between items-center mb-3">
@@ -295,7 +218,7 @@ const Tutors = () => {
 
                 </div>
             </div>
-
+     </MainLayout >
             {
                 <nav aria-label="Page navigation example">
                     <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
