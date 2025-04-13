@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import NavEtudiant from "../components/NavEtudiant"
 const API_URL = 'http://127.0.0.1:8000/api';
 const user = localStorage.getItem('user');
 const token = localStorage.getItem('token');
@@ -121,9 +121,7 @@ function Content() {
         }
     };
 
-    function PgeHome() {
-        navigate('/')
-    }
+
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
@@ -189,37 +187,8 @@ function Content() {
 
     return (
         <div className="bg-gray-50 min-h-screen">
-            <nav className="bg-black py-3">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex justify-between items-center">
-                        <div className="text-white space-x-8">
-                            <a href="#" className=" cursor-pointer text-gray-300 hover:text-white transition-colors">
-                                Tableau de bord
-                            </a>
-                            <a href="#" className="cursor-pointer  text-gray-300 hover:text-white transition-colors">
-                                Mes Messages
-                            </a>
-                            <a onClick={PgeHome} className="cursor-pointer text-gray-300 hover:text-white transition-colors">
-                                Home
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
 
-            <div className="border-b bg-white">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex space-x-8 py-4">
-                        <a href="#" className="text-black font-medium border-b-2 border-red-400 pb-1">
-                            Mon Profil
-                        </a>
-                        <a href="#" className="text-gray-500 hover:text-black transition-colors">
-                            Mes paiements
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+            <NavEtudiant></NavEtudiant>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
