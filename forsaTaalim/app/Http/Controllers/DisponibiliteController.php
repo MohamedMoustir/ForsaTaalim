@@ -6,6 +6,7 @@ use App\Http\Requests\DisponibilitesRequest;
 use App\Models\Disponibilite;
 use App\Services\DisponibiliteServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DisponibiliteController extends Controller
 {
@@ -37,6 +38,14 @@ class DisponibiliteController extends Controller
     public function delete($id){
         $Disponibilite = $this->disponibiliteServices->delete($id);
         return response()->json(['message' => 'Disponibilite delete successfully!'],200);
+    }
+
+    public function getById($id)
+    {
+
+        $disponibilites = $this->disponibiliteServices->getById($id);
+        return response()->json($disponibilites);
+
     }
     
 }
