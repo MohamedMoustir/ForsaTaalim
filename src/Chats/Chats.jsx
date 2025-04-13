@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Pusher from "pusher-js";
 import '../assets/js/index';
 import axios from 'axios';
-
+import { useParams } from "react-router-dom";
 const API_URL = 'http://127.0.0.1:8000/api';
 
 const token = localStorage.getItem('token');
@@ -10,12 +10,12 @@ const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
 
 function App() {
-
+    const { id } = useParams()
   const [username, setUsername] = useState('mohamed');
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const [receive_id, setreceive_id] = useState(20);
-  const [sender, setSender] = useState(parsedToken.role);
+  const [receive_id, setreceive_id] = useState(id);
+  // const [sender, setSender] = useState(parsedToken.role);
 
   useEffect(() => {
     axios.get(`${API_URL}/messages/${receive_id}`, {
@@ -26,9 +26,9 @@ function App() {
   })
 
   .then((response) => {    
-    console.log(response.data.message);
+    console.log(response.data.messages);
     
-      setMessages(response.data.message);
+      setMessages(response.data.messages);
   })
 
     Pusher.logToConsole = true;
@@ -59,19 +59,16 @@ function App() {
             },
             body: JSON.stringify({
                 username,
-                sender,
                 message,
                 receiver_id: receive_id  
             })
         });
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Something went wrong');
         }
-
         const data = await response.json();    
-        setMessage('');
+        setMessage();
     } catch (error) {
         console.error('Erreur lors de l\'envoi du message:', error);
     }
@@ -79,7 +76,7 @@ function App() {
   return (
     <div className="bg-gray-100 h-screen flex items-center justify-center">
       <div className="flex h-[600px] w-full max-w-6xl mx-auto bg-white border border-gray-200 shadow-lg">
-        {/* Sidebar */}
+
         <div className="w-80 border-r border-gray-200 flex flex-col">
           <div className="p-4 border-b border-gray-200">
             <h1 className="text-lg font-bold text-blue-900">Messages</h1>
@@ -249,50 +246,41 @@ function App() {
             </div>
           </div>
 
-          {/* Messages */}
+       
           <div className="flex-grow p-4 overflow-y-auto">
-      {messages.map((msg, index) => {        
-    if (msg.sender == 'etudiant') {
+  {messages.map((msg, index) => {
+    const sender = msg.sender || ''; 
+
+    if (sender === 'tuteur') {
       return (
-        <div
-          key={index}
-          className={`mb-4 w-28 ml-auto`}
-        >
-          <div
-            className={`p-3 w-20 rounded-lg bg-indigo-600 text-left text-white`}
-          >
+        <div key={index} className={`mb-4 w-28 ml-auto`}>
+          <div className={`p-3 w-20 rounded-lg bg-indigo-600 text-left text-white`}>
             <p className={`text-left`}>
               {msg.message}
             </p>
           </div>
-          <p className={`text-xs text-gray-400  text-left`}>
+          <p className={`text-xs text-gray-400 text-left`}>
             {msg.timestamp || '12:45 PM'}
           </p>
         </div>
       );
-    }else{
-        return (
-          <div
-            key={index}
-            className={`mb-4 w-28  mr-auto`}
-          >
-            <div
-              className={`p-3 rounded-lg bg-gray-100`}
-            >
-              <p className={`text-sm text-right`}>
-                {msg.message}
-              </p>
-            </div>
-            <p className={`text-xs text-gray-400 mt-1text-right `}>
-              {msg.timestamp || '12:45 PM'}
+    } else if(sender === 'etudiant'){
+      return (
+        <div key={index} className={`mb-4 w-28 mr-auto`}>
+          <div className={`p-3 rounded-lg bg-gray-100`}>
+            <p className={`text-sm text-right`}>
+              {msg.message}
             </p>
           </div>
-        );
+          <p className={`text-xs text-gray-400 mt-1 text-right`}>
+            {msg.timestamp || '12:45 PM'}
+          </p>
+        </div>
+      );
     }
-    
-      })}
-    </div>
-  
+  })}
+</div>
+
 
           {/* Input Area */}
           <form onSubmit={submit} className="p-4 border-t border-gray-200">

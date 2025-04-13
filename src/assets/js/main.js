@@ -145,3 +145,5 @@ function openChoix(id) {
         choix2.innerHTML = 'Presonsiale'
     }
 }
+
+
