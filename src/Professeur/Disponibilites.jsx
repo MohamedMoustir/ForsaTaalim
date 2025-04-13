@@ -24,17 +24,18 @@ function MyFullCalendar() {
   const [loading, setLoading] = useState(true);
   const [tuteur_id, setTuteur_id] = useState(null);
   const { id } = useParams()
+  const [getDateReserve, setGetDateReserve] = useState(null);
+  const [timeReservation, setTimeReservation] = useState(null);
+  const [isOpenPoupupDate, setIsOpenPoupupDate] = useState(null);
 
-
-
-
-
-  // function handlegetId (info) {
-  //   console.log(info);
-
-  // };
-
-
+  
+  const availableTimes = [
+    { time: '08:00 AM' },
+    { time: '10:00 AM' },
+    { time: '11:00 AM' },
+    { time: '01:00 PM' },
+    { time: '03:00 PM' },
+  ];
 
   const handleGetdata = async (e) => {
     try {
@@ -50,7 +51,7 @@ function MyFullCalendar() {
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
-            color: evant.colorEvant,
+            color: evant.time_reservation,
             id: evant.id
           }));
           setLoading(false)
@@ -91,14 +92,16 @@ function MyFullCalendar() {
     if (parsedToken.role === 'tuteur') {
       setIsOpen(true)
       setEvanteDte(arg.dateStr);
-    }else{
+    } else {
       let filteredEvents = events.filter(
         (item) => new Date(item.date).toISOString().slice(0, 10) === arg.dateStr
-      ); 
-      if(filteredEvents.length === 1){
+      );
+      if (filteredEvents.length === 1) {
         alert('this date dont found')
-      }else{
-        
+      } else {
+        setGetDateReserve(arg.dateStr);
+        setIsOpenPoupupDate(true)
+
       }
     }
 
@@ -147,6 +150,34 @@ function MyFullCalendar() {
       console.error(error);
     }
   }
+  const handleReservation = async (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('date_reservation', getDateReserve);
+    formData.append('time_reservation', '12:00');
+    formData.append('amount', 80);
+    try {
+      axios.post(`${API_URL}/Etudiant/pay/${id}`, formData, {
+        headers: {
+          authorization: `bearer ${token}`
+        },
+        body: formData
+      })
+      .then((response) => {
+        if (response.data.reservation.original.redirect_url) {
+          window.location.href = response.data.reservation.original.redirect_url;
+      }else{
+        console.log(response.data.reservation.original.message);
+      }
+       
+      })
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Erreur côté client.");
+    }
+  };
+
+  
 
 
   if (loading) {
@@ -158,7 +189,7 @@ function MyFullCalendar() {
   }
   return (
     <>
-      {isOpen && (
+      {isOpen && parsedToken.role == 'tuteur'(
         <>
 
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
@@ -281,9 +312,10 @@ function MyFullCalendar() {
         </div>
 
       )}
-      <div className="mt-8 cursor-pointer">
-        <h2 className="text-2xl font-semibold mb-4">Full Calendar Example </h2>
+      <div className="mb-8  cursor-pointer">
         <FullCalendar
+
+
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           events={events}
@@ -292,9 +324,50 @@ function MyFullCalendar() {
           eventDidMount={(info) => {
             info.el.style.backgroundColor = info.backgroundColor;
           }}
+          displayEventTime={true}
 
         />
       </div>
+      {parsedToken.role === 'etudiant' && (
+        <>
+          <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {availableTimes.map((time, index) => (
+              <button
+                key={index}
+                id={time.time}
+                onClick={(e) => setTimeReservation(e.target.id)}
+                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time.time ? 'bg-red-100' : 'bg-white'
+                  }`}
+              >
+                {time.time}
+              </button>
+            ))}
+
+
+          </div>
+          <form onSubmit={handleReservation} className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
+            <div>
+              <p className="font-medium">Selected session:</p>
+              <p className="text-gray-600">{getDateReserve} at {timeReservation}(1 hour)</p>
+            </div>
+            <button  className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
+              Confirm
+            </button>
+          </form>
+        </>
+      )}
+      {isOpenPoupupDate && (
+        <div id="modal" class="fixed inset-0  z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div class="bg-white p-8 rounded shadow-lg max-w-sm w-full">
+            <p id="modalMessage" class="text-lg mb-4">YO CHOSE DATE {getDateReserve}</p>
+            <button onClick={() => setIsOpenPoupupDate(false)} id="modalClose" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none">
+              Add
+            </button>
+          </div>
+        </div>
+      )}
+
     </>
   );
 }

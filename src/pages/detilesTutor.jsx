@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import Login from "../Auth/Login";
 import MainLayout from "../components/MainLayout.jsX";
+
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -35,6 +36,7 @@ const detiles = () => {
                 setLoading(false)
                 setDetilesprofiles(response.data.Profile);
                 setTutors(response.data.Profile.profe_id);
+                
             })
     };
     const fetchComment = async (tutor) => {
