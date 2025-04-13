@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { useParams } from 'react-router-dom';
 import '../assets/style/style.css';
 import axios from 'axios';
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -19,7 +20,11 @@ function MyFullCalendar() {
   const [InfoDate, setInfoDate] = useState([]);
   const [InfoTitle, setInfotTitle] = useState([]);
   const [infoColor, setInfoColor] = useState([]);
-  const [id, setId] = useState([]);
+  const [id_card, setId] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [tuteur_id, setTuteur_id] = useState(null);
+  const { id } = useParams()
+
 
 
 
@@ -30,11 +35,10 @@ function MyFullCalendar() {
   // };
 
 
+
   const handleGetdata = async (e) => {
-
-
     try {
-      axios.get(`${API_URL}/disponibilite`, {
+      axios.get(`${API_URL}/disponibilite/${id}`, {
         headers: {
           authorization: `bearer ${token}`,
           'Content-Type': 'application/json'
@@ -49,7 +53,7 @@ function MyFullCalendar() {
             color: evant.colorEvant,
             id: evant.id
           }));
-
+          setLoading(false)
           setEvents(newEvents);
         })
     } catch (error) {
@@ -84,8 +88,20 @@ function MyFullCalendar() {
     }
   }
   const handleDateClick = (arg) => {
-    setIsOpen(true)
-    setEvanteDte(arg.dateStr);
+    if (parsedToken.role === 'tuteur') {
+      setIsOpen(true)
+      setEvanteDte(arg.dateStr);
+    }else{
+      let filteredEvents = events.filter(
+        (item) => new Date(item.date).toISOString().slice(0, 10) === arg.dateStr
+      ); 
+      if(filteredEvents.length === 1){
+        alert('this date dont found')
+      }else{
+        
+      }
+    }
+
   };
 
   useEffect(() => {
@@ -113,19 +129,19 @@ function MyFullCalendar() {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = axios.delete(`${API_URL}/disponibilite/${id}`, {
+      const response = axios.delete(`${API_URL}/disponibilite/${id_card}`, {
         headers: {
           authorization: `bearer ${token}`,
           'Content-Type': 'application/json'
         },
       })
-      if (response) { 
+      if (response) {
         setEventClicks(false);
-        const updatedEvents = events.filter((items) => items.id != id);
+        const updatedEvents = events.filter((items) => items.id != id_card);
         console.log(updatedEvents);
-        
+
         setEvents(updatedEvents);
-       
+
       }
     } catch (error) {
       console.error(error);
@@ -133,7 +149,13 @@ function MyFullCalendar() {
   }
 
 
-
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+      </div>
+    );
+  }
   return (
     <>
       {isOpen && (
@@ -238,11 +260,19 @@ function MyFullCalendar() {
 
                 <div className="flex justify-end space-x-2 mt-4">
 
-                  <button onClick={handleDelete}
-                    className="px-3 py-1.5 text-sm bg-red-400 text-white rounded hover:bg-red-500"
+                  <button onClick={() => setEventClicks(false)}
+                    className="px-3 py-1.5 text-sm bg-gray-400 text-white rounded hover:bg-gray-500"
                   >
-                    Remove
+                    Close
                   </button>
+                  {parsedToken.role === 'tuteur' && (
+                    <button onClick={handleDelete}
+                      className="px-3 py-1.5 text-sm bg-red-400 text-white rounded hover:bg-red-500"
+                    >
+                      Remove
+                    </button>
+                  )}
+
                 </div>
               </div>
             </div>
