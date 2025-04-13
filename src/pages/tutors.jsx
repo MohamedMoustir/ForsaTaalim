@@ -74,16 +74,6 @@ const Tutors = () => {
             });
     }
 
-    // function handleClickFlase() {
-    //     setIsMenuHidden(true);
-    // }
-    // const handleClickProfessor = (id) => {
-    //     navigate(`/detilesTutor/${id}`);
-    //   };
-
-
-
-
     const lastItemsIndex = currentPage * itemsPerPage;
     const firstItemsIndex = lastItemsIndex - itemsPerPage
     const thisPageItems = profiles.slice(firstItemsIndex, lastItemsIndex)
