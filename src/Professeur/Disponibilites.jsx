@@ -19,15 +19,20 @@ function MyFullCalendar() {
   const [InfoDate, setInfoDate] = useState([]);
   const [InfoTitle, setInfotTitle] = useState([]);
   const [infoColor, setInfoColor] = useState([]);
+  const [id, setId] = useState([]);
 
 
 
-  // const handleDateClick = (info) => {
-  //   alert('Date clicked: ' + info.dateStr);
+
+  // function handlegetId (info) {
+  //   console.log(info);
+
   // };
 
 
   const handleGetdata = async (e) => {
+
+
     try {
       axios.get(`${API_URL}/disponibilite`, {
         headers: {
@@ -41,7 +46,8 @@ function MyFullCalendar() {
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
-            color: evant.colorEvant
+            color: evant.colorEvant,
+            id: evant.id
           }));
 
           setEvents(newEvents);
@@ -50,7 +56,6 @@ function MyFullCalendar() {
       console.error(error);
     }
   }
-  console.log(eventColor);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,10 +104,35 @@ function MyFullCalendar() {
     setInfoDate(formattedDate);
     setInfotTitle(info.event.title);
     setInfoColor(info.event.backgroundColor);
+    setId(info.event._def.publicId);
 
 
     // alert('Event clicked: ' + info.event.title);
   };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const response = axios.delete(`${API_URL}/disponibilite/${id}`, {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      if (response) { 
+        setEventClicks(false);
+        const updatedEvents = events.filter((items) => items.id != id);
+        console.log(updatedEvents);
+        
+        setEvents(updatedEvents);
+       
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 
   return (
     <>
@@ -208,7 +238,7 @@ function MyFullCalendar() {
 
                 <div className="flex justify-end space-x-2 mt-4">
 
-                  <button
+                  <button onClick={handleDelete}
                     className="px-3 py-1.5 text-sm bg-red-400 text-white rounded hover:bg-red-500"
                   >
                     Remove
@@ -222,7 +252,7 @@ function MyFullCalendar() {
 
       )}
       <div className="mt-8 cursor-pointer">
-        <h2 className="text-2xl font-semibold mb-4">Full Calendar Example</h2>
+        <h2 className="text-2xl font-semibold mb-4">Full Calendar Example </h2>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -232,6 +262,7 @@ function MyFullCalendar() {
           eventDidMount={(info) => {
             info.el.style.backgroundColor = info.backgroundColor;
           }}
+
         />
       </div>
     </>
