@@ -18,6 +18,7 @@ class ResevationController
     }
     public function createReservations(ReservationRequests $request, $id)
     {
+        
         $valdate = $request->validated();
         $reservation = $this->resevationServices->createReservations($valdate, $id);
         return response()->json(['message' => 'Reservation ajoute successfully!', 'reservation' => $reservation]);
@@ -25,9 +26,8 @@ class ResevationController
     public function success(Request $request)
     {
         $validatedData = $request->all();
-
         $payment = $this->resevationServices->success($validatedData);
-        return response()->json(['message' => 'payment ajoute successfully!', 'payment' => $payment]);
+        return  redirect()->away('http://localhost:3000/reservation/' . $payment);
     }
     public function getAllReservations()
     {
