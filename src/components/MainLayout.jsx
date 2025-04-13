@@ -10,6 +10,9 @@ const MainLayout = ({ children , showNavFooter = true  }) => {
     const rejister = location.pathname.includes('/Rejister');
     const favorites = location.pathname.includes('/favorites');
     const Tutors = location.pathname.includes('/Tutors');
+    const Resiravtioon = location.pathname.includes('/reservation');
+
+    
 
   return (
     <div className="layout">
@@ -18,7 +21,7 @@ const MainLayout = ({ children , showNavFooter = true  }) => {
     <div className="content">
       {children} 
     </div>
-    {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors &&<Footer />} 
+    {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors && !Resiravtioon &&<Footer />} 
   </div>
   );
 };
