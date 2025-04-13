@@ -84,7 +84,7 @@ const detiles = () => {
                     fetchComment(tutor);
                     setIsFormVisible(false);
                 } else {
-                    l
+                    
                     alert('Erreur lors de l\'ajout');
                 }
             }
