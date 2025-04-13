@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
-import { useUser } from '../components/UserContext';
+// import { useUser } from '../components/UserContext';
 import { useNavigate } from "react-router-dom";
 const token = localStorage.getItem('token');
 
@@ -40,7 +40,7 @@ const Nav = () => {
                 },
             });
 
-            useUser(null);
+           
             navigate('/login')
         } catch (err) {
 
