@@ -13,19 +13,24 @@ class DisponibiliteRepositories
     }
     public function index()
     {
-        return  $this->model->all();
+        return $this->model->all();
     }
-    public function store($data){
+    public function store($data)
+    {
         return $this->model->create($data);
     }
-    public function update($id ,$data){
+    public function update($id, $data)
+    {
         return $this->model->findOrFail($id)->update($data);
     }
     public function delete($id)
     {
-        return $this->model->findOrFail($id)->delete();  
-       
-    }
-  
+        return $this->model->findOrFail($id)->delete();
 
+    }
+
+    public function getById($id)
+    {
+        return $this->model->where('tuteur_id', '=', $id)->get();
+    }
 }

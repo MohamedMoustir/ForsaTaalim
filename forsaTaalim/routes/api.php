@@ -7,6 +7,7 @@ use App\Http\Controllers\AvisController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompetenceController;
 use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\ResevationController;
@@ -42,8 +43,10 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::get('refresh', [AuthController::class, 'refresh']);
+
     Route::middleware('auth:api')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
+
     });
 
     Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
@@ -55,6 +58,7 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
 
 
 // Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
@@ -91,16 +95,15 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 |-----
 ---------------------------------------------------------------------
 */
-// Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+
 
 Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
 
     Route::post('/Professeur', [ProfesseurController::class, 'create']);
     Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
     Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
-    Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
     // Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
-    Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
+    // Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
 
     /*
     |--------------------------------------------------------------------------
@@ -117,11 +120,11 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
     | API Announcment
     |--------------------------------------------------------------------------
     */
-    Route::post('/Announcment', [AnnouncementController::class, 'create']);
-    Route::put('/Announcment/{id}', [AnnouncementController::class, 'update']);
-    Route::delete('/Announcment/{id}', [AnnouncementController::class, 'delete']);
-    Route::get('/Announcment/{id}', [AnnouncementController::class, 'getById']);
-    Route::get('/Announcment', [AnnouncementController::class, 'Show']);
+    Route::post('/announcment', [AnnouncementController::class, 'create']);
+    Route::put('/announcment/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('/announcment/{id}', [AnnouncementController::class, 'delete']);
+    Route::get('/announcment/{id}', [AnnouncementController::class, 'getById']);
+    Route::get('/announcment', [AnnouncementController::class, 'Show']);
 
     // Route::post('messages/{id}', [ChatController::class, 'message']);
 // Route::get('messages/{id}', [ChatController::class, 'getMessage']);
@@ -142,25 +145,33 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function ()
     Route::post('/notification', [NotificationController::class, 'create']);
     Route::get('/notification', [NotificationController::class, 'show']);
     Route::delete('/notification/{id}', [NotificationController::class, 'destroy']);
-    Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
-    Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
+    Route::delete('/user/delete', [NewPasswordController::class, 'deleteAccount']);
+    Route::get('/disponibilite/{id}', [DisponibiliteController::class, 'getById']);
+
+
 
 });
+Route::get('payment/success',  [ResevationController::class, 'success']);
+
 
 Route::group(['middleware' => ['auth:api', 'role:etudiant']], function () {
     Route::post('/Etudiant', [EtudiantController::class, 'create']);
     Route::patch('/Etudiant/{id}', [EtudiantController::class, 'update']);
-    Route::get('/Etudiant/{id}', [EtudiantController::class, 'getById']);
+    Route::get('/Etudiant/profile', [EtudiantController::class, 'getById']);
     Route::get('/Etudiant', [EtudiantController::class, 'getAll']);
     Route::delete('/Etudiant/{id}', [EtudiantController::class, 'destroy']);
     Route::post('Etudiant/pay/{id}', [ResevationController::class, 'createReservations']);
-    Route::get('payment/success', [ResevationController::class, 'success']);
     Route::get('error', [ResevationController::class, 'error']);
-
+    Route::get('/Reservation/pay', [ResevationController::class, 'getByIdEtudiant']);
     Route::post('/avis', [AvisController::class, 'poster']);
     Route::put('/avis/{id}', [AvisController::class, 'edit']);
     Route::delete('/avis/{id}', [AvisController::class, 'delete']);
     Route::get('/avis/{id}', [AvisController::class, 'getById']);
+
+    Route::get('/favorites', [FavoritesController::class, 'index']);
+    Route::post('/favorites', [FavoritesController::class, 'store']);
+    Route::delete('/favorites/{id}', [FavoritesController::class, 'destroy']);
+
 });
 
 
@@ -180,6 +191,12 @@ Route::get('reports/activity', [AdminController::class, 'generateActivityReport'
 Route::get('reports/performance', [AdminController::class, 'generatePerformanceReport']);
 
 
+
+Route::group(['middleware' => ['auth:api', 'role:admin,etudiant']], function () {
+    Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
+});
+
+Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
 
 
 

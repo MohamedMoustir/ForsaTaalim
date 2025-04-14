@@ -9,10 +9,28 @@
     <script src="../js/index.js"></script>
 
 </head>
+<style>
+    .faq-item:hover+.faq-content {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 
 <body class="bg-[#FFF1F1]">
     <!-- Navigation -->
-    <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
+    <!-- <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
         <div class="text-2xl font-bold text-pink-500">
             ForsaTaalim
         </div>
@@ -21,17 +39,55 @@
             <a href="#" class="bg-white px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
             <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Log In</a>
         </div>
-    </nav>
-    <!-- <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
+    </nav> -->
+    <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
         <div class="text-2xl font-bold text-pink-500">
             ForsaTaalim
         </div>
-        <div class="flex gap-4 items-center">
-            <a href="#" class="text-gray-600 rounded-full bg-slate-50 px-2 py-2  hover:text-gray-800">?</a>
-            <a href="#" class="bg-white px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
-            <a href="#" class="bg-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl">M</a>
+        <div class="flex gap-4 items-center ">
+            <a href="#"
+                class="bg-red-400 border border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl">M</a>
         </div>
-    </nav> -->
+        <button data-collapse-toggle="navbar-hamburger" type="button"
+            class="inline-flex items-center justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg  absolute right-[180px] "
+            aria-controls="navbar-hamburger" aria-expanded="false" onclick="OpenMnue()">
+            <span class="sr-only">Open main menu</span>
+            <svg class="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15" />
+            </svg>
+
+        </button>
+        <ul class="menu hidden flex flex-col font-medium mt-4 w-[200px]  bg-white shadow-sm dark:bg-red-400 dark:border-red-400 text-center absolute right-[8%] bottom-[65%]"
+            style="z-index: 1;">
+            <li>
+                <a href="#" class="block py-2 px-3 text-white bg-red-400  dark:bg-blue-600" aria-current="page">Sort
+                    bye</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="p1">Priority</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="triparTiter">title</a>
+            </li>
+            <li>
+                <a href="#"
+                    class="block py-2 px-3 text-gray-900  hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    id="triparDate_limite">date limite</a>
+            </li>
+        </ul>
+        <button class="absolute top-4 right-[225px] p-1 rounded-full bg-white/80 hover:bg-white">
+            <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                </path>
+            </svg>
+
+    </nav>
 
     <section class="container mx-auto mt-24 lg:mt-0 px-8  py-12 ">
         <div class="flex flex-col md:flex-row items-center justify-around gap-20 p-16">
@@ -46,7 +102,8 @@
                     student, professional, or lifelong learner, our cutting-edge Learning Management System is designed
                     to elevate your learning experience.
                 </p>
-                <button class="bg-pink-500 relative  ml-10 mr-10 lg:m-0 text-white px-6 py-3 rounded-lg hover:bg-pink-600 transition">
+                <button
+                    class="bg-pink-500 relative  ml-10 mr-10 lg:m-0 text-white px-6 py-3 rounded-lg hover:bg-pink-600 transition">
                     Start your instructor journey
                 </button>
             </div>
@@ -164,7 +221,8 @@
                 <!-- Tutor Card 1 -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="relative h-48 bg-gray-200">
-                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover  cursor-pointer  cursor-pointer ">
+                        <img src="../image/Mask Group.png" alt=""
+                            class="w-[100%] h-[100%] bg-cover  cursor-pointer  cursor-pointer ">
                         <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
                             <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -371,7 +429,7 @@
         </div>
         <div class="flex items-center justify-around">
             <span
-                class="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-48 text-center mt-4 rounded-3xl">Red More</span>
+                class="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-48 text-center mt-4 rounded-3xl">See more tutors</span>
         </div>
     </section>
 
@@ -384,7 +442,8 @@
                 <!-- Review 1 -->
                 <div class="flex bg-white border p-2 rounded-md  items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -401,7 +460,8 @@
                 </div>
                 <div class="flex bg-white border p-2 rounded-md   items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -418,7 +478,8 @@
                 </div>
                 <div class="flex bg-white border p-2 rounded-md   items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -435,7 +496,8 @@
                 </div>
                 <div class="flex bg-white border p-2 rounded-md   items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -452,7 +514,8 @@
                 </div>
                 <div class="flex bg-white border p-2 rounded-md   items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -469,7 +532,8 @@
                 </div>
                 <div class="flex bg-white border p-2 rounded-md   items-start gap-4">
                     <div class="flex-shrink-0">
-                        <img src="../image/images (8).jpg" alt="Irina" class="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                        <img src="../image/images (8).jpg" alt="Irina"
+                            class="w-10 h-10 rounded-full object-cover cursor-pointer " />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-1 mb-1">
@@ -507,10 +571,12 @@
                     <div class="w-full lg:w-1/2 pr-8">
                         <div class="flex gap-4">
                             <div class="rounded-3xl overflow-hidden">
-                                <img src="../image/about-img-3.png.png" alt="Students" class="w-full h-full object-cover cursor-pointer " />
+                                <img src="../image/about-img-3.png.png" alt="Students"
+                                    class="w-full h-full object-cover cursor-pointer " />
                             </div>
                             <div class="absolute  rounded-3xl overflow-hidden ml-16 -mt-10 left-[110px]">
-                                <img src="../image/about-img-6.png.png" alt="More students" class="w-full h-full object-cover cursor-pointer " />
+                                <img src="../image/about-img-6.png.png" alt="More students"
+                                    class="w-full h-full object-cover cursor-pointer " />
                             </div>
                         </div>
                     </div>
@@ -540,72 +606,27 @@
 
             <div class="space-y-4">
                 <div class="border border-gray-200 rounded-lg">
-                    <dev id="FAQ" class="w-full flex items-center justify-between p-4 hover:bg-red-50">
+                    <div class="faq-item w-full flex items-center justify-between p-4 hover:bg-red-50">
                         <span class="font-medium">What is the average price of Mathematics lessons?</span>
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
-                    </dev>
+                    </div>
+                    <p class="faq-content hidden bg-blue-50 p-5">Lorem ipsum dolor sit amet...</p>
                 </div>
-                <p id="action" class="  relative bg-blue-50 p-5 bottom-20 hidden ">Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Doloremque, sequi corporis soluta sed
-                    eligendi accusantium ut dolores sapiente id vel quos qui eum perferendis pariatur voluptas
-                    architecto corrupti neque ipsum.</p>
 
                 <div class="border border-gray-200 rounded-lg">
-                    <div id="FAQ" class="w-full flex items-center justify-between p-4 hover:bg-gray-50">
+                    <div class="faq-item w-full flex items-center justify-between p-4 hover:bg-gray-50">
                         <span class="font-medium">How long does it take to master Mathematics?</span>
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
+                    <p class="faq-content hidden bg-blue-50 p-5">Lorem ipsum dolor sit amet...</p>
                 </div>
-
-                <p id="action" class="  relative bg-blue-50 p-5 bottom-20 hidden ">Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Doloremque, sequi corporis soluta sed
-                    eligendi accusantium ut dolores sapiente id vel quos qui eum perferendis pariatur voluptas
-                    architecto corrupti neque ipsum.</p>
-
-                <div class="border border-gray-200 rounded-lg">
-                    <div id="FAQ" class="w-full flex items-center justify-between p-4 hover:bg-gray-50">
-                        <span class="font-medium">Can you learn Mathematics online?</span>
-                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
-
-                <p id="action" class="  relative bg-blue-50 p-5 bottom-20 hidden ">Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Doloremque, sequi corporis soluta sed
-                    eligendi accusantium ut dolores sapiente id vel quos qui eum perferendis pariatur voluptas
-                    architecto corrupti neque ipsum.</p>
-                <div class="border border-gray-200 rounded-lg">
-                    <div id="FAQ" class="w-full flex items-center justify-between p-4 hover:bg-gray-50">
-                        <span class="font-medium">How many tutors are available to give Mathematics lessons?</span>
-                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
-                
-                <p id="action" class="  relative bg-blue-50 p-5 bottom-20 hidden ">Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Doloremque, sequi corporis soluta sed
-                    eligendi accusantium ut dolores sapiente id vel quos qui eum perferendis pariatur voluptas
-                    architecto corrupti neque ipsum.</p>
-                <div class="border border-gray-200 rounded-lg">
-                    <div id="FAQ" class="w-full flex items-center justify-between p-4 hover:bg-gray-50">
-                        <span class="font-medium">How are our Mathematics tutors rated?</span>
-                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
-                <p id="action" class="  relative bg-blue-50 p-5 bottom-20 hidden ">Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Doloremque, sequi corporis soluta sed
-                    eligendi accusantium ut dolores sapiente id vel quos qui eum perferendis pariatur voluptas
-                    architecto corrupti neque ipsum.</p>
             </div>
         </div>
+
 
         <section class="bg-gray-50">
             <!-- FAQ Section -->
@@ -709,14 +730,42 @@
             </footer>
 
             <script>
-                let FAQ = document.getElementById('FAQ');
-                let action = document.getElementById('action');
-                FAQ.addEventListener('click', function (e) {
-                    e.preventDefault()
-                    action.style.bottom = '2px'
-                    action.style.display = 'block'
-                })
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        document.querySelectorAll('.faq-content').forEach(content => content.classList.add('hidden'));
+                        item.nextElementSibling.classList.remove('hidden');
+                    });
 
+                    item.addEventListener('mouseleave', () => {
+                        item.nextElementSibling.classList.add('hidden');
+                    });
+                });
+                let menu = document.getElementsByClassName('menu');
+                let choix1 = document.getElementById('choix1');
+                let choix2 = document.getElementById('choix2');
+                let title = document.getElementById('title');
+                let container = document.getElementsByClassName('container');
+
+                function OpenMnue() {
+                    menu[0].classList.toggle('hidden')
+                }
+
+                function openChoix(id) {
+                    container[0].classList.toggle('hidden')
+                    if (id == 2) {
+                        title.innerHTML = 'this title'
+                        choix1.innerHTML = 'choix1'
+                        choix2.innerHTML = 'choix2'
+                    } else if (id == 3) {
+                        title.innerHTML = 'this title'
+                        choix1.innerHTML = 'choix1 3'
+                        choix2.innerHTML = 'choix2 3'
+                    } else {
+                        title.innerHTML = 'Type of class'
+                        choix1.innerHTML = 'Online'
+                        choix2.innerHTML = 'Presonsiale'
+                    }
+                }
             </script>
         </body>
 

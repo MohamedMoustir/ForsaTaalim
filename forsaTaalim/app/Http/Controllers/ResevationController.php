@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use App\Services\ResevationServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResevationController
 {
@@ -39,6 +40,15 @@ class ResevationController
         $reservation = $this->resevationServices->getByIdReservations($id);
         return response()->json(['message' => 'reservation get successfully!', 'reservation' => $reservation]);
     }
+
+    public function getByIdEtudiant()
+    {
+      
+        $id = Auth::id();
+        $reservation = $this->resevationServices->getByIdEtudiant($id);
+        return response()->json(['message' => 'reservation get successfully!', 'reservation' => $reservation]);
+    }
+
     public function updateStatusReservationsToApproved($id)
     {
         $StatusReservation = $this->resevationServices->updateStatusReservationsToApproved($id);

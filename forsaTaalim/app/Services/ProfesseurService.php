@@ -26,9 +26,7 @@ class professeurService implements CrudInterface
         if (isset($data['video'])) {
             $video = $data['video'];
             $videoName = time() . '_' . $video->getClientOriginalName();
-    
             $videoPath = $video->storeAs('videos', $videoName, 'public');
-    
             $data['video'] = $videoPath;
         }
     

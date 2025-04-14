@@ -25,16 +25,15 @@ class ResevationRepositories
     }
     public function createReservations($data, $id)
     {
+
         try {
             $reservation = Reservation::create([
                 'professeur_id' => $id,
                 'etudiant_id' => Auth::id(),
+                'date_reservation' => $data['date_reservation'],
+                'time_reservation' => $data['time_reservation'],
                 'status' => 'pending',
             ]);
-
-            if (!$reservation) {
-                return response()->json(['message' => 'Failed to create reservation'], 400);
-            }
 
             $response = $this->gateway->purchase([
                 'amount' => $data['amount'],
@@ -48,6 +47,7 @@ class ResevationRepositories
                     'message' => 'Redirecting to PayPal for payment',
                     'redirect_url' => $response->getRedirectUrl()
                 ], 200);
+
             } else {
                 return response()->json(['message' => $response->getMessage()], 400);
             }
@@ -58,7 +58,7 @@ class ResevationRepositories
     public function success($validatedData)
     {
         if (!isset($validatedData['paymentId']) || !isset($validatedData['PayerID'])) {
-            return response()->json(['message' => 'Payment details are incomplete or missing.'], 400);
+            return redirect()->away('http://localhost:3000/payment/failed?error=missing_parameters');
         }
 
         try {
@@ -79,12 +79,12 @@ class ResevationRepositories
                 $payment->amount = $arr['transactions'][0]['amount']['total'];
                 $payment->payment_status = $arr['state'];
                 $payment->currencym = $arr['transactions'][0]['amount']['currency'];
-                $payment->user_id = Auth::id();
+                $payment->user_id = $lastInsertId->etudiant_id;
                 $payment->reservation_id = $lastInsertId->id;
 
                 $payment->save();
 
-                return response()->json(['message' => 'Paiement effectué avec succès !']);
+                return $lastInsertId->professeur_id;
             } else {
                 return response()->json(['message' => 'Échec du paiement', 'error' => $response->getMessage()], 400);
             }
@@ -133,6 +133,34 @@ class ResevationRepositories
             ->where('r.id', '=', $id)
             ->get();
     }
+    public function getByIdEtudiant($id)
+    {
+        return DB::table('reservations as r')
+            ->leftJoin('users as u1', 'r.etudiant_id', '=', 'u1.id')
+            ->leftJoin('users as u2', 'r.professeur_id', '=', 'u2.id')
+            ->leftJoin('professeurs as p', 'u2.id', '=', 'p.id')
+            ->leftJoin('categorie_matieres as cm', 'cm.id', '=', 'p.categorieMatiere_id')
+            ->leftJoin('payments as pa', 'r.id', '=', 'pa.reservation_id')
+            ->select(
+                'r.id',
+                'u1.name as etudiant',
+                'u2.name as professeur',
+                'u1.role as e', 
+                'u2.role as p',
+                'r.status',
+                'pa.payment_id',
+                'pa.payer_id',
+                'pa.amount',
+                'pa.currencym',
+                'pa.payment_status',
+                'r.updated_at',
+                'p.*',
+                'cm.nom'
+            )
+            ->where('u1.id', '=', $id)
+
+            ->paginate(3);
+    }
     public function updateStatusReservationsToApproved($id)
     {
         $reservation = Reservation::findOrFail($id);
@@ -143,7 +171,7 @@ class ResevationRepositories
     }
     public function updateStatusReservationsTorefuser($id)
     {
-       
+
         $reservation = Reservation::findOrFail($id);
         $reservation->update(['status' => 'refuser']);
 
@@ -173,8 +201,8 @@ class ResevationRepositories
                 'r.updated_at',
                 'u2.role'
             )
-            ->where('u2.role', '=', 'tuteur') 
+            ->where('u2.role', '=', 'tuteur')
             ->get();
     }
-    
+
 }

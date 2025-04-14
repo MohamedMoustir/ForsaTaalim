@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-white">
-    <section class="min-h-screen flex flex-col">
+    <section class="min-h-screen ">
         <!-- Header -->
         <header class="p-6">
             <div class="text-xl font-bold text-red-400">
@@ -26,7 +26,7 @@
             </div>
         </header>
         <div data-step="1"
-            class="step-content flex-grow flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 py-12 gap-12 ">
+            class="step-content hidden flex-grow flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 py-12 gap-12 ">
             <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
                 <h2 class="font-bold text-xl mb-4">Good to know</h2>
                 <p class="text-gray-700">
@@ -99,9 +99,8 @@
                 </div>
             </div>
         </div>
-
         <div data-step="2"
-            class="step-content flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            class="step-content hidden flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
             <!-- Left Side Info Box -->
             <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
                 <h2 class="font-bold text-xl mb-4">Good to know</h2>
@@ -127,7 +126,7 @@
                     Title of your
                 </h1>
                 <h1 class="text-3xl font-bold text-red-400 mb-2">diplomes</h1>
-                <p class="text-sm text-gray-500 mb-6">(1 minimum words)</p>
+                <!-- <p class="text-sm text-gray-500 mb-6">(1 minimum words)</p> -->
 
                 <!-- Diploma Entry Fields -->
                 <div id="orders-container" class="  space-y-4 mb-12">
@@ -152,15 +151,14 @@
                 <div class="flex items-center justify-between mt-12">
                     <button class=" prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                         back</button>
-                    <button id="Next" class="next-btn px-6 py-3 bg-gray-100 rounded-full">
-                        1/1
-                    </button>
+                    <button
+                        class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+
                 </div>
             </div>
         </div>
-
         <div data-step="3"
-            class="step-content  flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            class="step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
             <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
                 <h2 class="font-bold text-xl mb-4">Good to know</h2>
                 <p class="text-gray-700 mb-4">
@@ -199,257 +197,255 @@
                     <div class="flex items-center justify-between mt-12">
                         <button class="prev-btn  px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                             back</button>
-                        <button id="Next" class="next-btn px-6 py-3 bg-gray-100 rounded-full">
-                            0/40
-                        </button>
+                        <button
+                            class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+
                     </div>
                 </div>
             </div>
-            
-            <div data-step="4"class=" step-content flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12 ">
-                <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                    <h2 class="font-bold text-xl mb-4">Good to know</h2>
-                    <p class="text-gray-700 mb-4">
-                        Inspire confidence, establish your legitimacy, and reassure students of your professionalism.
-                    </p>
-                    <ul class="list-disc pl-5 mb-6 text-gray-700">
-                        <li>This is one of the first things that the students will read about you, remember to take care
-                            of your spelling and grammar.</li>
-                    </ul>
+        </div>
+        <div data-step="4"
+            class=" step-content hiddenflex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12 ">
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    Inspire confidence, establish your legitimacy, and reassure students of your professionalism.
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>This is one of the first things that the students will read about you, remember to take care
+                        of your spelling and grammar.</li>
+                </ul>
 
-                    <h3 class="font-bold uppercase text-sm mb-3">DO NOT FORGET Mohamed</h3>
-                    <p class="text-gray-700">
-                        • Your contact details or URLs should not appear in your texts
-                    </p>
-                </div>
-                <div class="w-full md:w-1/2">
-                    <h1 class="text-3xl font-bold mb-1">
-                        About <span class="text-3xl font-bold text-red-400 mb-2">you</span>
-                    </h1>
-                    <!-- Diploma Entry Fields -->
-                    <div class="space-y-4 mb-12">
-                        <!-- First Diploma Field -->
-                        <div class="flex">
-                            <textarea
-                                class="hidden  flex-grow p-3 border border-gray-300 h-48 w-[600px] rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                placeholder="ex:Engineering student teaches math and physics frommiddle school to high school in Los Angeles"></textarea>
-                        </div>
-                        <!-- Navigation Buttons -->
-                        <div class="flex items-center justify-between mt-12">
-                            <button class="prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                                back</button>
-                            <div class=" px-6 py-3 bg-gray-100 rounded-full">
-                                1/1
-                            </div>
-                        </div>
+                <h3 class="font-bold uppercase text-sm mb-3">DO NOT FORGET Mohamed</h3>
+                <p class="text-gray-700">
+                    • Your contact details or URLs should not appear in your texts
+                </p>
+            </div>
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-1">
+                    About <span class="text-3xl font-bold text-red-400 mb-2">you</span>
+                </h1>
+                <!-- Diploma Entry Fields -->
+                <div class="space-y-4 mb-12">
+                    <!-- First Diploma Field -->
+                    <div class="flex">
+                        <textarea
+                            class="flex-grow p-3 border border-gray-300 h-48 w-[600px] rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                            placeholder="ex:Engineering student teaches math and physics frommiddle school to high school in Los Angeles"></textarea>
+                    </div>
+                    <!-- Navigation Buttons -->
+                    <div class="flex items-center justify-between mt-12">
+                        <button class="prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                            back</button>
+                        <button
+                            class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+
                     </div>
                 </div>
-
-                <div data-step="5"
-                    class="step-content  flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
-                    <!-- Left Side Info Box -->
-                    <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                        <h2 class="font-bold text-xl mb-4">Good to know</h2>
-                        <p class="text-gray-700 mb-4">
-                            Inspire confidence, establish your legitimacy, and reassure students of your
-                            professionalism.
-                        </p>
-                        <ul class="list-disc pl-5 mb-6 text-gray-700">
-                            <li>This is one of the first things that the students will read about you, remember to take
-                                care of your spelling and grammar.</li>
-
-
-
-                        </ul>
-
-                        <h3 class="font-bold uppercase text-sm mb-3">DO NOT FORGET Mohamed</h3>
-                        <p class="text-gray-700">
-                            • Your contact details or URLs should not appear in your texts
-                        </p>
-                    </div>
-
-                    <!-- Right Side Diploma Entry -->
-                    <div class="w-full md:w-1/2">
-                        <h1 class="text-3xl font-bold mb-2">
-
-                            <span class="text-red-400">Location</span> of your
-                        </h1>
-                        <h1 class="text-3xl font-bold mb-8">lessons</h1>
+            </div>
+        </div>
+        <div data-step="5"
+            class="step-content hidden flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    Inspire confidence, establish your legitimacy, and reassure students of your
+                    professionalism.
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>This is one of the first things that the students will read about you, remember to take
+                        care of your spelling and grammar.</li>
 
 
-                        <div>
-                            <h3 class="text-sm font-medium text-gray-500 mb-4">Where will the lesson take place?</h3>
-                            <div class="space-y-3 ">
-                                <div
-                                    class="flex text-white items-center justify-between p-4 bg-red-400 rounded-md hover:bg-red-400 cursor-pointer">
-                                    <span class="font-medium ">At your house</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white hover:text-white"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 cursor-pointer hover:text-white">
-                                    <span class="font-medium">You can travel</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-                                <div
-                                    class="flex   items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 hover:text-white cursor-pointer ">
-                                    <span class="font-medium">Online</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-gray-400 hover:text-white" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-                            </div>
+
+                </ul>
+
+                <h3 class="font-bold uppercase text-sm mb-3">DO NOT FORGET Mohamed</h3>
+                <p class="text-gray-700">
+                    • Your contact details or URLs should not appear in your texts
+                </p>
+            </div>
+
+            <!-- Right Side Diploma Entry -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-2">
+
+                    <span class="text-red-400">Location</span> of your
+                </h1>
+                <h1 class="text-3xl font-bold mb-8">lessons</h1>
+
+
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">Where will the lesson take place?</h3>
+                    <div class="space-y-3 ">
+                        <div
+                            class="flex text-white items-center justify-between p-4 bg-red-400 rounded-md hover:bg-red-400 cursor-pointer">
+                            <span class="font-medium ">At your house</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white hover:text-white"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
                         </div>
-
-                        <div class="flex items-center justify-between mt-12">
-                            <button class=" prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                                back</button>
-                            <button
-                                class="px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+                        <div
+                            class="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 cursor-pointer hover:text-white">
+                            <span class="font-medium">You can travel</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-white"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div
+                            class="flex   items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 hover:text-white cursor-pointer ">
+                            <span class="font-medium">Online</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-white"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
                         </div>
                     </div>
                 </div>
 
-                <div data-step="6"
-                    class=" step-content flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
-                    <!-- Left Side Info Box -->
-                    <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                        <h2 class="font-bold text-xl mb-4">Good to know</h2>
-                        <p class="text-gray-700 mb-4">
-                            You are free to choose your hourly rate and modify it at any time.
-                        </p>
-                        <ul class="list-disc pl-5 mb-6 text-gray-700">
-                            <li>If you are just starting out, you may not want to choose a rate that is too high and
-                                wait until you have some reviews and recommendations to adjust it..</li>
-                        </ul>
-                    </div>
+                <div class="flex items-center justify-between mt-12">
+                    <button class=" prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                        back</button>
+                    <button id="Next"
+                        class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+                </div>
+            </div>
+        </div>
+        <div data-step="6"
+            class=" step-content hidden flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    You are free to choose your hourly rate and modify it at any time.
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>If you are just starting out, you may not want to choose a rate that is too high and
+                        wait until you have some reviews and recommendations to adjust it..</li>
+                </ul>
+            </div>
 
-                    <!-- Right Side Diploma Entry -->
-                    <div class="w-full md:w-1/2">
-                        <h1 class="text-3xl font-bold mb-1">
-                            <span class="text-3xl font-bold text-red-400 mb-2">Rate</span> per hour
-                            <h3 class="text-sm font-medium text-gray-500 mb-4">Info: The average rate for singing
-                                lessons in El Paso is $33</h3>
+            <!-- Right Side Diploma Entry -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-1">
+                    <span class="text-3xl font-bold text-red-400 mb-2">Rate</span> per hour
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">Info: The average rate for singing
+                        lessons in El Paso is $33</h3>
 
-                        </h1>
-                        <!-- Diploma Entry Fields -->
-                        <div class="space-y-4 mb-12">
-                            <div class="flex">
-                                <input type="number"
-                                    class="hidden  flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                    placeholder="33">
-                            </div>
-                        </div>
-                        <!-- Navigation Buttons -->
-                        <div class=" prev-btn flex items-center justify-between mt-12">
-                            <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                                back</button>
-                            <div class="px-6 py-3 bg-gray-100 rounded-full">
-                                1/1
-                            </div>
-                        </div>
+                </h1>
+                <!-- Diploma Entry Fields -->
+                <div class="space-y-4 mb-12">
+                    <div class="flex">
+                        <input type="number"
+                            class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                            placeholder="33">
                     </div>
                 </div>
+                <!-- Navigation Buttons -->
+                <div class=" prev-btn flex items-center justify-between mt-12">
+                    <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                        back</button>
+                    <button
+                        class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
 
-                <div data-step="7"
-                    class=" step-content flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
-                    <!-- Left Side Info Box -->
-                    <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                        <h2 class="font-bold text-xl mb-4">Good to know</h2>
-                        <p class="text-gray-700 mb-4">
-                            You are free to choose your hourly rate and modify it at any time.
-                        </p>
-                        <ul class="list-disc pl-5 mb-6 text-gray-700">
-                            <li>If you are just starting out, you may not want to choose a rate that is too high and
-                                wait until you have some reviews and recommendations to adjust it..</li>
-                        </ul>
-                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-step="7"
+            class=" step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    You are free to choose your hourly rate and modify it at any time.
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>If you are just starting out, you may not want to choose a rate that is too high and
+                        wait until you have some reviews and recommendations to adjust it..</li>
+                </ul>
+            </div>
 
-                    <!-- Right Side Diploma Entry -->
-                    <div class="w-full md:w-1/2">
-                        <h1 class="text-3xl font-bold mb-1">
-                            <span class="text-3xl font-bold text-red-400 mb-2">Telephone Number</span>
-                            <h3 class="text-sm font-medium text-gray-500 mb-4">Your number never appears on the site, it
-                                is only sent to the students to whom you accept to give lessons.</h3>
+            <!-- Right Side Diploma Entry -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-1">
+                    <span class="text-3xl font-bold text-red-400 mb-2">Telephone Number</span>
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">Your number never appears on the site, it
+                        is only sent to the students to whom you accept to give lessons.</h3>
 
-                        </h1>
-                        <!-- Diploma Entry Fields -->
-                        <div class="space-y-4 mb-12">
-                            <div class="flex">
-                                <input type="number"
-                                    class="hidden  flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                    placeholder="Mobile Number">
-                            </div>
-                        </div>
-                        <!-- Navigation Buttons -->
-                        <div class="prev-btn flex items-center justify-between mt-12">
-                            <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                                back</button>
-                            <button class="px-6 py-3 bg-gray-100 rounded-full">
-                                Next
-                            </button>
-                        </div>
+                </h1>
+                <!-- Diploma Entry Fields -->
+                <div class="space-y-4 mb-12">
+                    <div class="flex">
+                        <input type="number"
+                            class=" flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                            placeholder="Mobile Number">
                     </div>
                 </div>
-
-                <div data-step="8"
-                    class=" step-content flex-grow flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
-                    <!-- Left Side Info Box -->
-                    <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                        <h2 class="font-bold text-xl mb-4">Good to know</h2>
-                        <p class="text-gray-700 mb-4">
-                            Your photo will be used for all your ads, a professional quality photo will help you build
-                            trust with your future students and maximize lesson requests.
-                        </p>
-                        <ul class="list-disc pl-5 mb-6 text-gray-700">
-                            <li>Show yourself alone and smiling!.</li>
-                            <li>Face and gaze in front of the lens.</li>
-                            <li>Avoid sunglasses, logos, blurry, pixelated or too dark photos.</li>
-                            <li>Min. 600x600px, .PNG or .JPEG.</li>
-
-
-                        </ul>
-                    </div>
-
-                    <!-- Right Side Diploma Entry -->
-                    <div class="w-full md:w-1/2">
-                        <h1 class="text-3xl font-bold mb-1">
-                            <span class="text-3xl font-bold text-red-400 mb-2">Video
-                            </span>
-
-                        </h1>
-                        <!-- Diploma Entry Fields -->
-                        <div class="space-y-4 mb-12">
-                            <div class="flex">
-                                <input type="file"
-                                    class="hidden flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                    placeholder="33">
-                                <img src="../image/image.png" alt="" class="cursor-pointer">
-                            </div>
-                            <button class="px-6 py-3 text-white text-center ml-[27%] rounded-full bg-red-400">Upload a
-                                video</button>
-                        </div>
-                        <!-- Navigation Buttons -->
-                        <div class="flex items-center justify-between mt-12">
-                            <button class="prev-btn  px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                                back</button>
-                            <button class="px-6 py-3 text-white rounded-full bg-red-400">
-                                Next
-                            </button>
-                        </div>
-                    </div>
+                <!-- Navigation Buttons -->
+                <div class="prev-btn flex items-center justify-between mt-12">
+                    <button class="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                        back</button>
+                    <button
+                        class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
                 </div>
+            </div>
+        </div>
+        <div data-step="8"
+            class=" step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
+            <!-- Left Side Info Box -->
+            <div class="w-full md:w-80 bg-red-50 rounded-3xl p-6">
+                <h2 class="font-bold text-xl mb-4">Good to know</h2>
+                <p class="text-gray-700 mb-4">
+                    Your photo will be used for all your ads, a professional quality photo will help you build
+                    trust with your future students and maximize lesson requests.
+                </p>
+                <ul class="list-disc pl-5 mb-6 text-gray-700">
+                    <li>Show yourself alone and smiling!.</li>
+                    <li>Face and gaze in front of the lens.</li>
+                    <li>Avoid sunglasses, logos, blurry, pixelated or too dark photos.</li>
+                    <li>Min. 600x600px, .PNG or .JPEG.</li>
+
+                </ul>
+            </div>
+
+            <!-- Right Side Diploma Entry -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-1">
+                    <span class="text-3xl font-bold text-red-400 mb-2">Video
+                    </span>
+
+                </h1>
+                <!-- Diploma Entry Fields -->
+                <div class="space-y-4 mb-12 ml-16">
+                    <div class="flex">
+                        <input type="file"
+                            class="hidden flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
+                            placeholder="33">
+                        <img src="../image/image.png" alt="" class="cursor-pointer">
+                    </div>
+                    <button class="px-6 py-3 text-white text-center ml-[19%] rounded-full bg-red-400">Upload a
+                        video</button>
+                </div>
+                <!-- Navigation Buttons -->
+                <div class="flex items-center justify-between mt-12 mr-24">
+                    <button class="prev-btn  px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                        back</button>
+                    <button
+                        class="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+
+                </div>
+            </div>
+        </div>
+
+        <video width="640" height="360" controls>
+            <source src="../../storage//videos/" type="video/mb4" />
+            </video>
 
     </section>
     <script>
@@ -459,27 +455,29 @@
         let subjects = document.getElementsByClassName('.subjects');
         let nextEtap = document.getElementById('Next');
 
-        function getSubjects(subject, targat) {
-            inputSerch.value = subject
-            targat.classList.toggle('subjects bg-red-400  flex items-center justify-between p-4 bg-gray-50 rounded-md  cursor-pointer text-white')
-        }
+        // function getSubjects(subject, targat) {
+        //     inputSerch.value = subject
+        //     targat.classList.toggle('subjects bg-red-400  flex items-center justify-between p-4 bg-gray-50 rounded-md  cursor-pointer text-white')
+        // }
 
-        function getNextEtap(value) {
-            if (value) {
-                nextEtap.innerHTML = 'Next';
-                nextEtap.classList = 'next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition'
-            } else {
-                nextEtap.innerHTML = '1/1'
-                nextEtap.classList = 'next-btn px-6 py-3 bg-gray-100 rounded-full'
+        // function getNextEtap(value) {
+        //     if (value) {
+        //         nextEtap.innerHTML = 'Next';
+        //         nextEtap.classList = 'next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition'
+        //     } else {
+        //         nextEtap.innerHTML = '1/1'
+        //         nextEtap.classList = 'next-btn px-6 py-3 bg-gray-100 rounded-full'
 
-            }
-        }
+        //     }
+        // }
+
         document.addEventListener("DOMContentLoaded", function () {
-            let currentStep = 1;
+            let currentStep = 8;
             const totalSteps = 8
 
             function updateStep(step) {
-                console.log("Changement vers l'étape :", step);
+                console.log(step);
+
                 document.querySelectorAll('.step-content').forEach((content) => {
                     content.classList.toggle('hidden', content.dataset.step != step);
                 });
@@ -488,17 +486,20 @@
                     el.classList.toggle('text-white', el.dataset.step == step);
                     el.classList.toggle('bg-white/10', el.dataset.step != step);
                 });
-
                 currentStep = step;
-
             }
-
 
             document.querySelectorAll('.next-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (currentStep < totalSteps) {
-                        updateStep(currentStep + 1);
+                        if (currentStep == 7) {
+                            updateStep(currentStep + 1);
+                        }
+                        if (currentStep == 6) {
+                            updateStep(currentStep + 1);
+                        }
 
+                        updateStep(currentStep + 1);
                     }
                 });
             });
@@ -517,8 +518,6 @@
 
         function addOrder() {
             const container = document.getElementById('orders-container');
-            console.log(container);
-
             const div = document.createElement('div');
             div.classList.add('order-group', 'mb-4', 'flex', 'gap-2');
 

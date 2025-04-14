@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Disponibilite extends Model
 {
     use HasFactory;
-    protected $fillable = ['tuteur_id','available_from','available_to','is_walkin'];
+    protected $fillable = ['tuteur_id','date','titleEvant','colorEvant','is_walkin'];
 
 }

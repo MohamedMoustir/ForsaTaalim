@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('disponibilites', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tuteur_id');
-            $table->timestamp('available_from');
-            $table->timestamp('available_to');
+            $table->timestamp('date');
+            $table->string('titleEvant');
+            $table->enum('colorEvant',['red','blue','green'])->default('red');
             $table->boolean('is_walkin')->default(true);
             $table->foreign('tuteur_id')->references('id')->on('users');
             $table->timestamps();

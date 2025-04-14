@@ -34,7 +34,7 @@ class EtudiantRepositories
 
         
     }
-    public function getById($id)
+    public function  getById($id)
     {
 
         $showProfile = DB::table('etudiants as e')

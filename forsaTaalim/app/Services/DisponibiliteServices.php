@@ -38,4 +38,8 @@ class DisponibiliteServices
     {
         return $this->disponibiliteRepositories->delete($id);
     }
+    public function getById($id)
+    {
+        return $this->disponibiliteRepositories->getById($id);
+    }
 }

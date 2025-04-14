@@ -39,6 +39,9 @@ class ResevationServices implements ResevationInterface
     {
         return $this->resevationRepositories->getByIdReservations($id);
     }
+    public function getByIdEtudiant($id){
+        return $this->resevationRepositories->getByIdEtudiant($id);
+    }
     public function updateStatusReservationsToApproved($id)
     {
         return $this->resevationRepositories->updateStatusReservationsToApproved($id);

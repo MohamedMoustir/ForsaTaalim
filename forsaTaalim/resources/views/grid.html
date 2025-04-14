@@ -112,23 +112,26 @@
                     <button
                         class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
                 </div>
-                <ul class=" container hidden flex flex-col font-medium mt-4 w-[150px] border rounded  bg-white shadow-sm dark:bg-red-400 dark:border-red-400  absolute left-[227px] bottom-[55%] "
-                    style="z-index: 1;">
-                    <li>
-                        <a href="#" id="title" class="block py-2 px-3 text-white bg-red-400 rounded  dark:bg-blue-600"
-                            aria-current="page">Type of class</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="block py-2 px-3 text-gray-900  hover:bg-red-50 rounded dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                            id="choix1">Online</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="block py-2 px-3 text-gray-900  hover:bg-red-50 rounded dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
-                            id="choix2">Presonsiale</a>
-                    </li>
-                </ul>
+                <div class="relative">
+                    <!-- Trigger Button -->
+                    <button id="dropdownButton" class="px-4 py-2 bg-red-400 text-white rounded">
+                        Select Class Type
+                    </button>
+                
+                    <!-- Dropdown Menu -->
+                    <ul id="dropdownMenu" class="hidden absolute left-0 mt-2 w-40 border rounded bg-white shadow-sm dark:bg-red-400 dark:border-red-400 z-10">
+                        <li>
+                            <a href="#" class="block py-2 px-3 text-white bg-red-400 rounded-t dark:bg-blue-600" aria-current="page">Type of class</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Online</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Presential</a>
+                        </li>
+                    </ul>
+                </div>
+                
 
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
