@@ -14,6 +14,9 @@ import Reservation from "./pages/reservation"
 import Profile from "./pages/profile"
 import Myfavorites from "./pages/Myfavorites"
 import Disponibilites from "./Professeur/Disponibilites"
+import Mespaiements from "./pages/Mespaiements"
+import Dashboard from "./Professeur/Dashboard";
+import Annonce from "./Professeur/Ajoutennonce"; 
 function App() {
   return (
     <Router>
@@ -41,6 +44,10 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/favorites" element={<Myfavorites />} />
         <Route path="/disponibilites/:id" element={<Disponibilites />} />
+        <Route path="/Mespaiements" element={<Mespaiements />} />
+        <Route path="/dashboard-tuteur" element={<Dashboard />} />
+        <Route path="/dashboard-annonce" element={<Annonce />} />
+
 
 
       </Routes>

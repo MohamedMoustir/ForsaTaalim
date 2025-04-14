@@ -69,16 +69,15 @@ const Rejister = () => {
           },
         });
 
-        
-
-        alert('Profile created successfully!');
         setLoading(false)
       }
       if (role == 'tuteur') {
         navigate('/RejisterPro');
       }
-
-      alert('User login successfully');
+      if (role == 'etudiant') {
+        navigate('/login');
+      }
+   
       setLoading(false)
 
     } catch (err) {

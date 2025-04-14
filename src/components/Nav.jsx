@@ -7,7 +7,10 @@ const Nav = () => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate()
-
+    //   if (!token) {
+    //     navigate('/login')
+        
+    //   }
     function BecomeTutor() {
         navigate('/Rejister')
     }

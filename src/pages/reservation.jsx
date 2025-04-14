@@ -14,7 +14,6 @@ function ReservationTutors() {
 
     const { id } = useParams()
 
-
     const fetchProfesseurs = async (tutor_id) => {
         axios.get(`${API_URL}/Professeur/${tutor_id}`, {
             headers: {
@@ -32,7 +31,8 @@ function ReservationTutors() {
 
     return (
         <>
-            <MainLayout></MainLayout>
+ 
+            <MainLayout ></MainLayout>
             <div className="min-h-screen w-[70%] relative left-[15%]">
 
                 <div className="flex items-center mb-6">
@@ -86,7 +86,7 @@ function ReservationTutors() {
                     </div>
 
                     <div className="md:col-span-2 h-42">
-                        <Disponibilites></Disponibilites>
+                        <Disponibilites title="Accueil" amount={detile.tarifHoraire}></Disponibilites>
                      
                        
                     </div>

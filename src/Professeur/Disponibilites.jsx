@@ -9,7 +9,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
-function MyFullCalendar() {
+function MyFullCalendar({ title, amount }) {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +28,8 @@ function MyFullCalendar() {
   const [timeReservation, setTimeReservation] = useState(null);
   const [isOpenPoupupDate, setIsOpenPoupupDate] = useState(null);
 
-  
+  // const [amount, setAmount] = useState(amount);
+
   const availableTimes = [
     { time: '08:00 AM' },
     { time: '10:00 AM' },
@@ -54,6 +55,8 @@ function MyFullCalendar() {
             color: evant.time_reservation,
             id: evant.id
           }));
+
+
           setLoading(false)
           setEvents(newEvents);
         })
@@ -150,12 +153,17 @@ function MyFullCalendar() {
       console.error(error);
     }
   }
+
+  console.log(amount);
+
+
   const handleReservation = async (e) => {
     e.preventDefault();
+
     let formData = new FormData();
     formData.append('date_reservation', getDateReserve);
-    formData.append('time_reservation', '12:00');
-    formData.append('amount', 80);
+    formData.append('time_reservation', timeReservation.replace(/ (AM|PM)/, ''));
+    formData.append('amount', parseFloat(amount.replace(/[^\d.]/g, '')));
     try {
       axios.post(`${API_URL}/Etudiant/pay/${id}`, formData, {
         headers: {
@@ -163,21 +171,20 @@ function MyFullCalendar() {
         },
         body: formData
       })
-      .then((response) => {
-        if (response.data.reservation.original.redirect_url) {
-          window.location.href = response.data.reservation.original.redirect_url;
-      }else{
-        console.log(response.data.reservation.original.message);
-      }
-       
-      })
+        .then((response) => {
+          if (response.data.reservation.original.redirect_url) {
+            window.location.href = response.data.reservation.original.redirect_url;
+          } else {
+            console.log(response.data.reservation.original.message);
+          }
+        })
     } catch (error) {
       console.error("Erreur:", error);
       alert("Erreur côté client.");
     }
   };
 
-  
+
 
 
   if (loading) {
@@ -189,9 +196,8 @@ function MyFullCalendar() {
   }
   return (
     <>
-      {isOpen && parsedToken.role == 'tuteur'(
+      {isOpen && parsedToken.role === 'tuteur'&&(
         <>
-
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
 
             <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
@@ -351,7 +357,7 @@ function MyFullCalendar() {
               <p className="font-medium">Selected session:</p>
               <p className="text-gray-600">{getDateReserve} at {timeReservation}(1 hour)</p>
             </div>
-            <button  className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
+            <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
               Confirm
             </button>
           </form>

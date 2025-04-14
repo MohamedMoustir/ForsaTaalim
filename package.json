@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@fullcalendar/daygrid": "^6.1.17",
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
@@ -21,10 +24,12 @@
     "axios": "^1.8.3",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.1",
+    "date-fns": "^4.1.0",
     "lodash.debounce": "^4.0.8",
     "pusher-js": "^8.4.0",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
+    "react-datepicker": "^8.3.0",
     "react-dom": "^19.0.0",
     "react-paginate": "^8.3.0",
     "react-router-dom": "^6.30.0",

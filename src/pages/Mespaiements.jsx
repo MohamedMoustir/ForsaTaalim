@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import NavEtudiant from "../components/NavEtudiant"
 
-
-
-
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -26,7 +23,7 @@ const Mespaiements = () => {
     const [loading, setLoading] = useState(true);
 
     const fetchPayments = async (page) => {
-        const response = await axios.get(`${API_URL}/Reservation/pay/?page=${page}`,{
+        const response = await axios.get(`${API_URL}/Reservation/pay/?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -34,6 +31,8 @@ const Mespaiements = () => {
         });
         setpaymentlength(response.data.reservation.total);
         setMespaiements(response.data.reservation.data);
+        console.log('ccc', response.data.reservation.data);
+
         if (response) {
             setLoading(false);
         }
@@ -139,46 +138,59 @@ const Mespaiements = () => {
                         </div>
                     </div>
                 </div>
-                {
-                    Mespaiements.filter((item) => {
-                            if (search) {
-                                return search.toLowerCase() === ''
-                                    ? item
-                                    : item.prenom.toLowerCase().includes(search.toLowerCase());
-                            }
-                            return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
-                        })
-                        .map((prof, index) => (
-                            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-gray-50">
-                                            <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                            </tr>
-                                        </thead>
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            {
+                                Mespaiements.filter((item) => {
+                                    if (search) {
+                                        return search.toLowerCase() === ''
+                                            ? item
+                                            : item.prenom.toLowerCase().includes(search.toLowerCase());
+                                    }
+                                    return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
+                                })
+                                    .map((prof, index) => (
+
+
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             <tr>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Avr 2025</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{prof.updated_at}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <img className="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/42.jpg" alt="Student" />
                                                         <div className="ml-4">
-                                                            <div className="text-sm font-medium text-gray-900">Cours de mathématiques</div>
-                                                            <div className="text-sm text-gray-500">avec</div>
+                                                            <div className="text-sm font-medium text-gray-900">Cours de {prof.nom}</div>
+                                                            <div className="text-sm text-gray-500">avec {prof.professeur} </div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-green-600">+30,00 €</div>
+                                                    <div className="text-sm font-medium text-green-600">{prof.tarifHoraire}€</div>
                                                     <div className="text-xs text-gray-500">1 heure</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complété</span>
+                                                    {prof.status == 'approved' && (
+                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Complété</span>
+                                                    )}
+                                                    {prof.status == 'pending' && (
+                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Complété</span>
+                                                    )}
+                                                    {prof.status == 'refuser' && (
+                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Complété</span>
+                                                    )}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     <button className="text-indigo-600 hover:text-indigo-900 mr-3"><i className="fas fa-receipt"></i></button>
@@ -186,11 +198,13 @@ const Mespaiements = () => {
                                                 </td>
                                             </tr>
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        ))
-                }
+
+
+                                    ))
+                            }
+                        </table>
+                    </div>
+                </div>
             </div>
 
         </>
