@@ -3,6 +3,7 @@ import Pusher from "pusher-js";
 import '../assets/js/index';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import Login from "../Auth/Login";
 const API_URL = 'http://127.0.0.1:8000/api';
 
 const token = localStorage.getItem('token');
@@ -11,6 +12,8 @@ const parsedToken = JSON.parse(user);
 
 function App() {
     const { id } = useParams()
+    const { chat_user_id } = useParams()
+
   const [username, setUsername] = useState('mohamed');
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -18,7 +21,7 @@ function App() {
   // const [sender, setSender] = useState(parsedToken.role);
 
   useEffect(() => {
-    axios.get(`${API_URL}/messages/${receive_id}`, {
+    axios.get(`${API_URL}/messages/${receive_id}/room/${chat_user_id}`, {
       headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -27,7 +30,6 @@ function App() {
 
   .then((response) => {    
     console.log(response.data.messages);
-    
       setMessages(response.data.messages);
   })
 
@@ -46,6 +48,7 @@ function App() {
       channel.unsubscribe();
     };
   },[]);
+console.log('s',messages);
 
   const submit = async e => {
     e.preventDefault();
