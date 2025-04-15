@@ -15,9 +15,9 @@ function Mespaiements() {
 function profile() {
     navigate('/profile')
 }
-// function MesMessages(){
-//     navigate('/chat')
-// }
+function MesMessages(){
+    navigate('/chat')
+}
 return (
     <>
           <nav className="bg-black py-3">
