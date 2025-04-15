@@ -10,8 +10,7 @@ import {
     faTrash,
     faSearch
 } from '@fortawesome/free-solid-svg-icons';
-
-import Detile from "../pages/detilesTutor"
+import DetilesAnnonce from "../pages/DetilesAnnonce"
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -34,8 +33,12 @@ const Dashboard = () => {
     const [search, setSearch] = useState('');
 
 
+console.log(annonces.length);
 
     const handleSubmit = async (e) => {
+        if (annonces.length == 3) {
+          alert('max annoncement add 3')  
+        }else{
         e.preventDefault();
         let formData = new FormData();
         formData.append('title', title);
@@ -82,6 +85,7 @@ const Dashboard = () => {
             setError('error');
         }
     }
+    }
 
     useEffect(() => {
         axios.get(`${API_URL}/announcment/${parsedToken.id}`, {
@@ -109,7 +113,7 @@ const Dashboard = () => {
                 },
             });
 
-            setAnnonce((prevAnnonces) => prevAnnonces.filter(a => a.id != id));
+            setAnnonce((prevAnnonces) => prevAnnonces.filter(a => a.id_annonce != id));
             alert("Annonce supprimée avec succès !");
         } catch (error) {
             console.error("Erreur lors de la suppression :", error);
@@ -119,7 +123,7 @@ const Dashboard = () => {
     const handleUpdate = (annonce_id) => {
         setOpenPopUp(true)
         setEditeId(annonce_id);
-        const annoncement = annonces.filter((a) => a.id == annonce_id);
+        const annoncement = annonces.filter((a) => a.id_annonce == annonce_id);
         setTitle(annoncement[0].title);
         setDescription(annoncement[0].description);
         setSubjects(annoncement[0].subjects);
@@ -128,12 +132,9 @@ const Dashboard = () => {
         setDate(annoncement[0].date);
     };
 
-
-
-
     return (
         <>
-           
+         
             <div className="bg-gray-100">
                 <div className="flex h-screen">
                     <DashboardNav></DashboardNav>
@@ -246,14 +247,14 @@ const Dashboard = () => {
                                         {/* Actions */}
                                         <div className="flex justify-end gap-2 px-4 pb-4">
                                             <button
-                                                onClick={() => handleUpdate(annonce.id)}
+                                                onClick={() => handleUpdate(annonce.id_annonce)}
                                                 className="bg-yellow-400 text-white px-4 py-1.5 rounded-md hover:bg-yellow-500 text-sm flex items-center gap-1"
                                             >
                                                 <FontAwesomeIcon icon={faPen} />
                                                 Modifier
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(annonce.id)}
+                                                onClick={() => handleDelete(annonce.id_annonce)}
                                                 className="bg-red-500 text-white px-4 py-1.5 rounded-md hover:bg-red-600 text-sm flex items-center gap-1"
                                             >
                                                 <FontAwesomeIcon icon={faTrash} />
