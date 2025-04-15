@@ -3,6 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import Login from "../Auth/Login";
 import MainLayout from "../components/MainLayout.jsX";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faGlobe,
+    faEuroSign,
+    faMapMarkerAlt,
+    faPen,
+    faTrash,
+    faSearch,
+    faCalendarAlt,
+    faBookOpen,
+    faUsers,
+    faSignInAlt,
+    faChalkboardTeacher
+} from '@fortawesome/free-solid-svg-icons';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
@@ -21,6 +35,8 @@ const detiles = () => {
     const [editId, setEditId] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [annonces, setAnnonces] = useState([]);
+
 
     const navigate = useNavigate();
     const { id } = useParams()
@@ -33,10 +49,9 @@ const detiles = () => {
             }
         })
             .then((response) => {
-                setLoading(false)
                 setDetilesprofiles(response.data.Profile);
                 setTutors(response.data.Profile.profe_id);
-                
+                fetchAnnonces(response.data.Profile.profe_id);
             })
     };
     const fetchComment = async (tutor) => {
@@ -86,7 +101,7 @@ const detiles = () => {
                     fetchComment(tutor);
                     setIsFormVisible(false);
                 } else {
-                    
+
                     alert('Erreur lors de l\'ajout');
                 }
             }
@@ -107,7 +122,7 @@ const detiles = () => {
     useEffect(() => {
         fetchProfesseurs(id);
         if (token) {
-            setUserAuth(true);   
+            setUserAuth(true);
         }
         if (!token) {
             navigate("/login");
@@ -155,10 +170,33 @@ const detiles = () => {
         setEditId(id);
         setIsFormVisible(true);
     };
-     const handleContact = () => { 
-     navigate(`/contactTutors/${tutor}`)
+    const handleContact = () => {
+        navigate(`/contactTutors/${tutor}`)
     }
 
+    const fetchAnnonces = async (tutor) => {
+        setLoading(false)
+        axios.get(`${API_URL}/announcment/${tutor}`, {
+            headers: {
+                authorization: `bearer ${token}`,
+            }
+        })
+            .then(response => {
+                console.log('dDDDDDDDDD', response.data.announcement);
+                setAnnonces(response.data.announcement);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the announcements:", error);
+            });
+
+    }
+
+    const handleRegister = ($id_annonce) => {
+        if ($id_annonce) {
+          navigate(`/detileAnnonce/${$id_annonce}`);   
+        }
+       
+      };
 
     if (loading) {
         return (
@@ -168,220 +206,269 @@ const detiles = () => {
         );
     }
     return (
-        <MainLayout > 
-        <div className="container px-4 py-8 max-w-7xl mx-auto  ">
+        <MainLayout >
+            <div className="container px-4 py-8 max-w-7xl mx-auto  ">
 
-            <div className="flex flex-wrap gap-2 mb-6">
-                <span className="bg-red-100 text-red-500 px-3 py-1 rounded-full text-xs flex items-center">
-                    <i className="fa fa-plus mr-1"></i> {detile.nom_matiere}
-                </span>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{detile.biographie}</h1>
-
-                    <div className="mt-6">
-                        <h3 className="font-semibold mb-2">Lesson location</h3>
-                        <div className="inline-flex items-center bg-gray-100 rounded-full px-4 py-1">
-                            <i className="fa fa-laptop mr-2"></i>
-                            <span>{detile.location}</span>
-                        </div>
-                    </div>
-
-                    <div className="bg-blue-50 rounded-lg p-4 mt-6">
-                        <div className="flex items-center mb-2">
-                            <i className="fas fa-award text-blue-500 mr-2"></i>
-                            <span className="text-blue-600 font-medium">Ambassador</span>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                            One of our best tutors. Quality profile, experience in their field, verified qualifications and a great response time. Davayne will be happy to arrange your first Mathematics lesson.
-                        </p>
-                    </div>
-
-                    <div className="mt-6">
-                        <h2 className="text-xl font-bold mb-4">About {detile.prenom}</h2>
-                        <div className="space-y-4 text-gray-700">
-                            <p>{detile.experiences}</p>
-
-                        </div>
-                    </div>
+                <div className="flex flex-wrap gap-2 mb-6">
+                    <span className="bg-red-100 text-red-500 px-3 py-1 rounded-full text-xs flex items-center">
+                        <i className="fa fa-plus mr-1"></i> {detile.nom_matiere}
+                    </span>
                 </div>
 
-                <div className="w-full md:w-80">
-                    <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                        <div className="flex justify-end mb-2">
-                            <button className="text-gray-400">
-                                <i className="far fa-heart"></i>
-                            </button>
-                            <button className="text-gray-400 ml-2">
-                                <i className="fas fa-download"></i>
-                            </button>
-                        </div>
+                <div className="flex flex-col md:flex-row gap-8">
+                    <div className="flex-1">
+                        <h1 className="text-2xl md:text-3xl font-bold mb-2">{detile.biographie}</h1>
 
-                        <div className="flex flex-col items-center">
-                            <img src={`http://127.0.0.1:8000/storage/${detile.photo}`} alt={detile.prenom} className="w-24 h-24 rounded-full object-cover mb-2" />
-                            <h3 className="font-bold text-lg">{detile.prenom}</h3>
-                            <div className="flex items-center text-sm mb-4">
-                                <i className="fas fa-star text-yellow-400"></i>
-                                <span className="ml-1">{detile.total_ratings} ({detile.total_ratings} reviews)</span>
+                        <div className="mt-6">
+                            <h3 className="font-semibold mb-2">Lesson location</h3>
+                            <div className="inline-flex items-center bg-gray-100 rounded-full px-4 py-1">
+                                <i className="fa fa-laptop mr-2"></i>
+                                <span>{detile.location}</span>
                             </div>
                         </div>
 
-                        <div className="space-y-3 mb-6">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-gray-600">Hourly rate</span>
-                                <span className="font-bold">{detile.tarifHoraire}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                                <span className="text-gray-600">Number of students</span>
-                                <span className="font-bold">50+</span>
-                            </div>
-                        </div>
-
-                        <button onClick={handleContact} className="w-full bg-red-400 hover:bg-red-500 text-white py-3 rounded-md flex justify-center items-center mb-3">
-                            <i className="far fa-envelope mr-2"></i>
-                            Contact
-                        </button>
-
-                        <p className="text-center text-sm text-red-500">
-                            <i className="fas fa-gift mr-1"></i>
-                            1<sup>st</sup> lesson free
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="mt-12 bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-bold mb-6">About the lesson</h2>
-
-                <div className="flex flex-wrap gap-4 mb-6">
-                    <div className="inline-flex items-center bg-gray-100 rounded-full px-4 py-1 text-sm">
-                        <i className="fa fa-school mr-2 text-gray-500"></i>
-                        <span>{detile.location}</span>
-                    </div>
-                    <div className="inline-flex items-center bg-gray-100 rounded-full px-4 py-1 text-sm">
-                        <i className="fa fa-language mr-2 text-gray-500"></i>
-                        <span>{detile.nom_matiere}</span>
-                    </div>
-                </div>
-
-                <div className="space-y-4 text-gray-700">
-                    <p>Have trouble understanding your workload? There are a million tutors, and you have landed on the right page.</p>
-
-                </div>
-                <h1>Ma vidéo</h1>
-                <video width="640" height="360" controls>
-                    <source src={`http://127.0.0.1:8000/storage/videos/1744326299_video.mp4`} type="video/oog" />
-                </video>
-            </div>
-            <div className="mt-12">
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold flex items-center">
-                        Reviews
-                        <i className="far fa-question-circle ml-2 text-gray-400"></i>
-                    </h2>
-                    <div className="flex items-center">
-                        <i className="fas fa-star text-yellow-400 mr-1"></i>
-                        <span>{detile.total_ratings} ({detile.total_ratings} reviews)</span>
-                    </div>
-                </div>
-
-                <div className="space-y-4">
-                    {comment.map((item, index) => (
-
-                        <div
-                            key={index}
-                            className="bg-white rounded-2xl shadow-md p-4 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-                        >
+                        <div className="bg-blue-50 rounded-lg p-4 mt-6">
                             <div className="flex items-center mb-2">
-                                <div className="w-9 h-9 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                                    {detile.prenom.charAt(0).toUpperCase()}
-                                </div>
+                                <i className="fas fa-award text-blue-500 mr-2"></i>
+                                <span className="text-blue-600 font-medium">Ambassador</span>
+                            </div>
+                            <p className="text-sm text-gray-700">
+                                One of our best tutors. Quality profile, experience in their field, verified qualifications and a great response time. Davayne will be happy to arrange your first Mathematics lesson.
+                            </p>
+                        </div>
 
-                                <div>
-                                    <span className="font-semibold text-gray-800">{detile.prenom}</span>
-                                </div>
+                        <div className="mt-6">
+                            <h2 className="text-xl font-bold mb-4">About {detile.prenom}</h2>
+                            <div className="space-y-4 text-gray-700">
+                                <p>{detile.experiences}</p>
 
-                                <div className="ml-auto flex items-center space-x-3 text-sm">
-                                    <div className="flex items-center text-yellow-500">
-                                        <i className="fas fa-star mr-1"></i>
-                                        <span>{item.rating}  <span className="text-yellow-400">★</span></span>
-                                    </div>
-                                    {item.user_id === parsedToken.id && (
-                                        <>
-                                            <button
-                                                onClick={() => handleEdit(item.id)}
-                                                className="text-blue-500 hover:text-blue-700 transition"
-                                                title="Edit"
-                                            >
-                                                Edit
-                                            </button>
+                            </div>
+                        </div>
+                    </div>
 
-                                            <button
-                                                onClick={() => handleDelete(item.id)}
-                                                className="text-red-500 hover:text-red-700 transition"
-                                                title="Delete"
-                                            >
-                                                Delete
-                                            </button>
-                                        </>
-                                    )}
+                    <div className="w-full md:w-80">
+                        <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                            <div className="flex justify-end mb-2">
+                                <button className="text-gray-400">
+                                    <i className="far fa-heart"></i>
+                                </button>
+                                <button className="text-gray-400 ml-2">
+                                    <i className="fas fa-download"></i>
+                                </button>
+                            </div>
 
-
+                            <div className="flex flex-col items-center">
+                                <img src={`http://127.0.0.1:8000/storage/${detile.photo}`} alt={detile.prenom} className="w-24 h-24 rounded-full object-cover mb-2" />
+                                <h3 className="font-bold text-lg">{detile.prenom}</h3>
+                                <div className="flex items-center text-sm mb-4">
+                                    <i className="fas fa-star text-yellow-400"></i>
+                                    <span className="ml-1">{detile.total_ratings} ({detile.total_ratings} reviews)</span>
                                 </div>
                             </div>
 
-                            <p className="text-gray-700">{item.content}</p>
-                        </div>
-                    ))}
+                            <div className="space-y-3 mb-6">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-600">Hourly rate</span>
+                                    <span className="font-bold">{detile.tarifHoraire}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-600">Number of students</span>
+                                    <span className="font-bold">50+</span>
+                                </div>
+                            </div>
 
-                    <div className="text-center">
-                        <button
-                            onClick={openPopUp}
-                            className="text-sm flex items-center mx-auto bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                        >
-                            Add Review
-                            <i className="fas fa-plus ml-2"></i>
-                        </button>
+                            <button onClick={handleContact} className="w-full bg-red-400 hover:bg-red-500 text-white py-3 rounded-md flex justify-center items-center mb-3">
+                                <i className="far fa-envelope mr-2"></i>
+                                Contact
+                            </button>
+
+                            <p className="text-center text-sm text-red-500">
+                                <i className="fas fa-gift mr-1"></i>
+                                1<sup>st</sup> lesson free
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className=" py-10 px-4 mt-20">
+                    <div className="container mx-auto">
+                        {/* <h1 className="text-4xl font-bold text-center text-gray-800 mb-10 flex items-center justify-center gap-3">
+                            <FontAwesomeIcon icon={faCalendarAlt} className="text-red-500" />
+                            Upcoming Events
+                        </h1> */}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
+                            {annonces.map((item) => (
+                                <div key={item.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border">
+                                    <div className="h-52 overflow-hidden rounded-t-2xl">
+                                        <img
+                                            src={`http://127.0.0.1:8000/storage/${item.image}`}
+                                            alt={item.title}
+                                            className="object-cover h-full w-full transition-transform duration-300 hover:scale-105"
+                                        />
+                                    </div>
+
+                                    <div className="p-6">
+                                        <h2 className="text-2xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                                            <FontAwesomeIcon icon={faChalkboardTeacher} className="text-red-400" />
+                                            {item.title}
+                                        </h2>
+
+                                        <p className="text-gray-600 mb-4">{item.description.slice(0, 80)}...</p>
+
+                                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                                            <FontAwesomeIcon icon={faCalendarAlt} className="mr-2 text-red-400" />
+                                            {item.date}
+                                        </div>
+
+                                        <div className="flex items-center text-sm text-gray-600 mb-4">
+                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 text-red-400" />
+                                            {item.location}
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <FontAwesomeIcon icon={faBookOpen} className="mr-2 text-red-400" />
+                                                Subjects:
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                                    {item.subjects}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-5">
+                                            <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <FontAwesomeIcon icon={faUsers} className="mr-2 text-red-400" />
+                                                Levels:
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <span className="border border-red-300 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                                    {item.levels}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <button onClick={()=>handleRegister(item.id_annonce)} className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+                                            <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+                                            Register Now
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
 
-
-                {popUp && (
-
-                    <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 ">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                            <h3 className="text-lg font-semibold mb-4">Add Your Review</h3>
-                            <form onSubmit={handleAvis}>
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium mb-2">Rating</label>
-                                    <input value={rating} onChange={((e) => setRating(e.target.value))} type="number" min="1" max="5" className="w-full p-2 border border-gray-300 rounded" id="rating" />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block tiext-sm font-medium mb-2">Your Review</label>
-                                    <textarea value={content} onChange={((e) => setContent(e.target.value))} id="review" rows="4" className="w-full p-2 border border-gray-300 rounded"></textarea>
-                                </div>
-                                <div className="flex justify-between">
-                                    <button onClick={closePopUp} type="button" className="text-gray-500" >Cancel</button>
-                                    {isFormVisible && (
-                                        <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">Update</button>
-                                    )
-                                    }
-                                    {!isFormVisible && (
-                                        <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">submit</button>
-                                    )
-                                    }
-                                </div>
-                            </form>
+                <div className="mt-12">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-xl font-bold flex items-center">
+                            Reviews
+                            <i className="far fa-question-circle ml-2 text-gray-400"></i>
+                        </h2>
+                        <div className="flex items-center">
+                            <i className="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>{detile.total_ratings} ({detile.total_ratings} reviews)</span>
                         </div>
                     </div>
-                )}
-            </div>
 
-        </div>
-        </MainLayout> 
+                    <div className="space-y-4">
+                        {comment.map((item, index) => (
+
+                            <div
+                                key={index}
+                                className="bg-white rounded-2xl shadow-md p-4 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+                            >
+                                <div className="flex items-center mb-2">
+                                    <div className="w-9 h-9 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                        {detile.prenom.charAt(0).toUpperCase()}
+                                    </div>
+
+                                    <div>
+                                        <span className="font-semibold text-gray-800">{detile.prenom}</span>
+                                    </div>
+
+                                    <div className="ml-auto flex items-center space-x-3 text-sm">
+                                        <div className="flex items-center text-yellow-500">
+                                            <i className="fas fa-star mr-1"></i>
+                                            <span>{item.rating}  <span className="text-yellow-400">★</span></span>
+                                        </div>
+                                        {item.user_id === parsedToken.id && (
+                                            <>
+                                                <button
+                                                    onClick={() => handleEdit(item.id)}
+                                                    className="text-blue-500 hover:text-blue-700 transition"
+                                                    title="Edit"
+                                                >
+                                                    Edit
+                                                </button>
+
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="text-red-500 hover:text-red-700 transition"
+                                                    title="Delete"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
+
+
+                                    </div>
+                                </div>
+
+                                <p className="text-gray-700">{item.content}</p>
+                            </div>
+                        ))}
+
+                        <div className="text-center">
+                            <button
+                                onClick={openPopUp}
+                                className="text-sm flex items-center mx-auto bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                            >
+                                Add Review
+                                <i className="fas fa-plus ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                    {popUp && (
+
+                        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 ">
+                            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                                <h3 className="text-lg font-semibold mb-4">Add Your Review</h3>
+                                <form onSubmit={handleAvis}>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium mb-2">Rating</label>
+                                        <input value={rating} onChange={((e) => setRating(e.target.value))} type="number" min="1" max="5" className="w-full p-2 border border-gray-300 rounded" id="rating" />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block tiext-sm font-medium mb-2">Your Review</label>
+                                        <textarea value={content} onChange={((e) => setContent(e.target.value))} id="review" rows="4" className="w-full p-2 border border-gray-300 rounded"></textarea>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <button onClick={closePopUp} type="button" className="text-gray-500" >Cancel</button>
+                                        {isFormVisible && (
+                                            <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">Update</button>
+                                        )
+                                        }
+                                        {!isFormVisible && (
+                                            <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">submit</button>
+                                        )
+                                        }
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+            </div>
+        </MainLayout>
     );
 
 }
