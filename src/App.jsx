@@ -17,6 +17,7 @@ import Disponibilites from "./Professeur/Disponibilites"
 import Mespaiements from "./pages/Mespaiements"
 import Dashboard from "./Professeur/Dashboard";
 import Annonce from "./Professeur/Ajoutennonce"; 
+import ReservationEtudient from "./Professeur/Reservation"
 function App() {
   return (
     <Router>
@@ -47,6 +48,8 @@ function App() {
         <Route path="/Mespaiements" element={<Mespaiements />} />
         <Route path="/dashboard-tuteur" element={<Dashboard />} />
         <Route path="/dashboard-annonce" element={<Annonce />} />
+        <Route path="/dashboard-tuteur/reservation" element={<ReservationEtudient />} />
+
 
 
 
