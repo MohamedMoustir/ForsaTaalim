@@ -16,8 +16,9 @@ import Myfavorites from "./pages/Myfavorites"
 import Disponibilites from "./Professeur/Disponibilites"
 import Mespaiements from "./pages/Mespaiements"
 import Dashboard from "./Professeur/Dashboard";
-import Annonce from "./Professeur/Ajoutennonce"; 
-import ReservationEtudient from "./Professeur/Reservation"
+import Annonce from "./Professeur/Ajoutennonce";
+import ReservationEtudient from "./Professeur/Reservation";
+import DetileAnnonce from "./pages/DetilesAnnonce";
 function App() {
   return (
     <Router>
@@ -33,7 +34,7 @@ function App() {
 
       <Routes>
 
-      <Route path="/" element={<Index />} />
+        <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/RejisterPro" element={<RejisterPro />} />
         <Route path="/Rejister" element={<Rejister />} />
@@ -49,6 +50,7 @@ function App() {
         <Route path="/dashboard-tuteur" element={<Dashboard />} />
         <Route path="/dashboard-annonce" element={<Annonce />} />
         <Route path="/dashboard-tuteur/reservation" element={<ReservationEtudient />} />
+        <Route path="/detileAnnonce/:id" element={<DetileAnnonce />} />
 
 
 
