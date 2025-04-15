@@ -62,7 +62,7 @@ const ContactTutors = () => {
             });
 
             if (response) {
-                navigate(`/chat/${id}`)
+                navigate(`/reservation/${id}`)
             }
             const user = response.data.user;
 
