@@ -38,6 +38,9 @@ const DashboardNav = () => {
   function ReservationEtudiant() {
     navigate('/dashboard-tuteur/reservation')
   }
+  function Annoncement(){
+    navigate('/dashboard-annonce');
+  } 
   return (
     <>
       <div className="w-64 bg-[#0f172a] text-white flex flex-col">
@@ -68,10 +71,10 @@ const DashboardNav = () => {
               Communication
             </a>
 
-            {/* <a href="#" className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
+            <a onClick={Annoncement} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
               <FontAwesomeIcon icon={faDollarSign} className="h-5 w-5 mr-3" />
-              Revenue
-            </a> */}
+              Annoncement
+            </a>
 
             <a href="#" className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
               <FontAwesomeIcon icon={faCog} className="h-5 w-5 mr-3" />
