@@ -5,10 +5,15 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useParams } from 'react-router-dom';
 import '../assets/style/style.css';
 import axios from 'axios';
+import DashboardNav from '../components/dashboardNav';
+
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
+
+
+
 function MyFullCalendar({ title, amount }) {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState([]);
@@ -27,6 +32,9 @@ function MyFullCalendar({ title, amount }) {
   const [getDateReserve, setGetDateReserve] = useState(null);
   const [timeReservation, setTimeReservation] = useState(null);
   const [isOpenPoupupDate, setIsOpenPoupupDate] = useState(null);
+  const [durationOption, setDurationOptions] = useState([{ time: '1:00' }, { time: '2:00' }, { time: '3:00' }]);
+  const [time, setTime] = useState(null);
+
 
   // const [amount, setAmount] = useState(amount);
 
@@ -49,14 +57,14 @@ function MyFullCalendar({ title, amount }) {
         .then((response) => {
 
           let data = response.data;
+          console.log(data);
+
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
-            color: evant.time_reservation,
+            color: evant.colorEvant,
             id: evant.id
           }));
-
-
           setLoading(false)
           setEvents(newEvents);
         })
@@ -65,12 +73,15 @@ function MyFullCalendar({ title, amount }) {
     }
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let formData = new FormData();
     formData.append('date', evantDate);
     formData.append('colorEvant', eventColor);
     formData.append('titleEvant', titleEvante);
+
+
     try {
       axios.post(`${API_URL}/disponibilite`, formData, {
         headers: {
@@ -129,6 +140,7 @@ function MyFullCalendar({ title, amount }) {
     setId(info.event._def.publicId);
 
 
+
     // alert('Event clicked: ' + info.event.title);
   };
 
@@ -164,6 +176,8 @@ function MyFullCalendar({ title, amount }) {
     formData.append('date_reservation', getDateReserve);
     formData.append('time_reservation', timeReservation.replace(/ (AM|PM)/, ''));
     formData.append('amount', parseFloat(amount.replace(/[^\d.]/g, '')));
+    formData.append('dura', time);
+
     try {
       axios.post(`${API_URL}/Etudiant/pay/${id}`, formData, {
         headers: {
@@ -196,8 +210,9 @@ function MyFullCalendar({ title, amount }) {
   }
   return (
     <>
-      {isOpen && parsedToken.role === 'tuteur'&&(
+      {isOpen && parsedToken.role === 'tuteur' && (
         <>
+
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
 
             <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
@@ -277,6 +292,7 @@ function MyFullCalendar({ title, amount }) {
           </div>
         </>
       )}
+
       {eventClicks && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className=" p-6 rounded-lg shadow-lg w-96">
@@ -318,21 +334,24 @@ function MyFullCalendar({ title, amount }) {
         </div>
 
       )}
-      <div className="mb-8  cursor-pointer">
-        <FullCalendar
+      <div className='flex'>
+        {parsedToken.role == 'tuteur' && (
+          <DashboardNav></DashboardNav>
+        )}
+        <div className="w-full m-8  cursor-pointer">
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            events={events}
+            dateClick={handleDateClick}
+            eventClick={handleEventClick}
+            eventDidMount={(info) => {
+              info.el.style.backgroundColor = info.backgroundColor;
+            }}
+            displayEventTime={true}
 
-
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={events}
-          dateClick={handleDateClick}
-          eventClick={handleEventClick}
-          eventDidMount={(info) => {
-            info.el.style.backgroundColor = info.backgroundColor;
-          }}
-          displayEventTime={true}
-
-        />
+          />
+        </div>
       </div>
       {parsedToken.role === 'etudiant' && (
         <>
@@ -343,19 +362,34 @@ function MyFullCalendar({ title, amount }) {
                 key={index}
                 id={time.time}
                 onClick={(e) => setTimeReservation(e.target.id)}
-                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time.time ? 'bg-red-100' : 'bg-white'
+                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${time === time.time ? 'bg-red-100' : 'bg-white'
                   }`}
               >
                 {time.time}
               </button>
             ))}
 
+          </div>
+          <h3 className="font-medium text-gray-800 mt-8 mb-4">Choisissez une durée de réservation</h3>
+          <div className="grid grid-cols-2 gap-3 mb-8">
 
+
+            {durationOption.map((time, index) => (
+              <button
+                key={index}
+                id={time.time}
+                onClick={(e) => setTime(e.target.id)}
+                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 ${durationOption === time.time ? 'bg-red-100 shadow-md' : 'bg-white hover:bg-red-50'
+                  }`}
+              >
+                {time.time} hour
+              </button>
+            ))}
           </div>
           <form onSubmit={handleReservation} className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
             <div>
               <p className="font-medium">Selected session:</p>
-              <p className="text-gray-600">{getDateReserve} at {timeReservation}(1 hour)</p>
+              <p className="text-gray-600">{getDateReserve} at {timeReservation}({time} hour)</p>
             </div>
             <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
               Confirm
