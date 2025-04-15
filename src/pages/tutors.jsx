@@ -4,15 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from "../components/MainLayout.jsX";
 
-
-
-
 const API_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
 const parsedToken = JSON.parse(user);
-
-
 const Tutors = () => {
 
     const [isMenuHidden, setIsMenuHidden] = useState(true);
@@ -140,10 +135,12 @@ const Tutors = () => {
                         {
 
                             profiles.filter((item) => {
+
                                 if (search) {
                                     return search.toLowerCase() === '' ? item : item.prenom.toLowerCase().includes(search);
                                 }
                                 return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
+
                             }).map((prof, index) => {
                                 return (
                                     <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
