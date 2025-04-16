@@ -25,16 +25,12 @@ class AnnouncementRequests extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
+            'image'=>'required|file',
             'description' => 'required|string',
-            'subjects' => 'required|array',
-            'subjects.*' => 'string',
-            'levels' => 'required|array',
-            'levels.*' => 'string',
-            'price' => 'required|numeric',
+            'subjects' => 'required|string',
+            'levels' => 'required|string',
             'location' => 'required|string|max:255',
             'date' => 'required|date',
-            'is_active' => 'required|boolean',
-
         ];
     }
 
