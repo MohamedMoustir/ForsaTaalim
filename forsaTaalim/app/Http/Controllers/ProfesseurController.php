@@ -86,4 +86,13 @@ class ProfesseurController extends Controller
         $filter = $this->professeurService->filter($filter);
         return response()->json(['message' => 'filter ajoute successfully!', 'filter' => $filter], 200);
     }
+    public function generateActivityReport()
+    {
+        $generate = $this->professeurService->generateActivityReport();
+        return response()->json([
+            'total_users' => $generate['totalUsers'],
+            'total_Announcement' => $generate['totalAnnouncement'],
+            'total_reviews' => $generate['totalReviews'],
+        ]);
+    }
 }
