@@ -25,84 +25,66 @@ class ChatController extends Controller
         event(new Message($request->input('username'), $request->input('message'), $id));
         return [];
     }
-    // public function getMessage($id)
-    // {
-    //     $authId = Auth::id();
 
-    //     $chats = DB::table('chat_users as cha_u')
-    //         ->join('users as senders', 'cha_u.user_id1', '=', 'senders.id')
-    //         ->join('users as receivers', 'cha_u.user_id2', '=', 'receivers.id')
-    //         ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
-    //         ->select(
-    //             'ch.message',
-    //             'ch.created_at',
-    //             'senders.name as sender_name',
-    //             'senders.role as sender_role',
-    //             'receivers.name as receiver_name',
-    //             'receivers.role as receiver_role'
-    //         )
-    //         ->where(function ($query) use ($authId, $id) {
-    //             $query->where('cha_u.user_id1', $authId)
-    //                 ->where('cha_u.user_id2', $id);
-    //         })
-    //         ->orWhere(function ($query) use ($authId, $id) {
-    //             $query->where('cha_u.user_id1', $id)
-    //                 ->where('cha_u.user_id2', $authId);
-    //         })
-    //         ->orderBy('ch.created_at', 'asc')
-    //         ->get();
-
-    //     if ($chats->isEmpty()) {
-    //         return response()->json([
-    //             'error' => 'Aucune conversation trouvée.',
-    //         ], 404);
-    //     }
-
-
-    //     $conversation = $chats->map(function ($chat) {
-    //         return [
-    //             'message' => $chat->message,
-    //             'sender' => $chat->sender_role,
-    //             'receiver' => $chat->receiver_role,
-
-    //             'timestamp' => now()->format('h:i A')
-    //         ];
-    //     });
-
-
-    //     // 'message' => $data['message'],
-    //     // 'sender' => Auth::user()->role,
-    //     // 'timestamp' => now()->format('h:i A'),
-
-    //     return response()->json([
-    //         'message' => $conversation,
-    //         'sender' => $chats,
-    //     ]);
-
-    // }
-    public function getMessage($id)
+    public function getMessage($id, $chat_user_id)
     {
-        $authId = Auth::id(); 
-    
+        // // $authId = Auth::id(); 
+        // dd($chat_user_id);
+
         $chats = DB::table('chat_users as cha_u')
             ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
-            ->join('users as role1', 'cha_u.user_id1', '=', 'role1.id')
-            ->select('ch.message', 'role1.role as sender', 'ch.seen', 'ch.created_at')
+            ->join('users as sender', 'ch.sender_id', '=', 'sender.id')
+            ->select('ch.message', 'sender.name as sender_name', 'sender.id as sender_id', 'sender.role as sender', 'ch.created_at')
+            ->where('ch.chat_user_id', '=', $chat_user_id)
             ->get();
-    
-            $conversation = $chats->map(function ($chat) {
-                        return [
-                            'message' => $chat->message,
-                            'sender' => $chat->sender,
-                            'timestamp' => now()->format('h:i A')
-                        ];
-                    });
+        $conversation = $chats->map(function ($chat) {
+            return [
+                'message' => $chat->message,
+                'sender' => $chat->sender,
+                'timestamp' => now()->format('h:i A')
+            ];
+        });
+
         return response()->json([
-            'messages' => $chats,
+            'messages' => $conversation,
         ]);
     }
-    
-    
-    
+
+
+    public function getContacts()
+    {
+        $authId = Auth::id();
+        $contacts = DB::table('chat_users as cu')
+            ->join('chats as ch', 'cu.id','=','ch.chat_user_id')
+            ->where('user_id1', $authId)
+            ->orWhere('user_id2', $authId)
+            ->select('cu.id as chat_user_id', 'cu.user_id1', 'cu.user_id2', DB::raw('MIN(ch.message) as last_message'))
+            ->groupBy('cu.id', 'cu.user_id1', 'cu.user_id2')
+            ->orderByDesc(DB::raw('MAX(ch.created_at)'))
+            ->get();
+
+        $users = $contacts->map(function ($chat) use ($authId) {
+            $otherUserId = $chat->user_id1 == $authId ? $chat->user_id2 : $chat->user_id1;
+
+            $user = DB::table('users')->where('id', $otherUserId)->first();
+
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'role' => $user->role,
+                'chat_user_id' => $chat->chat_user_id,
+                'image' => $user->photo,
+                'message'=>$chat->last_message,
+                'created_at'=>now()->format('h:i A')
+                
+            ];
+        });
+
+        return response()->json([
+            'contacts' => $users,
+        ]);
+    }
+
+
 }
 
