@@ -27,6 +27,7 @@ class ReservationRequests extends FormRequest
             'amount' => 'required|numeric',
             'date_reservation'=> 'required|date',
             'time_reservation' => 'required|date_format:H:i',
+            'dura'=>'required'
         ];
     }
 
