@@ -11,6 +11,7 @@ class Announcement extends Model
 
     protected $fillable = [
         'title',
+        'image',
         'description',
         'subjects',
         'levels',
@@ -20,12 +21,7 @@ class Announcement extends Model
         'is_active',
         'professeur_id'
     ];
-    protected $casts = [
-        'subjects' => 'array',
-        'levels' => 'array',
-        'is_active' => 'boolean',
-        'created_at' => 'datetime',
-    ];
+ 
 
     public function updateAnnouncement(array $data): void
     {
