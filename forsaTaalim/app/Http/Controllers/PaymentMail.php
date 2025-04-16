@@ -11,11 +11,14 @@ class PaymentMail extends Controller
 {
     public function SendEmail(request $request)
     {
-        $status = $request->status; 
-        $message = $status === 'accepted'
-            ? ' Your payment was accepted successfully.'
-            : ' Your payment was refused. Please try again.';
+        $validte = $request->validate([
+            'status' => 'required',
+            'email' => 'required',
+        ]);
 
-        Mail::to($request->email)->send(new PaymentStatusMail($message));
+     
+
+        Mail::to($request->email)->send(new PaymentStatusMail( $request->status));
+        return response()->json(['message' => 'Email sent successfully']);
     }
 }
