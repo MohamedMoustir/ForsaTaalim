@@ -21,7 +21,7 @@ class AnnouncementController extends Controller
     {
         $validateData = $request->validated();
         $validateData['professeur_id'] = auth::id();
-        $announcement = $this->announcementService->create($validateData);
+        $announcement = $this->announcementService->create($validateData );
         return response()->json(['message' => 'Annonce créée avec succès', 'Announcment' => $announcement]);
     }
     public function Show()
@@ -39,11 +39,10 @@ class AnnouncementController extends Controller
     {
         $validateData = $request->validate([
             'title' => 'nullable|string|max:255',
+            'image'=>'nullable',
             'description' => 'nullable|string',
-            'subjects' => 'nullable|array',
-            'subjects.*' => 'string',
-            'levels' => 'nullable|array',
-            'levels.*' => 'string',
+            'subjects' => 'nullable|string',
+            'levels' => 'nullable|string',
             'price' => 'nullable|numeric',
             'location' => 'nullable|string|max:255',
             'date' => 'nullable|date',
@@ -56,5 +55,11 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->announcementService->delete($id);
         return response()->json(['message' => 'announcement deleted successfully!'], 200);
+    }
+    
+    public function getByIdAnnonce($id)
+    {
+        $announcement = $this->announcementService->getByIdAnnonce($id);
+        return response()->json(['message' => 'Announcement', 'announcement' => $announcement]);
     }
 }
