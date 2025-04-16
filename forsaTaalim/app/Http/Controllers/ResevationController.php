@@ -68,7 +68,7 @@ class ResevationController
     }
     public function reserverProfesseur()
     {
-        $reservation = $this->resevationServices->reserverProfesseur();
+        $reservation = $this->resevationServices->reserverProfesseur(Auth::id());
         return response()->json(['message' => 'reservation ajoute successfully!', 'reservation' => $reservation], 200);
        
     }
