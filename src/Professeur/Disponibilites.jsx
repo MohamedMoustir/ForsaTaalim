@@ -6,15 +6,13 @@ import { useParams } from 'react-router-dom';
 import '../assets/style/style.css';
 import axios from 'axios';
 import DashboardNav from '../components/dashboardNav';
-
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
+import { API_URL, getToken, getUser } from '../utils/config';
 
 
 
 function MyFullCalendar({ title, amount }) {
+  const token = getToken();
+  const user = getUser();
   const [events, setEvents] = useState([]);
   const [error, setError] = useState([]);
   const [isOpen, setIsOpen] = useState(false);

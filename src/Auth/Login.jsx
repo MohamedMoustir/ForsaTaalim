@@ -3,9 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from '../components/MainLayout.jsX';
-
-
-const API_URL = 'http://127.0.0.1:8000/api';
+import { API_URL, getToken, getUser } from '../utils/config';
 
 
 const Login = () => {
@@ -30,9 +28,10 @@ const Login = () => {
       const token = response.data.token;
       const user = response.data.user;
 
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+    
+    
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('user', JSON.stringify(user));
 
       setEmail('');
       setPassword('');

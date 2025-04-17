@@ -3,13 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from "../components/MainLayout.jsX";
+import { API_URL, getToken, getUser } from '../utils/config';
 
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
 const Tutors = () => {
-
+    const token = getToken();
+    const user = getUser();
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const [profiles, setprofiles] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);

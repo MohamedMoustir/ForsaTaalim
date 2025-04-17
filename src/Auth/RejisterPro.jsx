@@ -4,16 +4,14 @@ import axios from 'axios';
 import '../assets/js/index';
 import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
-
-
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
+import { API_URL, getToken, getUser } from '../utils/config';
+const token = getToken();
+const user = getUser();
 
 if (user) {
     try {
-        const parsedUser = JSON.parse(user);
-        console.log(parsedUser);
+        const parsedUser = JSON.parse(token);
+       
     } catch (error) {
         console.error('user:', error);
     }
@@ -21,7 +19,7 @@ if (user) {
     console.log('dont found localStorage');
 }
 
-console.log(token);
+
 
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
@@ -89,9 +87,9 @@ const RejisterPro = () => {
 
 
 
-        // if (!token) {
+        // if (!getToken) {
         //     navigate("/login");
-        // } else if (parsedToken && parsedToken.role === "tuteur") {
+        // } else if (parsedgetToken && parsedgetToken.role === "tuteur") {
         //     navigate("/login");
         // }
 

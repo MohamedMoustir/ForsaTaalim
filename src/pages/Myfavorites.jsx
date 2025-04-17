@@ -3,10 +3,7 @@ import React, { useEffect, useState } from 'react';
 import MainLayout from '../components/MainLayout.jsX';
 import gift from '../../../forsaTaalim/resources/image/gift.png';
 import { useNavigate } from 'react-router-dom';
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
+import { API_URL, getToken, getUser } from '../utils/config';
 
 export default function Myfavorites() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -14,6 +11,9 @@ export default function Myfavorites() {
     const [favorite, setFavorite] = useState();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const token = getToken();
+    const user = getUser();
+    
     const fetchFavorites = () => {
         fetch(`${API_URL}/favorites`, {
             method: 'GET',

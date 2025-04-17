@@ -2,15 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
 import { useNavigate } from "react-router-dom";
-const token = localStorage.getItem('token');
+import { API_URL, getToken, getUser } from '../utils/config';
 const Nav = () => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate()
-    //   if (!token) {
-    //     navigate('/login')
-        
-    //   }
+    const token = getToken();
+    const user = getUser();
+
     function BecomeTutor() {
         navigate('/Rejister')
     }
@@ -31,8 +30,8 @@ const Nav = () => {
     }
     const hanleLogout = async (e) => {
         try {
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("user");
+            sessionStorage.removeItem("token");
             const response = await axios.post(`${API_URL}/auth/logout`, {
                 headers: {
                     Authorization: `Bearer ${token}`,

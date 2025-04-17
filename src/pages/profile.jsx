@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import NavEtudiant from "../components/NavEtudiant"
-const API_URL = 'http://127.0.0.1:8000/api';
-const user = localStorage.getItem('user');
-const token = localStorage.getItem('token');
+import NavEtudiant from "../components/NavEtudiant";
+import { API_URL, getToken, getUser } from '../utils/config';
+
 function Content() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [userData, setUserData] = useState([]);
@@ -17,7 +16,8 @@ function Content() {
     const [password, setPasswordConfirmation] = useState("");
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
-
+    const token = getToken();
+    const user = getUser();
     useEffect(() => {
 
 
@@ -101,9 +101,6 @@ function Content() {
             }
 
             const updatedData = await response.json();
-
-
-
 
             const user = localStorage.getItem('user');
             if (user) {

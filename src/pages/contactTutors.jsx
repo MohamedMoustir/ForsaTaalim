@@ -3,15 +3,9 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from '../components/MainLayout.jsX';
-
-
-
-
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
-
+import { API_URL, getToken, getUser } from '../utils/config';
+const token = getToken();
+const user = getUser();
 
 const ContactTutors = () => {
     const { id } = useParams()

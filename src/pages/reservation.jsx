@@ -3,15 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MainLayout from '../components/MainLayout.jsX';
 import Disponibilites from "../Professeur/Disponibilites"
 import axios from 'axios';
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
+import { API_URL, getToken, getUser } from '../utils/config';
 
 function ReservationTutors() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [detile, setDetilesprofiles] = useState([]);
-
+    const token = getToken();
+    const user = getUser();
     const { id } = useParams()
 
     const fetchProfesseurs = async (tutor_id) => {
@@ -29,9 +27,10 @@ function ReservationTutors() {
         fetchProfesseurs(id)
     }, [id])
 
+ 
     return (
         <>
- 
+
             <MainLayout ></MainLayout>
             <div className="min-h-screen w-[70%] relative left-[15%]">
 
@@ -83,12 +82,15 @@ function ReservationTutors() {
                                 <span>Verified credentials</span>
                             </div>
                         </div>
+                     
+
+
                     </div>
 
                     <div className="md:col-span-2 h-42">
                         <Disponibilites title="Accueil" amount={detile.tarifHoraire}></Disponibilites>
-                     
-                       
+
+
                     </div>
                 </div>
             </div>

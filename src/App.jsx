@@ -18,7 +18,7 @@ import Mespaiements from "./pages/Mespaiements"
 import Dashboard from "./Professeur/Dashboard";
 import Annonce from "./Professeur/Ajoutennonce";
 import ReservationEtudient from "./Professeur/Reservation";
-import DetileAnnonce from "./pages/DetilesAnnonce";
+import DetileAnnonce from "./pages/DetilesAnnonce.jsx";
 function App() {
   return (
     <Router>
@@ -38,7 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/RejisterPro" element={<RejisterPro />} />
         <Route path="/Rejister" element={<Rejister />} />
-        <Route path="/Chat/:id" element={<Chat />} />
+        <Route path="/Chat/:id/room/:chat_user_id" element={<Chat />} />
         <Route path="/tutors" element={<Tutors />} />
         <Route path="/detilesTutor/:id" element={<DetilesTutor />} />
         <Route path="/contactTutors/:id" element={<ContactTutors />} />

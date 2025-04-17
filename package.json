@@ -25,6 +25,7 @@
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.1",
     "date-fns": "^4.1.0",
+    "js-cookie": "^3.0.5",
     "lodash.debounce": "^4.0.8",
     "pusher-js": "^8.4.0",
     "react": "^19.0.0",

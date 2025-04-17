@@ -18,11 +18,9 @@ import {
     faChalkboardTeacher
 } from '@fortawesome/free-solid-svg-icons';
 
-const API_URL = 'http://127.0.0.1:8000/api';
-const token = localStorage.getItem('token');
-const user = localStorage.getItem('user');
-const parsedToken = JSON.parse(user);
-
+import { API_URL, getToken, getUser } from '../utils/config';
+const token = getToken();
+const user = getUser();
 const detiles = () => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [detile, setDetilesprofiles] = useState([]);
@@ -193,10 +191,10 @@ const detiles = () => {
 
     const handleRegister = ($id_annonce) => {
         if ($id_annonce) {
-          navigate(`/detileAnnonce/${$id_annonce}`);   
+            navigate(`/detileAnnonce/${$id_annonce}`);
         }
-       
-      };
+
+    };
 
     if (loading) {
         return (
@@ -350,7 +348,7 @@ const detiles = () => {
                                             </div>
                                         </div>
 
-                                        <button onClick={()=>handleRegister(item.id_annonce)} className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+                                        <button onClick={() => handleRegister(item.id_annonce)} className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
                                             <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
                                             Register Now
                                         </button>

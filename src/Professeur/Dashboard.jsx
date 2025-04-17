@@ -64,7 +64,7 @@ const Dashboard = () => {
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-3">
                     <FontAwesomeIcon icon={faUsers} />
                   </div>
-                  <span className="text-gray-600">New Users</span>
+                  <span className="text-gray-600">Total Users</span>
                   <span className="ml-auto text-green-500 flex items-center">
                     <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
                     12.2%
