@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../assets/js/index';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/MainLayout.jsX';
 import { API_URL, getToken, getUser } from '../utils/config';
+import { Sessions } from 'openai/resources/beta/realtime/sessions.mjs';
+import Alert from '../components/Alert';
 
 const Rejister = () => {
   const [email, setEmail] = useState('');
@@ -20,8 +22,11 @@ const Rejister = () => {
   const [niveau, setNiveau] = useState('');
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
+  const token = getToken();
+  const user = getUser();
+  const [showAlert, setShowAlert] = useState(false);
 
-  let data ;
+  let data;
   const handleRejister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -37,7 +42,7 @@ const Rejister = () => {
       formData.append("photo", photo);
       formData.append("role", role);
 
-       data = new FormData();
+      data = new FormData();
       data.append("objectifs", objectif);
       data.append("ecole", ecole);
       data.append("niveau", niveau);
@@ -50,12 +55,8 @@ const Rejister = () => {
 
       const user = response.data.user;
       const token = response.data.user.original.token;
-
-
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
-
-
+      sessionStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('token', token);
 
       if (role == 'etudiant') {
         const response = await axios.post(`${API_URL}/Etudiant`, data, {
@@ -71,21 +72,33 @@ const Rejister = () => {
         navigate('/RejisterPro');
       }
       if (role == 'etudiant') {
-        navigate('/login');
+        navigate('/');
       }
-   
       setLoading(false)
-
+      sessionStorage.setItem('alertShown', 'true');
     } catch (err) {
-      setError('erorr login');
-        setLoading(false)
+
+      setLoading(false)
       console.error(err);
     }
 
   };
+  
+  // useEffect(() => {
+  //   const alertState = sessionStorage.getItem('alertShown');
+  //   if (alertState) {
+  //     setShowAlert(true);
+  //   }
+  //   setTimeout(() => {
+  //     sessionStorage.removeItem('alertShown')
+  //     setShowAlert(false);
+  //   }, 3000)
+  //   if (!showAlert) {
+  //     sessionStorage.removeItem('alertShown')
+  //   }
+  // }, [showAlert]);
 
-
-  if (loading  && !data) {
+  if (loading && !data) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
@@ -93,20 +106,19 @@ const Rejister = () => {
     );
   }
   return (
+
     <div className="bg-white">
       <div className="flex min-h-screen">
         <div className="hidden lg:block lg:w-1/2">
-    
           <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          alt="Student studying at desk"
+            alt="Student studying at desk"
             className="h-full w-full object-cover"
           />
         </div>
-
         <div className="w-full lg:w-1/2 flex flex-col p-8 bg-gray-50 shadow-lg rounded-lg">
-          <MainLayout > 
-        </MainLayout > 
-                 
+          <MainLayout >
+          </MainLayout >
+
           <div className="flex-grow flex items-center justify-center py-8">
             <div className="w-full max-w-lg">
               <h1 className="text-2xl font-bold mb-8 text-center lg:text-left">Create Your Account</h1>

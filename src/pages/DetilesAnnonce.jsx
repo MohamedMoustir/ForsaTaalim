@@ -28,8 +28,7 @@ const DetilesAnnonce = () => {
     const [annonces, setAnnonce] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
-
-
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -39,8 +38,10 @@ const DetilesAnnonce = () => {
             }
         })
             .then(response => {
+                setLoading(false)
                 console.log(response.data.announcement);
                 setAnnonce(response.data.announcement);
+             
             })
             .catch(error => {
                 console.error("There was an error fetching the announcements:", error);
@@ -51,6 +52,14 @@ const DetilesAnnonce = () => {
         
        
           navigate(`/reservation/${id_touter}`);  
+    }
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+            </div>
+        );
     }
     return (
         <>

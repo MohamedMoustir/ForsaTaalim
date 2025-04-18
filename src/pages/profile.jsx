@@ -23,7 +23,7 @@ function Content() {
 
         if (user) {
             try {
-                const parsedUser = JSON.parse(user);
+               
                 fetchUserData(token);
             } catch (error) {
                 console.error("Error parsing user data from localStorage:", error);
@@ -104,8 +104,8 @@ function Content() {
 
             const user = localStorage.getItem('user');
             if (user) {
-                const parsedUser = JSON.parse(user);
-                const updatedUser = { ...parsedUser, ...formData };
+              
+                const updatedUser = { ...user, ...formData };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
             }
 

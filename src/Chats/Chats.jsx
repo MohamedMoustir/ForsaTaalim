@@ -19,9 +19,10 @@ function App() {
   const [receive_id, setreceive_id] = useState(id);
   const [chat_user, setChat_user] = useState(chat_user_id);
   const [image, setImage] = useState(null);
+  const token = getToken();
+  const user = getUser();
 
-
-  // const [sender, setSender] = useState(parsedToken.role);
+  // const [sender, setSender] = useState(user.role);
   const navigate = useNavigate();
 
   const handleContacts = () => {
@@ -106,11 +107,11 @@ function App() {
   }
   return (
     <>
-      {parsedToken.role == 'etudiant' && (
+      {user.role == 'etudiant' && (
         <NavEtudiant />
       )}
       <div className="bg-gray-100 h-screen flex">
-        {parsedToken.role == 'tuteur' && (
+        {user.role == 'tuteur' && (
           <DashboardNav />
         )}
 

@@ -36,9 +36,9 @@ const Tutors = () => {
         if (token) {
             setUserAuth(true);
         }
-        if (!parsedToken.role) {
+        if (!user.role) {
             // navigate("/login");
-        } else if (parsedToken && parsedToken.role === "tuteur") {
+        } else if (user && user.role === "tuteur") {
             navigate("/login");
         }
     }, [token, user, navigate, currentPage]);
@@ -56,7 +56,7 @@ const Tutors = () => {
         fetch(`${API_URL}/favorites`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({

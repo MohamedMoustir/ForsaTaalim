@@ -6,11 +6,14 @@ import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
 
 function ReservationTutors() {
+    
     const [menuOpen, setMenuOpen] = useState(false);
     const [detile, setDetilesprofiles] = useState([]);
     const token = getToken();
     const user = getUser();
     const { id } = useParams()
+    const [loading, setLoading] = useState(true);
+
 
     const fetchProfesseurs = async (tutor_id) => {
         axios.get(`${API_URL}/Professeur/${tutor_id}`, {
@@ -21,13 +24,20 @@ function ReservationTutors() {
         })
             .then((response) => {
                 setDetilesprofiles(response.data.Profile);
+                setLoading(false)
             })
     };
     useEffect(() => {
         fetchProfesseurs(id)
     }, [id])
 
- 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+            </div>
+        );
+    }
     return (
         <>
 

@@ -3,16 +3,22 @@ import React, { useEffect, useRef, useState } from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
 import image from '../../../forsaTaalim/resources/image/image 15.png';
+import image1 from '../../../forsaTaalim/resources/image/about-img-3.png.png';
+import image2 from '../../../forsaTaalim/resources/image/about-img-6.png.png';
+
+
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import MainLayout from "../components/MainLayout.jsX";
 import { API_URL, getToken, getUser } from '../utils/config';
+import Alert from "../components/Alert";
 const token = getToken();
 const user = getUser();
 
 const index = () => {
     const [profiles, setprofiles] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         axios.get(`${API_URL}/Professeur`, {
@@ -23,7 +29,6 @@ const index = () => {
         })
             .then((response) => {
                 setLoading(false)
-
                 setprofiles(response.data.AllProfile.data);
             })
            
@@ -34,15 +39,38 @@ const index = () => {
     const handleClickProfessor = (id) => {
         navigate(`/detilesTutor/${id}`);
     };
-    if (loading ) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
+    // if (loading ) {
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
+    //         </div>
+    //     );
+    // }
+    
+  useEffect(() => {
+    const alertState = sessionStorage.getItem('alertShown');
+    if (alertState) {
+      setShowAlert(true);
     }
+    setTimeout(()=>{
+        sessionStorage.removeItem('alertShown')
+        setShowAlert(false);
+    },3000)
+    if (!showAlert) {
+        sessionStorage.removeItem('alertShown')
+    }
+  }, [showAlert]);
+
     return (
         <MainLayout>
+                {showAlert && (
+            <Alert
+              type="success"
+              title="Login Successful"
+              message="You can now log in and start using all the features."
+              onClose={() => setShowAlert(false)}
+            />
+          )}
             <div className="bg-[#FFF1F1]">
 
                 <section className="container mx-auto mt-24 lg:mt-0 px-8  py-12 ">
@@ -359,11 +387,11 @@ const index = () => {
                                 <div className="w-full lg:w-1/2 pr-8">
                                     <div className="flex gap-4">
                                         <div className="rounded-3xl overflow-hidden">
-                                            <img src="../image/about-img-3.png.png" alt="Students"
+                                            <img src={image1} alt="Students"
                                                 className="w-full h-full object-cover cursor-pointer " />
                                         </div>
                                         <div className="absolute  rounded-3xl overflow-hidden ml-16 -mt-10 left-[110px]">
-                                            <img src="../image/about-img-6.png.png" alt="More students"
+                                            <img src={image2} alt="More students"
                                                 className="w-full h-full object-cover cursor-pointer " />
                                         </div>
                                     </div>

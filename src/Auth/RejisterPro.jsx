@@ -11,15 +11,12 @@ const user = getUser();
 if (user) {
     try {
         const parsedUser = JSON.parse(token);
-       
     } catch (error) {
         console.error('user:', error);
     }
 } else {
     console.log('dont found localStorage');
 }
-
-
 
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
@@ -33,11 +30,8 @@ const RejisterPro = () => {
     const [video, setVideo] = useState('');
     const navigate = useNavigate();
 
-
-
     const handleRejisterProfesseur = async (e) => {
         e.preventDefault();
-
         try {
             const formData = new FormData();
             formData.append("categorieMatiere_id", subject);
@@ -67,8 +61,6 @@ const RejisterPro = () => {
             console.error(error);
         }
     };
-
-    console.log(token);
 
     useEffect(() => {
 

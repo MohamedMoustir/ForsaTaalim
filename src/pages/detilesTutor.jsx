@@ -60,6 +60,8 @@ const detiles = () => {
             }
         })
             .then((response) => {
+                console.log(response.data.comments);
+                
                 setComment(response.data.comments);
 
             })
@@ -124,7 +126,7 @@ const detiles = () => {
         }
         if (!token) {
             navigate("/login");
-        } else if (parsedToken && parsedToken.role === "tuteur") {
+        } else if (user && user.role === "tuteur") {
             navigate("/login");
         }
     }, [id]);
@@ -173,7 +175,7 @@ const detiles = () => {
     }
 
     const fetchAnnonces = async (tutor) => {
-        setLoading(false)
+      
         axios.get(`${API_URL}/announcment/${tutor}`, {
             headers: {
                 authorization: `bearer ${token}`,
@@ -182,6 +184,7 @@ const detiles = () => {
             .then(response => {
                 console.log('dDDDDDDDDD', response.data.announcement);
                 setAnnonces(response.data.announcement);
+                setLoading(false)
             })
             .catch(error => {
                 console.error("There was an error fetching the announcements:", error);
@@ -290,180 +293,226 @@ const detiles = () => {
 
                 <div className=" py-10 px-4 mt-20">
                     <div className="container mx-auto">
-                        {/* <h1 className="text-4xl font-bold text-center text-gray-800 mb-10 flex items-center justify-center gap-3">
-                            <FontAwesomeIcon icon={faCalendarAlt} className="text-red-500" />
-                            Upcoming Events
-                        </h1> */}
-
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
                             {annonces.map((item) => (
-                                <div key={item.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border">
-                                    <div className="h-52 overflow-hidden rounded-t-2xl">
-                                        <img
-                                            src={`http://127.0.0.1:8000/storage/${item.image}`}
-                                            alt={item.title}
-                                            className="object-cover h-full w-full transition-transform duration-300 hover:scale-105"
-                                        />
-                                    </div>
-
-                                    <div className="p-6">
-                                        <h2 className="text-2xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faChalkboardTeacher} className="text-red-400" />
-                                            {item.title}
-                                        </h2>
-
-                                        <p className="text-gray-600 mb-4">{item.description.slice(0, 80)}...</p>
-
-                                        <div className="flex items-center text-sm text-gray-600 mb-2">
-                                            <FontAwesomeIcon icon={faCalendarAlt} className="mr-2 text-red-400" />
-                                            {item.date}
-                                        </div>
-
-                                        <div className="flex items-center text-sm text-gray-600 mb-4">
-                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 text-red-400" />
-                                            {item.location}
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                                                <FontAwesomeIcon icon={faBookOpen} className="mr-2 text-red-400" />
-                                                Subjects:
-                                            </div>
-                                            <div className="flex flex-wrap gap-2">
-                                                <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                                    {item.subjects}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="mb-5">
-                                            <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                                                <FontAwesomeIcon icon={faUsers} className="mr-2 text-red-400" />
-                                                Levels:
-                                            </div>
-                                            <div className="flex flex-wrap gap-2">
-                                                <span className="border border-red-300 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                                    {item.levels}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <button onClick={() => handleRegister(item.id_annonce)} className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
-                                            <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
-                                            Register Now
-                                        </button>
-                                    </div>
-                                </div>
+                             <div key={item.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 border flex flex-col h-full">
+                             <div className="h-52 overflow-hidden rounded-t-2xl">
+                               <img
+                                 src={`http://127.0.0.1:8000/storage/${item.image}`}
+                                 alt={item.title}
+                                 className="object-cover h-full w-full transition-transform duration-300 hover:scale-105"
+                               />
+                             </div>
+                           
+                             <div className="p-6 flex flex-col flex-grow">
+                               <h2 className="text-2xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                                 <FontAwesomeIcon icon={faChalkboardTeacher} className="text-red-400" />
+                                 {item.title}
+                               </h2>
+                           
+                               <p className="text-gray-600 mb-4">{item.description.slice(0, 80)}...</p>
+                           
+                               <div className="flex items-center text-sm text-gray-600 mb-2">
+                                 <FontAwesomeIcon icon={faCalendarAlt} className="mr-2 text-red-400" />
+                                 {item.date}
+                               </div>
+                           
+                               <div className="flex items-center text-sm text-gray-600 mb-4">
+                                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 text-red-400" />
+                                 {item.location}
+                               </div>
+                           
+                               <div className="mb-3">
+                                 <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                   <FontAwesomeIcon icon={faBookOpen} className="mr-2 text-red-400" />
+                                   Subjects:
+                                 </div>
+                                 <div className="flex flex-wrap gap-2">
+                                   <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                     {item.subjects}
+                                   </span>
+                                 </div>
+                               </div>
+                           
+                               <div className="mb-5">
+                                 <div className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                   <FontAwesomeIcon icon={faUsers} className="mr-2 text-red-400" />
+                                   Levels:
+                                 </div>
+                                 <div className="flex flex-wrap gap-2">
+                                   <span className="border border-red-300 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                     {item.levels}
+                                   </span>
+                                 </div>
+                               </div>
+                           
+                               {/* bouton tjrs ltaht */}
+                               <div className="mt-auto">
+                                 <button
+                                   onClick={() => handleRegister(item.id_annonce)}
+                                   className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+                                 >
+                                   <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+                                   Register Now
+                                 </button>
+                               </div>
+                             </div>
+                           </div>
+                           
                             ))}
                         </div>
                     </div>
                 </div>
 
 
-                <div className="mt-12">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-bold flex items-center">
-                            Reviews
-                            <i className="far fa-question-circle ml-2 text-gray-400"></i>
-                        </h2>
-                        <div className="flex items-center">
-                            <i className="fas fa-star text-yellow-400 mr-1"></i>
-                            <span>{detile.total_ratings} ({detile.total_ratings} reviews)</span>
-                        </div>
-                    </div>
+             <div className="mt-12">
+  <div className="flex items-center justify-between mb-6">
+    <h2 className="text-2xl font-bold flex items-center text-gray-800">
+      Reviews
+      <span className="ml-2 text-gray-400 hover:text-gray-600 cursor-help">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+        </svg>
+      </span>
+    </h2>
+    <div className="flex items-center bg-yellow-50 px-3 py-1 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+      <span className="ml-1 font-medium">{detile.total_ratings} <span className="text-gray-500 font-normal">({detile.total_ratings} reviews)</span></span>
+    </div>
+  </div>
 
-                    <div className="space-y-4">
-                        {comment.map((item, index) => (
+  <div className="space-y-5">
+    {comment.map((item, index) => (
+      <div
+        key={index}
+        className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow duration-300"
+      >
+        <div className="flex items-center mb-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-white font-bold mr-3 shadow-sm">
+            {item.prenom.charAt(0).toUpperCase()}
+          </div>
 
-                            <div
-                                key={index}
-                                className="bg-white rounded-2xl shadow-md p-4 border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-                            >
-                                <div className="flex items-center mb-2">
-                                    <div className="w-9 h-9 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                                        {detile.prenom.charAt(0).toUpperCase()}
-                                    </div>
+          <div>
+            <span className="font-semibold text-gray-800">{item.prenom}</span>
+            <div className="flex items-center text-yellow-500 text-sm mt-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg key={i} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${i < item.rating ? 'text-yellow-400' : 'text-gray-300'}`} viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+              <span className="ml-1">{item.rating}</span>
+            </div>
+          </div>
 
-                                    <div>
-                                        <span className="font-semibold text-gray-800">{detile.prenom}</span>
-                                    </div>
+          {item.user_id === user.id && (
+            <div className="ml-auto flex items-center space-x-2">
+              <button
+                onClick={() => handleEdit(item.id)}
+                className="text-blue-500 hover:text-blue-700 transition p-1 rounded-full hover:bg-blue-50"
+                title="Edit"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+              </button>
 
-                                    <div className="ml-auto flex items-center space-x-3 text-sm">
-                                        <div className="flex items-center text-yellow-500">
-                                            <i className="fas fa-star mr-1"></i>
-                                            <span>{item.rating}  <span className="text-yellow-400">★</span></span>
-                                        </div>
-                                        {item.user_id === parsedToken.id && (
-                                            <>
-                                                <button
-                                                    onClick={() => handleEdit(item.id)}
-                                                    className="text-blue-500 hover:text-blue-700 transition"
-                                                    title="Edit"
-                                                >
-                                                    Edit
-                                                </button>
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="text-red-500 hover:text-red-700 transition p-1 rounded-full hover:bg-red-50"
+                title="Delete"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
 
-                                                <button
-                                                    onClick={() => handleDelete(item.id)}
-                                                    className="text-red-500 hover:text-red-700 transition"
-                                                    title="Delete"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </>
-                                        )}
+        <p className="text-gray-700 leading-relaxed">{item.content}</p>
+      </div>
+    ))}
 
+    <div className="text-center mt-8">
+      <button
+        onClick={openPopUp}
+        className="flex items-center justify-center mx-auto bg-gradient-to-r from-red-300 to-red-400 text-white px-5 py-2.5 rounded-lg hover:from-red-500 hover:to-red-700 transition duration-300 shadow-sm font-medium"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+        </svg>
+        Add Review
+      </button>
+    </div>
+  </div>
 
-                                    </div>
-                                </div>
-
-                                <p className="text-gray-700">{item.content}</p>
-                            </div>
-                        ))}
-
-                        <div className="text-center">
-                            <button
-                                onClick={openPopUp}
-                                className="text-sm flex items-center mx-auto bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                            >
-                                Add Review
-                                <i className="fas fa-plus ml-2"></i>
-                            </button>
-                        </div>
-                    </div>
-
-
-
-                    {popUp && (
-
-                        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 ">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                                <h3 className="text-lg font-semibold mb-4">Add Your Review</h3>
-                                <form onSubmit={handleAvis}>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-2">Rating</label>
-                                        <input value={rating} onChange={((e) => setRating(e.target.value))} type="number" min="1" max="5" className="w-full p-2 border border-gray-300 rounded" id="rating" />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block tiext-sm font-medium mb-2">Your Review</label>
-                                        <textarea value={content} onChange={((e) => setContent(e.target.value))} id="review" rows="4" className="w-full p-2 border border-gray-300 rounded"></textarea>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <button onClick={closePopUp} type="button" className="text-gray-500" >Cancel</button>
-                                        {isFormVisible && (
-                                            <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">Update</button>
-                                        )
-                                        }
-                                        {!isFormVisible && (
-                                            <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition-colors">submit</button>
-                                        )
-                                        }
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-                </div>
+  {popUp && (
+    <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md transform transition-all duration-300">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold text-gray-800">Add Your Review</h3>
+          <button onClick={closePopUp} className="text-gray-400 hover:text-gray-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleAvis}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+            <div className="flex items-center space-x-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  className="focus:outline-none"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className={`h-8 w-8 ${parseInt(rating) >= star ? 'text-yellow-400' : 'text-gray-300'}`} viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </button>
+              ))}
+              <input 
+                type="hidden" 
+                value={rating} 
+                id="rating" 
+              />
+            </div>
+          </div>
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+            <textarea 
+              value={content} 
+              onChange={(e) => setContent(e.target.value)} 
+              id="review" 
+              rows="4" 
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+              placeholder="Share your experience..."
+            ></textarea>
+          </div>
+          <div className="flex justify-end space-x-3">
+            <button 
+              onClick={closePopUp} 
+              type="button" 
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              className={`px-4 py-2 rounded-lg text-white ${isFormVisible ? 'bg-blue-500 hover:bg-blue-500' : 'bg-red-500 hover:bg-red-500'} transition-colors`}
+            >
+              {isFormVisible ? 'Update' : 'Submit'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )}
+</div>
 
             </div>
         </MainLayout>

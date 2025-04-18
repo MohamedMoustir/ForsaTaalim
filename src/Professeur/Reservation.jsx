@@ -16,7 +16,7 @@ import {
     faDownload,
     faPlus,
     faBars,
-     
+
 } from '@fortawesome/free-solid-svg-icons';
 import DashboardNav from '../components/dashboardNav';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -31,6 +31,7 @@ const ReservationPage = () => {
     const navigate = useNavigate();
     const token = getToken();
     const user = getUser();
+
     useEffect(() => {
         const fetchReservations = async () => {
             try {
@@ -54,7 +55,8 @@ const ReservationPage = () => {
         fetchReservations();
 
     }, []);
-    const handleStatusUpdate = async (id, status,email) => {
+
+    const handleStatusUpdate = async (id, status, email, user_id) => {
         try {
             const formData = new FormData();
             formData.append("_method", 'PUT');
@@ -63,7 +65,8 @@ const ReservationPage = () => {
                     Authorization: `bearer ${token}`
                 }
             });
-            handleSendEmail(status,email);
+            handleSendEmail(status, email);
+            HandleSendNotification(user_id,status);
             if (response.data) {
                 setReservations(reservations.map(res =>
                     res.reservation_id === id ? { ...res, status: status } : res
@@ -101,25 +104,51 @@ const ReservationPage = () => {
         }
     };
 
-    const handleSendEmail = async (status ,email) => {
+    const handleSendEmail = async (status, email) => {
         try {
-              const EmailData = new FormData();
-        EmailData.append('email', email);
-        EmailData.append('status', status);
+            const EmailData = new FormData();
+            EmailData.append('email', email);
+            EmailData.append('status', status);
 
-        const sendEmail = await axios.post(`${API_URL}/sendEmail`, EmailData, {
-            headers: {
-                Authorization: `bearer ${token}`
-            }
-        });  
+            const sendEmail = await axios.post(`${API_URL}/sendEmail`, EmailData, {
+                headers: {
+                    Authorization: `bearer ${token}`
+                }
+            });
         } catch (err) {
             setError('Failed to send email');
-                setLoading(false);
-                console.error('Error fetching reservations:', err); 
+            setLoading(false);
+            console.error('Error fetching reservations:', err);
         }
-    
+
     }
 
+    const HandleSendNotification = async (user_id, status) => {
+        try {
+            const response = await axios.post(`${API_URL}/notification`, {
+                receiver_id: user_id,
+                title: `Paiement ${status}`,
+                content: `Le professeur ${user.prenom} a ${status === 'refuser' ? 'refuser' : 'accepté'} votre paiement. Merci de vérifier avec lui.`
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (response.status === 200) {
+                alert('Message envoyé avec succès');
+            }
+        } catch (error) {
+            console.error('Erreur lors de l\'envoi de la notification:', error);
+            alert("Échec de l'envoi de la notification");
+        }
+    };
+    
+    const handleChat = (id_user, chat_user_id) => {
+        navigate(`/chat/${id_user}/room/${chat_user_id}`);
+    }
+    
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -138,9 +167,7 @@ const ReservationPage = () => {
         );
     }
 
-    const handleChat = (id_user, chat_user_id) => {
-        navigate(`/chat/${id_user}/room/${chat_user_id}`);
-    }
+   
 
     return (
         <div className='flex'>
@@ -240,7 +267,7 @@ const ReservationPage = () => {
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center space-x-2">
                                                         <button
-                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.payer_email)}
+                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.payer_email, res.user_id)}
                                                             disabled={res.status === 'approved'}
                                                             className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium ${res.status === 'approved'
                                                                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -250,7 +277,7 @@ const ReservationPage = () => {
                                                             <div size={14} className="mr-1" /> Approve
                                                         </button>
                                                         <button
-                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.payer_email)}
+                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.payer_email, res.user_id)}
                                                             disabled={res.status === 'refuser'}
                                                             className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium ${res.status === 'refuser'
                                                                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'

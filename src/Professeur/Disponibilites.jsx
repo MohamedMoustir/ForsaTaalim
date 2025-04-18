@@ -101,7 +101,7 @@ function MyFullCalendar({ title, amount }) {
     }
   }
   const handleDateClick = (arg) => {
-    if (parsedToken.role === 'tuteur') {
+    if (user.role === 'tuteur') {
       setIsOpen(true)
       setEvanteDte(arg.dateStr);
     } else {
@@ -208,7 +208,7 @@ function MyFullCalendar({ title, amount }) {
   }
   return (
     <>
-      {isOpen && parsedToken.role === 'tuteur' && (
+      {isOpen && user.role === 'tuteur' && (
         <>
 
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
@@ -316,7 +316,7 @@ function MyFullCalendar({ title, amount }) {
                   >
                     Close
                   </button>
-                  {parsedToken.role === 'tuteur' && (
+                  {user.role === 'tuteur' && (
                     <button onClick={handleDelete}
                       className="px-3 py-1.5 text-sm bg-red-400 text-white rounded hover:bg-red-500"
                     >
@@ -333,7 +333,7 @@ function MyFullCalendar({ title, amount }) {
 
       )}
       <div className='flex'>
-        {parsedToken.role == 'tuteur' && (
+        {user.role == 'tuteur' && (
           <DashboardNav></DashboardNav>
         )}
         <div className="w-full m-8  cursor-pointer">
@@ -351,7 +351,7 @@ function MyFullCalendar({ title, amount }) {
           />
         </div>
       </div>
-      {parsedToken.role === 'etudiant' && (
+      {user.role === 'etudiant' && (
         <>
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">

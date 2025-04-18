@@ -43,9 +43,9 @@ const Mespaiements = () => {
         if (token) {
             setUserAuth(true);
         }
-        if (!parsedToken.role) {
+        if (!user.role) {
             // navigate("/login");
-        } else if (parsedToken && parsedToken.role === "tuteur") {
+        } else if (user && user.role === "tuteur") {
             navigate("/login");
         }
 
