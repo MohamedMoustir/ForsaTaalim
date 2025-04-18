@@ -1,6 +1,10 @@
 import React from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
+import image1 from '../../../forsaTaalim/resources/image/Frame 42731904.png';
+
+import image2 from '../../../forsaTaalim/resources/image/Frame 427319048.png';
+
 const Footer = () => {
   return (
     <footer className="bg-blue-900  text-white py-10">
@@ -37,7 +41,7 @@ const Footer = () => {
                         <ul className="space-y-4">
                             <li>
                                 <a href="#" className="flex items-center space-x-3">
-                                    <img src="../image/Frame 42731904.png" alt="Post Image"
+                                    <img src={image1} alt="Post Image"
                                         className="w-16 h-16 object-cover rounded" />
                                     <div>
                                         <p className="text-gray-300 font-semibold">Complete Blender Creator: Learn</p>
@@ -47,7 +51,7 @@ const Footer = () => {
                             </li>
                             <li>
                                 <a href="#" className="flex items-center space-x-3">
-                                    <img src="../image/Frame 427319048.png" alt="Post Image"
+                                    <img src={image2} alt="Post Image"
                                         className="w-16 h-16 object-cover rounded" />
                                     <div>
                                         <p className="text-gray-300 font-semibold">Traditional Elementary Education News</p>
