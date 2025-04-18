@@ -4,21 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from '../components/MainLayout.jsX';
 import { API_URL, getToken, getUser } from '../utils/config';
-
-
+import Alert from '../components/Alert';
 const Login = () => {
-
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  // const { login } = useUser();
   const navigate = useNavigate();
-
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleLogin = async (e) => {
-
-
     e.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -27,16 +22,12 @@ const Login = () => {
       });
       const token = response.data.token;
       const user = response.data.user;
-
-    
-    
       sessionStorage.setItem('token', token);
       sessionStorage.setItem('user', JSON.stringify(user));
 
       setEmail('');
       setPassword('');
-     
-      
+
       if (user) {
         if (user.role === 'etudiant') {
           navigate('/');
@@ -47,10 +38,12 @@ const Login = () => {
         } else {
           navigate('/login');
         }
+        sessionStorage.setItem('alertShown', 'true');
       }
 
 
     } catch (err) {
+      setShowAlert(true)
       setError('erorr login');
       console.error(err);
     }
@@ -60,34 +53,46 @@ const Login = () => {
     e.preventDefault();
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
-
-  // useEffect(() => {
-  //   // if (!token) {
-  //   //     navigate("/login");
-  //   // } else if (parsedToken && parsedToken.role === "tuteur") {
-  //   //     navigate("/login");
-  //   // }
-  //   // if (parsedToken) {
-  //   //   if (parsedToken.role == 'etudiant') {
-  //   //     navigate('/home');
-  //   //   } else {
-  //   //     navigate('/login');
-  //   //   }
-  //   // }
-
-  // }, [parsedToken, navigate,email]);
+  useEffect(() => {
+    const alertState = sessionStorage.getItem('alertShown');
+    if (alertState) {
+      setShowAlert(true);
+    }
+    setTimeout(() => {
+      sessionStorage.removeItem('alertShown')
+      setShowAlert(false);
+    }, 3000)
+    if (!showAlert) {
+      sessionStorage.removeItem('alertShown')
+    }
+  }, [showAlert]);
+useEffect(()=>{
+  const token = getToken();
+  if (token) {
+    navigate('/');
+  }
+},[])
 
   return (
 
     <div className="bg-white">
-      {error && <p>{error}</p>}
-
+    
       <div className="flex min-h-screen">
+        
         <div className="w-full lg:w-1/2 flex flex-col p-8">
-                <MainLayout > 
-                  </MainLayout > 
-          
+         <div>
+         </div>
 
+          {showAlert && (
+            <Alert
+              type="error"
+              title="Login Failed"
+              message="Email or password is incorrect."
+              onClose={() => setShowAlert(false)}
+            />
+          )}
+   <MainLayout >
+   </MainLayout >
           <div className="flex-grow flex items-center justify-center">
             <div className="w-full max-w-md">
               <h1 className="text-2xl font-bold mb-8 text-center lg:text-left">Sign in to your account</h1>
