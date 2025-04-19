@@ -4,6 +4,7 @@ import MainLayout from '../components/MainLayout.jsX';
 import Disponibilites from "../Professeur/Disponibilites"
 import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 function ReservationTutors() {
 
@@ -65,7 +66,7 @@ function ReservationTutors() {
                             <div className="flex text-yellow-400">
 
                             </div>
-                            <span className="ml-1">{detile.total_ratings} ({detile.total_ratings} reviews)</span>
+                            <span className="ml-1">{detile.average_rating.split(0,8)} ({detile.total_ratings} reviews)</span>
                         </div>
                         <div className="text-sm text-gray-500 mb-2">{detile.nom_matiere} Tutor</div>
                         <div className="inline-flex items-center bg-red-100 rounded-full px-3 py-1 mb-4">

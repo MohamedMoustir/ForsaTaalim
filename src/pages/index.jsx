@@ -6,12 +6,12 @@ import image from '../../../forsaTaalim/resources/image/image 15.png';
 import image1 from '../../../forsaTaalim/resources/image/about-img-3.png.png';
 import image2 from '../../../forsaTaalim/resources/image/about-img-6.png.png';
 
-
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import MainLayout from "../components/MainLayout.jsX";
 import { API_URL, getToken, getUser } from '../utils/config';
 import Alert from "../components/Alert";
+import Spinner from "../components/Spinner";
 const token = getToken();
 const user = getUser();
 
@@ -56,6 +56,10 @@ const index = () => {
   }, [showAlert]);
 
     return (
+        <>
+        {loading && (
+            <Spinner />
+        )}
         <MainLayout>
                 {showAlert && (
             <Alert
@@ -65,9 +69,7 @@ const index = () => {
               onClose={() => setShowAlert(false)}
             />
           )}
-           {loading && (
-                <Spinner />
-            )}
+          
             <div className="bg-[#FFF1F1]">
 
                 <section className="container mx-auto mt-24 lg:mt-0 px-8  py-12 ">
@@ -218,7 +220,7 @@ const index = () => {
                                                 <div className="flex items-center mb-3">
                                                     <div className="flex items-center">
                                                         <span className="text-yellow-400">★</span>
-                                                        <span className="ml-1">{prof.total_ratings}</span>
+                                                        <span className="ml-1">{prof.average_rating.split(0,8)}</span>
                                                         <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
                                                     </div>
                                                     <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
@@ -464,6 +466,7 @@ const index = () => {
                 </section>
             </div>
         </MainLayout>
+        </>
     );
 };
 export default index;

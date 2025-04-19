@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import MainLayout from "../components/MainLayout.jsX";
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 const Tutors = () => {
     const token = getToken();
@@ -88,7 +89,6 @@ const Tutors = () => {
                     <h1 class="text-2xl font-bold mb-8">
                         Trouvez le professeur idéal pour vous accompagner
                     </h1>
-
                     <div class="flex items-center text-sm text-gray-500 mb-6 ">
                         <ul id="" onClick={(e) => setFilterByLocation(e.target.id)}
                             class="border cursor-pointer   border-black hover:border-red-400 relative  lg:ml-10 mr-10 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
@@ -175,7 +175,7 @@ const Tutors = () => {
                                             <div className="flex items-center mb-3">
                                                 <div className="flex items-center">
                                                     <span className="text-yellow-400">★</span>
-                                                    <span className="ml-1">{prof.total_ratings}</span>
+                                                    <span className="ml-1">{prof.average_rating.split(0,8)}</span>
                                                     <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
                                                 </div>
                                                 <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>

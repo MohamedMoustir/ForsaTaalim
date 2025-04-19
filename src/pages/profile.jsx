@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavEtudiant from "../components/NavEtudiant";
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 function Content() {
     const [menuOpen, setMenuOpen] = useState(false);
