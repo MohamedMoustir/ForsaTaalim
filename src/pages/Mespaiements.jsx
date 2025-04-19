@@ -4,6 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import NavEtudiant from "../components/NavEtudiant"
 import { API_URL, getToken, getUser } from '../utils/config';
+import {
+    faEllipsisV,
+    faReceipt,
+    faTimes
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Mespaiements = () => {
     const token = getToken();
@@ -12,7 +18,7 @@ const Mespaiements = () => {
     const [Mespaiements, setMespaiements] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [itemsPerPage, setItemsPerPage] = useState(3);
     const [paymentlength, setpaymentlength] = useState(6);
     const [search, setSearch] = useState('');
     const [filterByLocation, setFilterByLocation] = useState('All');
@@ -39,7 +45,7 @@ const Mespaiements = () => {
     const navigate = useNavigate();
     useEffect(() => {
 
-        fetchPayments(currentPage);
+        // fetchPayments(currentPage);
         if (token) {
             setUserAuth(true);
         }
@@ -76,6 +82,27 @@ const Mespaiements = () => {
     //             alert('done');
     //         });
     // }
+    const handleStatusUpdate = async (id) => {
+        try {
+            const formData = new FormData();
+            formData.append("_method", 'Delete');
+            const response = await axios.post(`${API_URL}/Reservation/${id}`, formData, {
+                headers: {
+                    Authorization: `bearer ${token}`
+                }
+            });
+            const data = response.data.reservation.data;
+            if (response.data) {
+                setMespaiements(Mespaiements.map(res =>
+                    res.reservation_id === id ? { ...res, data } : res
+                ));
+            }
+
+        } catch (err) {
+            console.error('Error updating reservation status:', err);
+            alert('Failed to update reservation status');
+        }
+    };
 
     const lastItemsIndex = currentPage * itemsPerPage;
     const firstItemsIndex = lastItemsIndex - itemsPerPage
@@ -94,6 +121,7 @@ const Mespaiements = () => {
     }
     return (
         <>
+
             <NavEtudiant></NavEtudiant>
             <div className='m-24 mb-0'>
 
@@ -125,6 +153,8 @@ const Mespaiements = () => {
                         </div>
                         <div className="relative w-full md:w-auto">
                             <input
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                                 type="text"
                                 placeholder="Rechercher..."
                                 className="w-full md:w-64 bg-gray-50 border border-gray-300 text-gray-700 py-2 px-4 pl-10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
@@ -152,7 +182,7 @@ const Mespaiements = () => {
                                     if (search) {
                                         return search.toLowerCase() === ''
                                             ? item
-                                            : item.prenom.toLowerCase().includes(search.toLowerCase());
+                                            : item.professeur.toLowerCase().includes(search.toLowerCase());
                                     }
                                     return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
                                 })
@@ -176,23 +206,32 @@ const Mespaiements = () => {
                                                     <div className="text-xs text-gray-500">1 heure</div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    {prof.status == 'approved' && (
+                                                    {prof.status === 'approved' && (
                                                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                            Complété</span>
+                                                            Complété
+                                                        </span>
                                                     )}
-                                                    {prof.status == 'pending' && (
-                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                            Complété</span>
+                                                    {prof.status === 'pending' && (
+                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                            En attente
+                                                        </span>
                                                     )}
-                                                    {prof.status == 'refuser' && (
-                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                            Complété</span>
+                                                    {prof.status === 'refuser' && (
+                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                            Refusé
+                                                        </span>
                                                     )}
                                                 </td>
+
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button className="text-indigo-600 hover:text-indigo-900 mr-3"><i className="fas fa-receipt"></i></button>
-                                                    <button className="text-gray-600 hover:text-gray-900"><i className="fas fa-ellipsis-v"></i></button>
+                                                    <button onClick={() => navigate(`/pdf/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                                        <FontAwesomeIcon icon={faReceipt} />
+                                                    </button>
+                                                    <button onClick={() => handleStatusUpdate(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">
+                                                        <FontAwesomeIcon icon={faTimes} className='text-red-400' />
+                                                    </button>
                                                 </td>
+
                                             </tr>
                                         </tbody>
 
@@ -200,8 +239,55 @@ const Mespaiements = () => {
                                     ))
                             }
                         </table>
+
                     </div>
+
                 </div>
+                {
+                    <nav aria-label="Page navigation example">
+                        <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
+                            <li>
+                                <button
+                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                    className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                    <span className="sr-only">Previous</span>
+                                    <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
+                                    </svg>
+                                </button>
+                            </li>
+
+                            {pages.map((pageIndex) => (
+
+                                <li key={pageIndex}>
+                                    <button
+                                        onClick={() => setCurrentPage(pageIndex + 1)}
+                                        className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 ${currentPage === pageIndex + 1
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                                            }`}
+                                    >
+                                        {pageIndex + 1}
+                                    </button>
+                                </li>
+                            ))}
+
+                            <li>
+                                <button
+                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
+                                    className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                    <span className="sr-only">Next</span>
+                                    <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+
+                }
             </div>
 
         </>
