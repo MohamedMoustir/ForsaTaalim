@@ -66,7 +66,7 @@ const ReservationPage = () => {
                 }
             });
             handleSendEmail(status, email);
-            HandleSendNotification(user_id,status);
+            HandleSendNotification(user_id, status);
             if (response.data) {
                 setReservations(reservations.map(res =>
                     res.reservation_id === id ? { ...res, status: status } : res
@@ -135,7 +135,7 @@ const ReservationPage = () => {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             if (response.status === 200) {
                 alert('Message envoyé avec succès');
             }
@@ -144,11 +144,11 @@ const ReservationPage = () => {
             alert("Échec de l'envoi de la notification");
         }
     };
-    
+
     const handleChat = (id_user, chat_user_id) => {
         navigate(`/chat/${id_user}/room/${chat_user_id}`);
     }
-    
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -167,12 +167,14 @@ const ReservationPage = () => {
         );
     }
 
-   
+
 
     return (
         <div className='flex'>
 
-            <DashboardNav />
+            <div className="hidden lg:flex">
+                <DashboardNav />
+            </div>
 
 
             <div className="bg-neutral-50 min-h-screen py-10 px-4 w-full">

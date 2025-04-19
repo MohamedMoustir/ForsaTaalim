@@ -25,13 +25,15 @@ const profilesilePage = () => {
                 })
         };
         fetchprofilesesseurs();
-    }, [])
+    }, [user.id])
 
     
       
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
-          <DashboardNav />
+            <div className="hidden lg:flex">
+                <DashboardNav />
+            </div>
           <div className="p-4 lg:ml-4 flex-1">
             <div className="bg-white rounded-lg shadow-sm mb-8 p-6 flex flex-col md:flex-row items-start md:items-center justify-between">
               <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Mon profil professeur</h1>

@@ -62,7 +62,9 @@ const Dashboard = () => {
   return (
     <div className="bg-gray-100">
       <div className="flex h-screen">
-        <DashboardNav></DashboardNav>
+      <div className="hidden lg:flex">
+                <DashboardNav />
+            </div>
 
         <div className="flex-1 overflow-auto">
           <div className="p-8">

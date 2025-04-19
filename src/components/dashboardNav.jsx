@@ -72,10 +72,10 @@ const DashboardNav = () => {
 
         <div className="p-4 border-t border-gray-700 flex items-center justify-between">
           <div className="flex items-center">
-            <img
+            <img onClick={()=>navigate('/profilePage')}
               src={`http://127.0.0.1:8000/storage/${user.photo}`}
               alt="User"
-              className="h-8 w-8 rounded-full mr-3"
+              className="h-8 w-8 rounded-full mr-3 cursor-pointer"
             />
             <div>
               <p className="text-xs text-gray-400">Hi, { user.prenom}</p>

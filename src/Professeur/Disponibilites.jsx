@@ -98,7 +98,7 @@ function MyFullCalendar({ title, amount }) {
     }
   }
   const handleDateClick = (arg) => {
-    if ( user.role === 'tuteur') {
+    if (user.role === 'tuteur') {
       setIsOpen(true)
       setEvanteDte(arg.dateStr);
     } else {
@@ -193,7 +193,7 @@ function MyFullCalendar({ title, amount }) {
 
   return (
     <>
-      {isOpen &&  user.role === 'tuteur' && (
+      {isOpen && user.role === 'tuteur' && (
         <>
           {loading && <Spinner />}
 
@@ -319,8 +319,10 @@ function MyFullCalendar({ title, amount }) {
 
       )}
       <div className='flex'>
-        { user.role == 'tuteur' && (
-          <DashboardNav></DashboardNav>
+        {user.role == 'tuteur' && (
+          <div className="hidden lg:flex">
+            <DashboardNav />
+          </div>
         )}
         <div className="w-full m-8  cursor-pointer">
           <FullCalendar
@@ -337,7 +339,7 @@ function MyFullCalendar({ title, amount }) {
           />
         </div>
       </div>
-      { user.role  === 'etudiant' && (
+      {user.role === 'etudiant' && (
         <>
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">

@@ -139,7 +139,9 @@ console.log(annonces.length);
          
             <div className="bg-gray-100">
                 <div className="flex h-screen">
-                    <DashboardNav></DashboardNav>
+                <div className="hidden lg:flex">
+                <DashboardNav />
+            </div>
 
                     <div className="flex h-screen w-[100%]">
                         <div className="flex-1 overflow-y-auto">
