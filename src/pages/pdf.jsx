@@ -57,48 +57,51 @@ const MyDocument = ({ payment }) => {
   console.log(payment);
 
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text style={styles.title}>FORSATAALIM</Text>
-          <Text style={styles.subtitle}>Facture #INV-2025-{payment[0]?.id}</Text>
+    <>
+    
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <View style={styles.section}>
+            <Text style={styles.title}>FORSATAALIM</Text>
+            <Text style={styles.subtitle}>Facture #INV-2025-{payment[0]?.id}</Text>
 
-          <View style={{ marginTop: 20 }}>
-            <Text style={styles.bold}>Facturé à :</Text>
-            <Text>Nom du professeur : {payment[0]?.professeur}</Text>
-            <Text>Email de l'étudiant : {payment[0]?.payer_email}</Text>
-            <Text>Date réservation : {payment[0]?.date_reservation}</Text>
-          </View>
+            <View style={{ marginTop: 20 }}>
+              <Text style={styles.bold}>Facturé à :</Text>
+              <Text>Nom du professeur : {payment[0]?.professeur}</Text>
+              <Text>Email de l'étudiant : {payment[0]?.payer_email}</Text>
+              <Text>Date réservation : {payment[0]?.date_reservation}</Text>
+            </View>
 
-          <View style={{ marginTop: 30 }}>
-            <Text style={styles.bold}>Détails du service</Text>
-            <View style={styles.invoiceRow}>
-              <Text>Durée</Text>
-              <Text>{payment[0]?.dura.split(":")[0]}h</Text>
+            <View style={{ marginTop: 30 }}>
+              <Text style={styles.bold}>Détails du service</Text>
+              <View style={styles.invoiceRow}>
+                <Text>Durée</Text>
+                <Text>{payment[0]?.dura.split(":")[0]}h</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text>Statut du paiement</Text>
+                <Text>{payment[0]?.payment_status}</Text>
+              </View>
             </View>
-            <View style={styles.invoiceRow}>
-              <Text>Statut du paiement</Text>
-              <Text>{payment[0]?.payment_status}</Text>
-            </View>
-          </View>
 
-          <View style={{ marginTop: 30 }}>
-            <Text style={styles.bold}>Résumé</Text>
-            <View style={styles.invoiceRow}>
-              <Text>Montant :</Text>
-              <Text>{(
-                parseFloat(payment[0]?.amount) *
-                parseFloat(payment[0]?.dura?.split(":")[0] || 0)
-              ).toFixed(2)}{" "} {payment[0]?.currencym}</Text>
-            </View>
-            <View style={styles.invoiceRow}>
-              <Text>Status de réservation :</Text>
-              <Text>{payment[0]?.status}</Text>
+            <View style={{ marginTop: 30 }}>
+              <Text style={styles.bold}>Résumé</Text>
+              <View style={styles.invoiceRow}>
+                <Text>Montant :</Text>
+                <Text>{(
+                  parseFloat(payment[0]?.amount) *
+                  parseFloat(payment[0]?.dura?.split(":")[0] || 0)
+                ).toFixed(2)}{" "} {payment[0]?.currencym}</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text>Status de réservation :</Text>
+                <Text>{payment[0]?.status}</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </Page>
-    </Document>
+        </Page>
+      </Document>
+    </>
   );
 };
 
