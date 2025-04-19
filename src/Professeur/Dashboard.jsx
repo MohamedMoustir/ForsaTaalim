@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChartPie,
@@ -17,12 +17,52 @@ import {
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import DashboardNav from "../components/dashboardNav"
-
+import { API_URL, getToken, getUser } from '../utils/config';
+import { useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 const Dashboard = () => {
+  const [error, setError] = useState(null);
+  const [statistic, setStatistic] = useState([]);
+
+
+
+  useEffect(() => {
+    const handleStatistic = async () => {
+      try {
+        const token = getToken();
+        const response = await fetch(`${API_URL}/reports/tuteur`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+
+        const data = await response.json();
+        setStatistic(data)
+        console.log(data);
+      } catch (error) {
+        console.error('Erreur :', error.message);
+      }
+    };
+
+    handleStatistic();
+  }, []);
+  const userStats = [
+    { date: "total Users", total: statistic['totalUsers'] },
+    { date: "total Message", total: statistic['totalMessage'] },
+    { date: "total Comment", total: statistic['totalComment'] },
+    { date: "Payment Approved", total: statistic['PaymentApproved'] },
+    { date: "Payment Refuser", total: statistic['PaymentRefuser'] },
+  ];
   return (
     <div className="bg-gray-100">
       <div className="flex h-screen">
-       <DashboardNav></DashboardNav>
+        <DashboardNav></DashboardNav>
 
         <div className="flex-1 overflow-auto">
           <div className="p-8">
@@ -49,13 +89,13 @@ const Dashboard = () => {
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-3">
                     <FontAwesomeIcon icon={faDollarSign} />
                   </div>
-                  <span className="text-gray-600">Total Revenue</span>
+                  <span className="text-gray-600">Total Comment</span>
                   <span className="ml-auto text-green-500 flex items-center">
                     <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
-                    4.5%
+                    {parseInt(statistic['totalComment']) / 100}%
                   </span>
                 </div>
-                <div className="text-3xl font-bold">$24,780</div>
+                <div className="text-3xl font-bold">{statistic['totalComment']}</div>
                 <div className="text-sm text-gray-500 mt-2">Last 30 days</div>
               </div>
 
@@ -67,10 +107,10 @@ const Dashboard = () => {
                   <span className="text-gray-600">Total Users</span>
                   <span className="ml-auto text-green-500 flex items-center">
                     <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
-                    12.2%
+                    {parseInt(statistic['totalUsers']) / 100}%
                   </span>
                 </div>
-                <div className="text-3xl font-bold">487</div>
+                <div className="text-3xl font-bold">{statistic['totalUsers']}</div>
                 <div className="text-sm text-gray-500 mt-2">Last 30 days</div>
               </div>
 
@@ -82,10 +122,10 @@ const Dashboard = () => {
                   <span className="text-gray-600">Messages</span>
                   <span className="ml-auto text-red-500 flex items-center">
                     <FontAwesomeIcon icon={faArrowDown} className="mr-1" />
-                    1.8%
+                    {parseInt(statistic['totalMessage']) / 100}%
                   </span>
                 </div>
-                <div className="text-3xl font-bold">1,324</div>
+                <div className="text-3xl font-bold">{statistic['totalMessage']}</div>
                 <div className="text-sm text-gray-500 mt-2">Last 30 days</div>
               </div>
             </div>
@@ -102,8 +142,15 @@ const Dashboard = () => {
                   <button className="text-sm text-gray-600 hover:text-indigo-600">Yearly</button>
                 </div>
               </div>
-              <div className="h-64">
-                <canvas id="revenueChart"></canvas>
+              <div className="h-64 flex items-center justify-center py-10">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={userStats}>
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="total" fill="#8874d8" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </div>
