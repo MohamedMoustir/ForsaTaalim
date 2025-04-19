@@ -19,6 +19,7 @@ function Content() {
     const [email, setEmail] = useState("");
     const token = getToken();
     const user = getUser();
+    
     useEffect(() => {
 
 

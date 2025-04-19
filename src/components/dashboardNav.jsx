@@ -24,21 +24,11 @@ import ReservationTutors from "../pages/reservation";
 import { API_URL, getToken, getUser } from '../utils/config';
 
 const DashboardNav = () => {
+
   const token = getToken();
   const user = getUser();
   const navigate = useNavigate();
-  function handleDisponibilites() {
-    navigate(`/disponibilites/${user.id}`);
-  }
-  function handledashboard_tuteur() {
-    navigate(`/dashboard-tuteur`);
-  }
-  function ReservationEtudiant() {
-    navigate('/dashboard-tuteur/reservation')
-  }
-  function Annoncement() {
-    navigate('/dashboard-annonce');
-  }
+
 
   return (
     <>
@@ -53,15 +43,15 @@ const DashboardNav = () => {
 
         <div className="flex-1 overflow-y-auto py-4">
           <nav className="px-2 space-y-1">
-            <a onClick={handledashboard_tuteur} className="cursor-pointer bg-slate-800 flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
+            <a onClick={() => navigate('/dashboard-tuteur')} className="cursor-pointer bg-slate-800 flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
               <FontAwesomeIcon icon={faChartPie} className="h-5 w-5 mr-3" />
               Dashboard
             </a>
-            <a onClick={handleDisponibilites} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
+            <a onClick={() => navigate(`/disponibilites/${ user.id}`)} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
               <FontAwesomeIcon icon={faBullhorn} className="h-5 w-5 mr-3 text-red-400" />
               Disponibilites
             </a>
-            <a onClick={ReservationEtudiant} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
+            <a onClick={() => navigate('/dashboard-tuteur/reservation')} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
               <FontAwesomeIcon icon={faDollarSign} className="h-5 w-5 mr-3" />
               Reservation
             </a>
@@ -69,7 +59,7 @@ const DashboardNav = () => {
               <FontAwesomeIcon icon={faComments} className="h-5 w-5 mr-3" />
               Communication
             </a>
-            <a onClick={Annoncement} className="cursor-pointer flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
+            <a onClick={() => navigate('/dashboard-annonce')} className="cursor-pointer flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
               <FontAwesomeIcon icon={faDollarSign} className="h-5 w-5 mr-3" />
               Annoncement
             </a>
@@ -88,7 +78,7 @@ const DashboardNav = () => {
               className="h-8 w-8 rounded-full mr-3"
             />
             <div>
-              <p className="text-xs text-gray-400">Hi, {user.prenom}</p>
+              <p className="text-xs text-gray-400">Hi, { user.prenom}</p>
             </div>
           </div>
           <button className="text-gray-400 hover:text-white">

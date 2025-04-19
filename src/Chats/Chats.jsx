@@ -21,8 +21,6 @@ function App() {
   const [image, setImage] = useState(null);
   const token = getToken();
   const user = getUser();
-
-  // const [sender, setSender] = useState(user.role);
   const navigate = useNavigate();
 
   const handleContacts = () => {
@@ -50,7 +48,6 @@ function App() {
     })
 
       .then((response) => {
-        // console.log('dd',response.data.messages);
         setMessages(response.data.messages);
       })
 
@@ -111,6 +108,7 @@ function App() {
         <NavEtudiant />
       )}
       <div className="bg-gray-100 h-screen flex">
+        
         {user.role == 'tuteur' && (
           <DashboardNav />
         )}

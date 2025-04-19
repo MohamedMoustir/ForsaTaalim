@@ -220,7 +220,7 @@ const index = () => {
                                                 <div className="flex items-center mb-3">
                                                     <div className="flex items-center">
                                                         <span className="text-yellow-400">★</span>
-                                                        <span className="ml-1">{prof.average_rating.split(0,8)}</span>
+                                                        <span className="ml-1">{prof.average_rating?.split(0,3)}</span>
                                                         <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
                                                     </div>
                                                     <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>

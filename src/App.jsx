@@ -19,7 +19,8 @@ import Dashboard from "./Professeur/Dashboard";
 import Annonce from "./Professeur/Ajoutennonce";
 import ReservationEtudient from "./Professeur/Reservation";
 import DetileAnnonce from "./pages/DetilesAnnonce.jsx";
-import DonePayment from "./pages/DonePayment.jsx"
+import DonePayment from "./pages/DonePayment.jsx";
+import PdfDociment from "./pages/PdfDociment.jsx"
 function App() {
   return (
     <Router>
@@ -53,6 +54,8 @@ function App() {
         <Route path="/dashboard-tuteur/reservation" element={<ReservationEtudient />} />
         <Route path="/detileAnnonce/:id" element={<DetileAnnonce />} />
         <Route path="/donePayment/:id" element={<DonePayment />} />
+        <Route path="/pdf/:id" element={<PdfDociment />} />
+
 
 
 

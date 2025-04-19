@@ -140,6 +140,7 @@ const Nav = () => {
             console.log(data);
 
         });
+        // Unmounting 
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
@@ -147,8 +148,7 @@ const Nav = () => {
     }, [notificationCount])
 
     
-      
-
+    
     return (
         <nav className="navbar">
             {!isUserAuth && (

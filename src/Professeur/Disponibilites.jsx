@@ -33,9 +33,6 @@ function MyFullCalendar({ title, amount }) {
   const [durationOption, setDurationOptions] = useState([{ time: '1:00' }, { time: '2:00' }, { time: '3:00' }]);
   const [time, setTime] = useState(null);
 
-
-  // const [amount, setAmount] = useState(amount);
-
   const availableTimes = [
     { time: '08:00 AM' },
     { time: '10:00 AM' },
@@ -101,7 +98,7 @@ function MyFullCalendar({ title, amount }) {
     }
   }
   const handleDateClick = (arg) => {
-    if (user.role === 'tuteur') {
+    if ( user.role === 'tuteur') {
       setIsOpen(true)
       setEvanteDte(arg.dateStr);
     } else {
@@ -164,8 +161,6 @@ function MyFullCalendar({ title, amount }) {
     }
   }
 
-  console.log(amount);
-
 
   const handleReservation = async (e) => {
     e.preventDefault();
@@ -196,13 +191,9 @@ function MyFullCalendar({ title, amount }) {
     }
   };
 
-
-
-
-
   return (
     <>
-      {isOpen && user.role === 'tuteur' && (
+      {isOpen &&  user.role === 'tuteur' && (
         <>
           {loading && <Spinner />}
 
@@ -328,7 +319,7 @@ function MyFullCalendar({ title, amount }) {
 
       )}
       <div className='flex'>
-        {user.role == 'tuteur' && (
+        { user.role == 'tuteur' && (
           <DashboardNav></DashboardNav>
         )}
         <div className="w-full m-8  cursor-pointer">
@@ -346,7 +337,7 @@ function MyFullCalendar({ title, amount }) {
           />
         </div>
       </div>
-      {user.role === 'etudiant' && (
+      { user.role  === 'etudiant' && (
         <>
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">

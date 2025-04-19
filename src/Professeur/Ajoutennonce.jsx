@@ -90,7 +90,7 @@ console.log(annonces.length);
     }
 
     useEffect(() => {
-        axios.get(`${API_URL}/announcment/${parsedToken.id}`, {
+        axios.get(`${API_URL}/announcment/${user.id}`, {
             headers: {
                 authorization: `bearer ${token}`,
             }

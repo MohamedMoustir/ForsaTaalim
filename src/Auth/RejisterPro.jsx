@@ -5,22 +5,21 @@ import '../assets/js/index';
 import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
-const token = getToken();
-const user = getUser();
 
-if (user) {
-    try {
-        const parsedUser = JSON.parse(token);
-    } catch (error) {
-        console.error('user:', error);
-    }
-} else {
-    console.log('dont found localStorage');
-}
+
+// if (user) {
+//     try {
+//         const parsedUser = JSON.parse(token);
+//     } catch (error) {
+//         console.error('user:', error);
+//     }
+// } else {
+//     console.log('dont found localStorage');
+// }
 
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
-    const [subject, setSubject] = useState('');
+    const [subject, setSubject] = useState(null);
     const [diplome, setDiplomes] = useState('');
     const [error, setError] = useState('');
     const [lesson, setlessons] = useState('');
@@ -29,7 +28,10 @@ const RejisterPro = () => {
     const [rate, setRate] = useState('');
     const [video, setVideo] = useState('');
     const navigate = useNavigate();
-
+    const [search, setSearch] = useState('');
+    const [city, setcity] = useState([]);
+    const token = getToken();
+    const user = getUser();
     const handleRejisterProfesseur = async (e) => {
         e.preventDefault();
         try {
@@ -41,7 +43,6 @@ const RejisterPro = () => {
             formData.append("location", location);
             formData.append("tarifHoraire", rate);
             formData.append("video", video);
-            formData.append("disponible", 0);
 
             const response = await axios.post(`${API_URL}/Professeur`, formData, {
                 headers: {
@@ -49,13 +50,14 @@ const RejisterPro = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
-            if (response.status === 200) {
+            if (response) {
                 alert('User registered successfully');
+                navigate('/login')
             } else {
+                
                 alert('Error during registration');
+                console.error(error);
             }
-
         } catch (error) {
             setError('Error registering user');
             console.error(error);
@@ -77,17 +79,21 @@ const RejisterPro = () => {
                 console.error("Error fetching categories", error);
             });
 
-
-
-        // if (!getToken) {
-        //     navigate("/login");
-        // } else if (parsedgetToken && parsedgetToken.role === "tuteur") {
-        //     navigate("/login");
-        // }
-
+        axios.get(`https://mohamedmoustir.github.io/api/`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                setcity(response.data.cities);
+            })
+            .catch((error) => {
+                console.error("Error fetching city", error);
+            });
 
     }, [token, navigate]);
 
+    const firstThreeCities = city.slice(0, 3);
 
     return (
         <div className="min-h-screen ">
@@ -132,7 +138,7 @@ const RejisterPro = () => {
                                 <input id="inputSerch" value={subject} onChange={(e) => setSubject(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
 
-                                <input type="text" placeholder="Try &quot;Math&quot;"
+                                <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
                             </div>
                             <div
@@ -140,12 +146,17 @@ const RejisterPro = () => {
                         </div>
                         <div>
                             <h3 className="text-sm font-medium text-gray-500 mb-4">Most taught subjects</h3>
-                            <div className="space-y-3">
-                                {CategorieMatiere.map((Categorie, index) => {
+                            <div className="space-y-3 overflow-y-auto h-24">
+                                {CategorieMatiere.filter((item) => {
+
+                                    return search.toLowerCase() === '' ? item : item.nom.toLowerCase().includes(search);
+
+                                }).map((Categorie, index) => {
                                     return (
                                         <div key={index} id={Categorie.id} onClick={(e) => setSubject(e.target.id)}
-                                            className="subjects  flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer">
-                                            <span className="font-medium text-black">{Categorie.nom}</span>
+                                            className={`subjects flex items-center h-8 justify-between p-4 rounded-md cursor-pointer 
+                                            ${parseInt(subject) === Categorie.id ? 'bg-red-400 text-white' : 'bg-gray-50'} hover:bg-red-400 hover:text-white`} >
+                                            <span className={` ${parseInt(subject) === Categorie.id ? 'font-medium text-white' : ' text-black'}`}>{Categorie.nom}</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -198,23 +209,23 @@ const RejisterPro = () => {
                                     type="text" id="input_2"
                                     className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="Enter diploma title" />
-                                <button
+                                {/* <button
                                     className="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                             d="M12 4v16m8-8H4" />
                                     </svg>
-                                </button>
+                                </button> */}
                             </div>
 
                         </div>
 
                         <div className="flex items-center justify-between mt-12">
-                            <div className=" prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
+                            <div className="cursor-pointer prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                 back</div>
                             <div
-                                className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                                className=" cursor-pointer next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
 
                         </div>
                     </div>
@@ -253,11 +264,11 @@ const RejisterPro = () => {
                                     className="flex-grow p-3 border border-gray-300 h-48 w-[600px] rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="ex:Engineering student teaches math and physics frommiddle school to high school in Los Angeles"></textarea>
                             </div>
-                            <div className="flex items-center justify-between mt-12">
+                            <div className="flex cursor-pointer items-center justify-between mt-12">
                                 <div className="prev-btn  px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                     back</div>
                                 <div
-                                    className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                                    className="next-btn cursor-pointer px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
 
                             </div>
                         </div>
@@ -333,35 +344,32 @@ const RejisterPro = () => {
                         <div>
                             <h3 className="text-sm font-medium text-gray-500 mb-4">Where will the lesson take place?</h3>
                             <div className="space-y-3 ">
-                                <input id="inputSerch" value={location} onChange={(e) => setLocation(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
+                            <input id="inputSerch" value={location} onChange={(e) => setLocation(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
-                                <div id='At your house' onClick={(e) => setLocation(e.target.id)}
-                                    className="flex text-white items-center justify-between p-4 bg-red-400 rounded-md hover:bg-red-400 cursor-pointer">
-                                    <span className="font-medium ">At your house</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white hover:text-white"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
+                                <input id="inputSerch" value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Try &quot;City&quot;"
+                                    className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
+                                <div className="space-y-3 overflow-y-auto h-64 ">
+                                    {city.filter((item) => {
+                                        return search.toLowerCase() === '' ? item : item.city.toLowerCase().includes(search);
+                                    }).map((city, index) => {
+                                        return (
+                                            <div key={index} id={city.city} onClick={(e) => setLocation(e.target.id)}
+                                                className={`subjects flex  h-8 items-center  justify-between p-4 rounded-md cursor-pointer 
+                                            ${city.city === location ? 'bg-red-400 text-white' : 'bg-gray-50'} hover:bg-red-400 hover:text-white`} >
+                                                <span className={` ${city.city === location  ? 'font-medium text-white' : ' text-black'}`}>{city.city}</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                        d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </div>
+                                        );
+                                    })}
+
+
                                 </div>
-                                <div id='You can travel' onClick={(e) => setLocation(e.target.id)}
-                                    className="flex items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 cursor-pointer hover:text-white">
-                                    <span className="font-medium">You can travel</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 hover:text-white"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-                                <div id='Online' onClick={(e) => setLocation(e.target.id)}
-                                    className="flex   items-center justify-between p-4 bg-gray-50 rounded-md hover:bg-red-400 hover:text-white cursor-pointer ">
-                                    <span className="font-medium">Online</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 hover:text-white"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
+
+
                             </div>
                         </div>
 
@@ -397,7 +405,7 @@ const RejisterPro = () => {
                             <div className="flex">
                                 <input type="number" value={rate} onChange={(e) => setRate(e.target.value)}
                                     className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                    placeholder="33" />
+                                    placeholder="33" max={33} min={10} />
                             </div>
                         </div>
                         <div className=" prev-btn flex items-center justify-between mt-12">
@@ -409,41 +417,6 @@ const RejisterPro = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div data-step="7"
-                className=" step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
-                <div className="w-full md:w-80 bg-red-50 rounded-3xl p-6">
-                    <h2 className="font-bold text-xl mb-4">Good to know</h2>
-                    <p className="text-gray-700 mb-4">
-                        You are free to choose your hourly rate and modify it at any time.
-                    </p>
-                    <ul className="list-disc pl-5 mb-6 text-gray-700">
-                        <li>If you are just starting out, you may not want to choose a rate that is too high and
-                            wait until you have some reviews and recommendations to adjust it..</li>
-                    </ul>
-                </div>
-
-                <div className="w-full md:w-1/2">
-                    <h1 className="text-3xl font-bold mb-1">
-                        <span className="text-3xl font-bold text-red-400 mb-2">Telephone Number</span>
-                        <p className="text-sm font-medium text-gray-500 mb-4">Your number never appears on the site, it
-                            is only sent to the students to whom you accept to give lessons.</p>
-
-                    </h1>
-                    <div className="space-y-4 mb-12">
-                        <div className="flex">
-                            <input type="number" value={rate} onChange={(e) => setRate(e.target.value)}
-                                className=" flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
-                                placeholder="Mobile Number" />
-                        </div>
-                    </div>
-                    <div className="prev-btn flex items-center justify-between mt-12">
-                        <div className="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
-                            back</div>
-                        <div
-                            className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
-                    </div>
-                </div>
-            </div> */}
                 <div data-step="7"
                     className=" step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
                     <div className="w-full md:w-80 bg-red-50 rounded-3xl p-6">
