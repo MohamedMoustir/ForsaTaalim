@@ -10,6 +10,18 @@ const profilesilePage = () => {
     const user = getUser();
     const token = getToken();
     const [isopen, setIsopen] = useState(false);
+    const [image, setImage] = useState(null);
+    const [name, setName] = useState(null);
+    const [email, setemail] = useState(null);
+    const [prenom, setPrenom] = useState(null);
+    const [telephone, setTelephone] = useState(null);
+    const [age, setAge] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [tarifHoraire, setTarifHoraire] = useState(null);
+    const [biographie, setBiographie] = useState(null);
+    const [diplomes, setDiplomes] = useState(null);
+    const [experiences, setExperiences] = useState(null);
+
 
     useEffect(() => {
         const fetchprofilesesseurs = async () => {
@@ -27,8 +39,9 @@ const profilesilePage = () => {
         };
         fetchprofilesesseurs();
     }, [user.id])
-
-
+   
+  
+  
 
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
