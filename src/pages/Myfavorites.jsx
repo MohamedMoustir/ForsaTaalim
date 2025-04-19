@@ -40,17 +40,7 @@ export default function Myfavorites() {
     },[])
     useEffect(() => {
         // navigate('/login')
-       
     })
-    // if (isFavorite) {
-    //     fetch(`/favorites/${itemId}`, {
-    //         method: 'DELETE',
-    //     }).then(() => onToggleFavorite(false));
-    // } else {
-    //     fetch(`/favorites/${itemId}`, {
-    //         method: 'POST',
-    //     }).then(() => onToggleFavorite(true));
-    // }
 
     function handlegetUser(userId) {
 
@@ -66,16 +56,13 @@ export default function Myfavorites() {
                 setFavorites(prevFavorites => prevFavorites.filter(item => item.user_id2 !== userId));
             });
     }
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
+ 
     return (
 
         <MainLayout >
+             {loading && (
+                <Spinner />
+            )}
             <section className="bg-gray-50">
                 <div className="max-w-6xl mx-auto p-6">
                     <h1 className="text-2xl font-bold mb-8">

@@ -15,6 +15,7 @@ const BookingSuccess = () => {
 
     return (
         <>
+           
             <Nav></Nav>
 
             <div className="min-h-screen w-[70%] relative left-[15%]">

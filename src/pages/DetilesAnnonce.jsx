@@ -18,6 +18,8 @@ import Nav from '../components/Nav';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
+
 const token = getToken();
 const user = getUser();
 
@@ -54,15 +56,12 @@ const DetilesAnnonce = () => {
           navigate(`/reservation/${id_touter}`);  
     }
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
+  
     return (
         <>
+         {loading && (
+                <Spinner />
+            )}
             <Nav></Nav>
             <div className="max-w-[85%] mt-14 mx-auto  bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="relative h-80">

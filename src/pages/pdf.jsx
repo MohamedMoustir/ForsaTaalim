@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import Spinner from '../components/Spinner';
 
 const styles = StyleSheet.create({
   page: {
@@ -54,11 +55,17 @@ const styles = StyleSheet.create({
 });
 
 const MyDocument = ({ payment }) => {
-  console.log(payment);
+  const [loading, setLoading] = useState(true);
+
+  if (payment) {
+    setLoading(false);
+  }
 
   return (
     <>
-    
+      {loading && (
+        <Spinner />
+      )}
       <Document>
         <Page size="A4" style={styles.page}>
           <View style={styles.section}>

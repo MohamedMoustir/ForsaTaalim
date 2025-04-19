@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import NavEtudiant from "../components/NavEtudiant"
+import Spinner from '../components/Spinner';
 import { API_URL, getToken, getUser } from '../utils/config';
 import {
     faEllipsisV,
@@ -61,27 +62,7 @@ const Mespaiements = () => {
         fetchPayments(currentPage);
     }, [currentPage]);
 
-    // function handleClick() {
-    //     setIsMenuHidden(false);
-    // };
-
-    // function handlegetUser(userId) {
-
-    //     fetch(`${API_URL}/favorites`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             user_id2: userId,
-    //         }),
-    //     })
-    //         .then((response) => response.json())
-    //         .then(() => {
-    //             alert('done');
-    //         });
-    // }
+  
     const handleStatusUpdate = async (id) => {
         try {
             const formData = new FormData();
@@ -112,20 +93,14 @@ const Mespaiements = () => {
         pages.push(i);
     }
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
+
     return (
         <>
-
+            {loading && (
+                <Spinner />
+            )}
             <NavEtudiant></NavEtudiant>
             <div className='m-24 mb-0'>
-
-
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
                     <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
                         <div className="flex flex-col sm:flex-row gap-4">

@@ -23,7 +23,7 @@ function Content() {
 
         if (user) {
             try {
-               
+
                 fetchUserData(token);
             } catch (error) {
                 console.error("Error parsing user data from localStorage:", error);
@@ -104,7 +104,7 @@ function Content() {
 
             const user = localStorage.getItem('user');
             if (user) {
-              
+
                 const updatedUser = { ...user, ...formData };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
             }
@@ -174,17 +174,13 @@ function Content() {
             setLoading(false);
         }
     };
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
+ 
 
     return (
         <div className="bg-gray-50 min-h-screen">
-
+            {loading && (
+                <Spinner />
+            )}
             <NavEtudiant></NavEtudiant>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}

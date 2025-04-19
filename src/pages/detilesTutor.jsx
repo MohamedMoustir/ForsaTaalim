@@ -17,6 +17,8 @@ import {
     faSignInAlt,
     faChalkboardTeacher
 } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../components/Spinner';
+
 
 import { API_URL, getToken, getUser } from '../utils/config';
 const token = getToken();
@@ -34,7 +36,6 @@ const detiles = () => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const [annonces, setAnnonces] = useState([]);
-
 
     const navigate = useNavigate();
     const { id } = useParams()
@@ -199,14 +200,12 @@ const detiles = () => {
 
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
     return (
+        <> {loading && (
+            <Spinner />
+        )}
+        
+      
         <MainLayout >
             <div className="container px-4 py-8 max-w-7xl mx-auto  ">
 
@@ -515,7 +514,8 @@ const detiles = () => {
 </div>
 
             </div>
-        </MainLayout>
+        </MainLayout>  
+        </>
     );
 
 }

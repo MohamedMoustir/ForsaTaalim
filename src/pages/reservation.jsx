@@ -6,7 +6,7 @@ import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
 
 function ReservationTutors() {
-    
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [detile, setDetilesprofiles] = useState([]);
     const token = getToken();
@@ -31,16 +31,11 @@ function ReservationTutors() {
         fetchProfesseurs(id)
     }, [id])
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-            </div>
-        );
-    }
     return (
         <>
-
+            {loading && (
+                <Spinner />
+            )}
             <MainLayout ></MainLayout>
             <div className="min-h-screen w-[70%] relative left-[15%]">
 
@@ -92,7 +87,7 @@ function ReservationTutors() {
                                 <span>Verified credentials</span>
                             </div>
                         </div>
-                     
+
 
 
                     </div>
