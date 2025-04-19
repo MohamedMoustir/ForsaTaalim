@@ -169,7 +169,7 @@ function MyFullCalendar({ title, amount }) {
 
   const handleReservation = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     let formData = new FormData();
     formData.append('date_reservation', getDateReserve);
     formData.append('time_reservation', timeReservation.replace(/ (AM|PM)/, ''));
@@ -199,17 +199,12 @@ function MyFullCalendar({ title, amount }) {
 
 
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-      </div>
-    );
-  }
+
   return (
     <>
       {isOpen && user.role === 'tuteur' && (
         <>
+          {loading && <Spinner />}
 
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
 

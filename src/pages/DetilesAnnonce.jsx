@@ -63,7 +63,7 @@ const DetilesAnnonce = () => {
                 <Spinner />
             )}
             <Nav></Nav>
-            <div className="max-w-[85%] mt-14 mx-auto  bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="max-w-[85%] mt-14 mx-auto mb-14 bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="relative h-80">
                     <img
                         src={`http://127.0.0.1:8000/storage/${annonces.image}`}
