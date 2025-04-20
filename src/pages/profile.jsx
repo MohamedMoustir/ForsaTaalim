@@ -19,13 +19,10 @@ function Content() {
     const [email, setEmail] = useState("");
     const token = getToken();
     const user = getUser();
-    
+
     useEffect(() => {
-
-
         if (user) {
             try {
-
                 fetchUserData(token);
             } catch (error) {
                 console.error("Error parsing user data from localStorage:", error);
@@ -176,7 +173,7 @@ function Content() {
             setLoading(false);
         }
     };
- 
+
 
     return (
         <div className="bg-gray-50 min-h-screen">
