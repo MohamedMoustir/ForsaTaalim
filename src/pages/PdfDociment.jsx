@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
 import { useState, useEffect } from 'react';
-import Nav from '../components/Nav';
+import { Nav } from '../components/Nav';
 import Spinner from '../components/Spinner';
 function App() {
 
