@@ -13,6 +13,7 @@ import {
 import DetilesAnnonce from "../pages/DetilesAnnonce";
 
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 const Dashboard = () => {
     const token = getToken();
@@ -31,7 +32,7 @@ const Dashboard = () => {
     const [selectedAnnonce, setSelectedAnnonce] = useState(null);
     const [editeId, setEditeId] = useState(null);
     const [search, setSearch] = useState('');
-
+    const [loading, setLoading] = useState(true);
 
 console.log(annonces.length);
 
@@ -88,7 +89,6 @@ console.log(annonces.length);
         }
     }
     }
-
     useEffect(() => {
         axios.get(`${API_URL}/announcment/${user.id}`, {
             headers: {
@@ -96,6 +96,7 @@ console.log(annonces.length);
             }
         })
             .then(response => {
+                setLoading(false)
                 console.log(response.data.announcement);
                 setAnnonce(response.data.announcement);
             })
@@ -136,11 +137,11 @@ console.log(annonces.length);
 
     return (
         <>
-         
+          {loading && <Spinner />}
             <div className="bg-gray-100">
                 <div className="flex h-screen">
                 <div className="hidden lg:flex">
-                <DashboardNav />
+                <DashboardNav id_={5} />
             </div>
 
                     <div className="flex h-screen w-[100%]">
