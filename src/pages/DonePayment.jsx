@@ -4,7 +4,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from "react-router-dom";
-import Nav from "../components/Nav";
+import { Nav } from '../components/Nav';
+
 
 
 const BookingSuccess = () => {
