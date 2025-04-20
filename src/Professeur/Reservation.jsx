@@ -22,6 +22,7 @@ import DashboardNav from '../components/dashboardNav';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 const ReservationPage = () => {
     const [reservations, setReservations] = useState([]);
@@ -31,7 +32,6 @@ const ReservationPage = () => {
     const navigate = useNavigate();
     const token = getToken();
     const user = getUser();
-
     useEffect(() => {
         const fetchReservations = async () => {
             try {
@@ -137,6 +137,7 @@ const ReservationPage = () => {
             });
 
             if (response.status === 200) {
+                setLoading(false)
                 alert('Message envoyé avec succès');
             }
         } catch (error) {
@@ -149,13 +150,7 @@ const ReservationPage = () => {
         navigate(`/chat/${id_user}/room/${chat_user_id}`);
     }
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-            </div>
-        );
-    }
+
 
     if (error) {
         return (
@@ -171,17 +166,12 @@ const ReservationPage = () => {
 
     return (
         <div className='flex'>
-
+        {loading && <Spinner />}
             <div className="hidden lg:flex">
-                <DashboardNav />
+                <DashboardNav id_={3} />
             </div>
-
-
             <div className="bg-neutral-50 min-h-screen py-10 px-4 w-full">
                 <div className="w-full mx-auto space-y-8">
-
-
-
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-white shadow-sm rounded-xl p-6 border border-slate-200">
                             <div className="flex items-center space-x-2 mb-2 text-gray-500 text-sm uppercase">

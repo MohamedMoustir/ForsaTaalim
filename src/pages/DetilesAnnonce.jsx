@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import Nav from '../components/Nav';
+import { Nav } from '../components/Nav';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
