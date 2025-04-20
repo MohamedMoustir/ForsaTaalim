@@ -154,12 +154,12 @@ const Mespaiements = () => {
                             </thead>
                             {
                                 Mespaiements.filter((item) => {
-                                    if (search) {
+                                    console.log(item);
+                                    
                                         return search.toLowerCase() === ''
                                             ? item
                                             : item.professeur.toLowerCase().includes(search.toLowerCase());
-                                    }
-                                    return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
+                                    
                                 })
                                     .map((prof, index) => (
 
