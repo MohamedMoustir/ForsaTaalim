@@ -20,11 +20,11 @@ import DashboardNav from "../components/dashboardNav"
 import { API_URL, getToken, getUser } from '../utils/config';
 import { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import Spinner from '../components/Spinner';
 const Dashboard = () => {
   const [error, setError] = useState(null);
   const [statistic, setStatistic] = useState([]);
-
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleStatistic = async () => {
@@ -43,6 +43,9 @@ const Dashboard = () => {
         }
 
         const data = await response.json();
+        if (data) {
+          setLoading(false)
+        }
         setStatistic(data)
         console.log(data);
       } catch (error) {
@@ -52,6 +55,7 @@ const Dashboard = () => {
 
     handleStatistic();
   }, []);
+
   const userStats = [
     { date: "total Users", total: statistic['totalUsers'] },
     { date: "total Message", total: statistic['totalMessage'] },
@@ -61,9 +65,10 @@ const Dashboard = () => {
   ];
   return (
     <div className="bg-gray-100">
+       {loading && <Spinner />}
       <div className="flex h-screen">
       <div className="hidden lg:flex">
-                <DashboardNav />
+                <DashboardNav id_={1} />
             </div>
 
         <div className="flex-1 overflow-auto">
