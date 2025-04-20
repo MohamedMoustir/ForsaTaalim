@@ -7,6 +7,7 @@ import '../assets/style/style.css';
 import axios from 'axios';
 import DashboardNav from '../components/dashboardNav';
 import { API_URL, getToken, getUser } from '../utils/config';
+import Spinner from '../components/Spinner';
 
 
 
@@ -52,7 +53,7 @@ function MyFullCalendar({ title, amount }) {
         .then((response) => {
 
           let data = response.data;
-          console.log(data);
+         
 
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
@@ -161,6 +162,7 @@ function MyFullCalendar({ title, amount }) {
     }
   }
 
+console.log(time);
 
   const handleReservation = async (e) => {
     e.preventDefault();
@@ -179,6 +181,7 @@ function MyFullCalendar({ title, amount }) {
         body: formData
       })
         .then((response) => {
+         
           if (response.data.reservation.original.redirect_url) {
             window.location.href = response.data.reservation.original.redirect_url;
           } else {
@@ -191,12 +194,13 @@ function MyFullCalendar({ title, amount }) {
     }
   };
 
+
   return (
-    <>
+    <>  
+    {loading && <Spinner />}
       {isOpen && user.role === 'tuteur' && (
         <>
-          {loading && <Spinner />}
-
+        
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
 
             <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
@@ -321,11 +325,11 @@ function MyFullCalendar({ title, amount }) {
       <div className='flex'>
         {user.role == 'tuteur' && (
           <div className="hidden lg:flex">
-            <DashboardNav />
+            <DashboardNav id_={2} />
           </div>
         )}
-        <div className="w-full m-8  cursor-pointer">
-          <FullCalendar
+        <div className="w-full m-8 h-full  cursor-pointer">
+          <FullCalendar 
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             events={events}
