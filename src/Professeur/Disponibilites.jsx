@@ -8,14 +8,15 @@ import axios from 'axios';
 import DashboardNav from '../components/dashboardNav';
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 
 
-function MyFullCalendar({ title, amount }) {
+function MyFullCalendar({ amount }) {
   const token = getToken();
   const user = getUser();
   const [events, setEvents] = useState([]);
-  const [error, setError] = useState([]);
+  const [message, setMessage] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [eventColor, setColer] = useState('');
   const [evantDate, setEvanteDte] = useState('');
@@ -33,6 +34,9 @@ function MyFullCalendar({ title, amount }) {
   const [isOpenPoupupDate, setIsOpenPoupupDate] = useState(null);
   const [durationOption, setDurationOptions] = useState([{ time: '1:00' }, { time: '2:00' }, { time: '3:00' }]);
   const [time, setTime] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [type, setType] = useState('');
+  const [title, setTitle] = useState('');
 
   const availableTimes = [
     { time: '08:00 AM' },
@@ -53,8 +57,6 @@ function MyFullCalendar({ title, amount }) {
         .then((response) => {
 
           let data = response.data;
-         
-
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
@@ -68,8 +70,6 @@ function MyFullCalendar({ title, amount }) {
       console.error(error);
     }
   }
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -92,11 +92,18 @@ function MyFullCalendar({ title, amount }) {
             ...events,
             { title: titleEvante, date: evantDate, color: eventColor },
           ]);
+          setTitle(' disponibilite ajoute  successyful')
+          setType('success')
+          setMessage('Votre disponibilité a été ajoutée avec succès.')
+          setShowAlert(true)
         })
     } catch (error) {
-      console.error(error);
-      setError('error')
+      setShowAlert(true)
+      setTitle('Error ajoute disponibilite');
+      setType('error')
+      setMessage('Erreur lors de l\'ajout de la disponibilité')
     }
+
   }
   const handleDateClick = (arg) => {
     if (user.role === 'tuteur') {
@@ -116,11 +123,9 @@ function MyFullCalendar({ title, amount }) {
     }
 
   };
-
   useEffect(() => {
     handleGetdata()
   }, [])
-
   const handleEventClick = (info) => {
     setEventClicks(true);
     const eventStartDate = info.event._instance.range.start;
@@ -139,7 +144,6 @@ function MyFullCalendar({ title, amount }) {
 
     // alert('Event clicked: ' + info.event.title);
   };
-
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
@@ -153,17 +157,22 @@ function MyFullCalendar({ title, amount }) {
         setEventClicks(false);
         const updatedEvents = events.filter((items) => items.id != id_card);
         console.log(updatedEvents);
-
         setEvents(updatedEvents);
 
+        setShowAlert(true)
+        setTitle(' disponibilite delete succès')
+        setType('success')
+        setMessage('Votre disponibilité a été ajoutée avec succès.')
+        setShowAlert(true)
       }
     } catch (error) {
       console.error(error);
+      setShowAlert(true)
+      setTitle('Error delete disponibilite');
+      setType('error')
+      setMessage('Erreur lors de l\'ajout de la delete disponibilité')
     }
   }
-
-console.log(time);
-
   const handleReservation = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -181,26 +190,34 @@ console.log(time);
         body: formData
       })
         .then((response) => {
-         
           if (response.data.reservation.original.redirect_url) {
             window.location.href = response.data.reservation.original.redirect_url;
           } else {
             console.log(response.data.reservation.original.message);
           }
         })
+        setShowAlert(true);
+        setTitle(' reservation ajoute  successyful')
+        setType('success')
+        setMessage('Votre reservation a été ajoutée avec succès.')
+        setShowAlert(true)
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur côté client.");
+      // alert("Erreur côté client.");
+      setShowAlert(true)
+      setTitle('Error ajoute reservation');
+      setType('error')
+      setMessage('Erreur lors de l\'ajout de la reservation')
     }
   };
 
 
   return (
-    <>  
-    {loading && <Spinner />}
+    <>
+      {loading && <Spinner />}
       {isOpen && user.role === 'tuteur' && (
         <>
-        
+
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
 
             <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
@@ -324,12 +341,21 @@ console.log(time);
       )}
       <div className='flex'>
         {user.role == 'tuteur' && (
+
           <div className="hidden lg:flex">
             <DashboardNav id_={2} />
           </div>
         )}
+        {showAlert && (
+          <Alert
+            type={type}
+            title={title}
+            message={message}
+            onClose={() => setShowAlert(false)}
+          />
+        )}
         <div className="w-full m-8 h-full  cursor-pointer">
-          <FullCalendar 
+          <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             events={events}
