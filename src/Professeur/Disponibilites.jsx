@@ -203,7 +203,6 @@ function MyFullCalendar({ amount }) {
         setShowAlert(true)
     } catch (error) {
       console.error("Erreur:", error);
-      // alert("Erreur côté client.");
       setShowAlert(true)
       setTitle('Error ajoute reservation');
       setType('error')
