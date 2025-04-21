@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
 import { useNavigate } from "react-router-dom";
@@ -8,22 +8,16 @@ import {
   faBullhorn,
   faComments,
   faDollarSign,
-  faCog,
-  faArrowLeft,
-  faArrowUp,
-  faArrowDown,
-  faUsers,
-  faEnvelope,
-  faChartBar,
-  faDownload,
-  faPlus,
+  faSignOutAlt,
+  faCalendarCheck,
   faBars,
   faTimes,
+  faClipboardList
 } from '@fortawesome/free-solid-svg-icons';
 import ReservationTutors from "../pages/reservation";
 import { API_URL, getToken, getUser } from '../utils/config';
 
-const DashboardNav = () => {
+const DashboardNav = ({id_}) => {
 
   const token = getToken();
   const user = getUser();
@@ -43,42 +37,42 @@ const DashboardNav = () => {
 
         <div className="flex-1 overflow-y-auto py-4">
           <nav className="px-2 space-y-1">
-            <a onClick={() => navigate('/dashboard-tuteur')} className="cursor-pointer bg-slate-800 flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
-              <FontAwesomeIcon icon={faChartPie} className="h-5 w-5 mr-3" />
+            <a id="1" onClick={(e) => { navigate('/dashboard-tuteur'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 1 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faChartPie} className={`h-5 w-5 mr-3 ${id_ == 1 ? 'text-red-400':''}`} />
               Dashboard
             </a>
-            <a onClick={() => navigate(`/disponibilites/${ user.id}`)} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
-              <FontAwesomeIcon icon={faBullhorn} className="h-5 w-5 mr-3 text-red-400" />
+            <a id="2" onClick={(e) => { navigate(`/disponibilites/${user.id}`); setid(e.target.id) }} className={`cursor-pointer ${id_ == 2 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faCalendarCheck} className={`h-5 w-5 mr-3 ${id_ == 2 ? 'text-red-400':''}`} />
               Disponibilites
             </a>
-            <a onClick={() => navigate('/dashboard-tuteur/reservation')} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md">
-              <FontAwesomeIcon icon={faDollarSign} className="h-5 w-5 mr-3" />
+            <a id="3" onClick={(e) => { navigate('/dashboard-tuteur/reservation'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 3 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faClipboardList} className={`h-5 w-5 mr-3 ${id_ == 3 ? 'text-red-400':''}`} />
               Reservation
             </a>
-            <a href="#" className="cursor-pointer flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
-              <FontAwesomeIcon icon={faComments} className="h-5 w-5 mr-3" />
+            <a id="4" onClick={(e) => { navigate(`/Chat/null/room/null`); setid(e.target.id) }}  className={`cursor-pointer ${id_ == 4 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faComments} className={`h-5 w-5 mr-3 ${id_ == 4 ? 'text-red-400':''}`} />
               Communication
             </a>
-            <a onClick={() => navigate('/dashboard-annonce')} className="cursor-pointer flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
-              <FontAwesomeIcon icon={faDollarSign} className="h-5 w-5 mr-3" />
+            <a id="5" onClick={(e) => { navigate('/dashboard-annonce'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 5 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faBullhorn} className={`h-5 w-5 mr-3 ${id_ == 5 ? 'text-red-400':''}`} />
               Annoncement
             </a>
-            <a href="#" className="cursor-pointer flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
-              <FontAwesomeIcon icon={faCog} className="h-5 w-5 mr-3" />
-              logOut
+            <a onclick={(e) => { navigate('/logout'); setid(e.target.id) }} className="cursor-pointer  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800">
+              <FontAwesomeIcon icon={faSignOutAlt} className={`h-5 w-5 mr-3 ${id_ == 6 ? 'text-red-400':''}`} />
+              log Out
             </a>
           </nav>
         </div>
 
         <div className="p-4 border-t border-gray-700 flex items-center justify-between">
           <div className="flex items-center">
-            <img onClick={()=>navigate('/profilePage')}
+            <img onClick={() => navigate('/profilePage')}
               src={`http://127.0.0.1:8000/storage/${user.photo}`}
               alt="User"
               className="h-8 w-8 rounded-full mr-3 cursor-pointer"
             />
             <div>
-              <p className="text-xs text-gray-400">Hi, { user.prenom}</p>
+              <p className="text-xs text-gray-400">Hi, {user.prenom}</p>
             </div>
           </div>
           <button className="text-gray-400 hover:text-white">
