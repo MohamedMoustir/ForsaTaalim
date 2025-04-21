@@ -72,7 +72,7 @@ const Rejister = () => {
         navigate('/RejisterPro');
       }
       if (role == 'etudiant') {
-        navigate('/');
+        navigate('/login');
       }
       setLoading(false)
       sessionStorage.setItem('alertShown', 'true');
@@ -84,19 +84,7 @@ const Rejister = () => {
 
   };
   
-  // useEffect(() => {
-  //   const alertState = sessionStorage.getItem('alertShown');
-  //   if (alertState) {
-  //     setShowAlert(true);
-  //   }
-  //   setTimeout(() => {
-  //     sessionStorage.removeItem('alertShown')
-  //     setShowAlert(false);
-  //   }, 3000)
-  //   if (!showAlert) {
-  //     sessionStorage.removeItem('alertShown')
-  //   }
-  // }, [showAlert]);
+ 
 
   if (loading && !data) {
     return (
