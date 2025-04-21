@@ -14,6 +14,7 @@ import DetilesAnnonce from "../pages/DetilesAnnonce";
 
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 const Dashboard = () => {
     const token = getToken();
@@ -34,60 +35,77 @@ const Dashboard = () => {
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
 
-console.log(annonces.length);
+    const [showAlert, setShowAlert] = useState(false);
+    const [type, setType] = useState('');
+    const [titles, setTitles] = useState('');
+    const [message, setMessage] = useState('');
+
 
     const handleSubmit = async (e) => {
         if (annonces.length == 3) {
-          alert('max annoncement add 3');
-          setOpenPopUp(false);
+            setShowAlert(true)
+            setTitle('Error Max Announcement');
+            setType('error')
+            setMessage('Max Announcement\nMessage: 3 added successfully.')
+            setOpenPopUp(false);
 
-        }else{
-        e.preventDefault();
-        let formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('subjects', subjects);
-        formData.append('levels', levels);
-        formData.append('location', location);
-        formData.append('date', date);
-        formData.append('image', image);
+        } else {
+            e.preventDefault();
+            let formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('subjects', subjects);
+            formData.append('levels', levels);
+            formData.append('location', location);
+            formData.append('date', date);
+            formData.append('image', image);
 
-        try {
-            if (editeId) {
-                // method spoofing
-                formData.append("_method", 'PUT');
-                let response = await axios.post(`${API_URL}/announcment/${editeId}`, formData, {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    }
-                });
+            try {
+                if (editeId) {
+                    // method spoofing
+                    formData.append("_method", 'PUT');
+                    let response = await axios.post(`${API_URL}/announcment/${editeId}`, formData, {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                            "Content-Type": "multipart/form-data",
+                        }
+                    });
 
-                setAnnonce((prevAnnonces) =>
-                    prevAnnonces.map((a) =>
-                        a.id === editeId ? { ...a, title, description, subjects, levels, location, date } : a
-                    )
-                );
-                alert('Annonce mise à jour avec succès !');
-                setSelectedAnnonce(null);
-                setOpenPopUp(false);
-            } else {
+                    setAnnonce((prevAnnonces) =>
+                        prevAnnonces.map((a) =>
+                            a.id === editeId ? { ...a, title, description, subjects, levels, location, date } : a
+                        )
+                    );
+                    setShowAlert(true)
+                    setTitle('Annonce mise à jour avec succès !')
+                    setType('success')
+                    setMessage('Votre Annonce a mise à jour avec succès.')
+                    setSelectedAnnonce(null);
+                    setOpenPopUp(false);
+                } else {
 
-                const response = await axios.post(`${API_URL}/announcment`, formData, {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    }
-                });
-                setAnnonce([...annonces, response.data.Announcment]);
-                setOpenPopUp(false);
+                    const response = await axios.post(`${API_URL}/announcment`, formData, {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                            "Content-Type": "multipart/form-data",
+                        }
+                    });
+                    setAnnonce([...annonces, response.data.Announcment]);
+                    setOpenPopUp(false);
+                    setShowAlert(true)
+                    setTitle('Annonce ajoute avec succès !')
+                    setType('success')
+                    setMessage('Votre Annonce a ajoute avec succès.')
+                }
+
+            } catch (error) {
+                console.error(error);
+                setShowAlert(true)
+                setTitle('Error ajoute annonce');
+                setType('error')
+                setMessage('Erreur lors de l\'ajout de la annonce')
             }
-
-        } catch (error) {
-            console.error(error);
-            setError('error');
         }
-    }
     }
     useEffect(() => {
         axios.get(`${API_URL}/announcment/${user.id}`, {
@@ -117,9 +135,17 @@ console.log(annonces.length);
             });
 
             setAnnonce((prevAnnonces) => prevAnnonces.filter(a => a.id_annonce != id));
-            alert("Annonce supprimée avec succès !");
+
+            setShowAlert(true)
+            setTitle('Annonce supprimée avec succès !');
+            setType('success')
+            setMessage('Votre Annonce a supprimée avec succès.')
         } catch (error) {
             console.error("Erreur lors de la suppression :", error);
+            setShowAlert(true)
+            setTitle('Erreur suppression ');
+            setType('error')
+            setMessage('Erreur lors de la suppression')
         }
     };
 
@@ -137,13 +163,20 @@ console.log(annonces.length);
 
     return (
         <>
-          {loading && <Spinner />}
+            {showAlert && (
+                <Alert
+                    type={type}
+                    title={title}
+                    message={message}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
+            {loading && <Spinner />}
             <div className="bg-gray-100">
                 <div className="flex h-screen">
-                <div className="hidden lg:flex">
-                <DashboardNav id_={5} />
-            </div>
-
+                    <div className="hidden lg:flex">
+                        <DashboardNav id_={5} />
+                    </div>
                     <div className="flex h-screen w-[100%]">
                         <div className="flex-1 overflow-y-auto">
                             <div className="p-6 max-w-5xl mx-auto">
