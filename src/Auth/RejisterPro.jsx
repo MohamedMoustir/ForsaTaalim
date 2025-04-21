@@ -6,17 +6,6 @@ import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
 
-
-// if (user) {
-//     try {
-//         const parsedUser = JSON.parse(token);
-//     } catch (error) {
-//         console.error('user:', error);
-//     }
-// } else {
-//     console.log('dont found localStorage');
-// }
-
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
     const [subject, setSubject] = useState(null);
