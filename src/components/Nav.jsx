@@ -14,7 +14,7 @@ dayjs.extend(relativeTime);
 dayjs.locale("En");
 import Pusher from "pusher-js";
 
-const Nav = () => {
+export  const Nav = () => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate()
@@ -27,9 +27,7 @@ const Nav = () => {
     function BecomeTutor() {
         navigate('/Rejister')
     }
-    const handleNotificationsClick = () => {
-
-    };
+   
 
     const handleDeleteNotifications = async (id) => {
 
@@ -50,7 +48,6 @@ const Nav = () => {
             console.error("Erreur lors de la suppression :", error);
         }
     };
-
 
     const handleAfficheNotifications = () => {
 
@@ -92,29 +89,7 @@ const Nav = () => {
     function hanleProfile() {
         navigate('/profile');
     }
-    const handleLogout = async (e) => {
-
-        e.preventDefault();
-        try {
-            const response = await axios.post(`${API_URL}/auth/logout`, {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    }
-                }
-            );
-
-            if (response) {
-                sessionStorage.removeItem("user");
-                sessionStorage.removeItem("token");
-                navigate('/login')
-            }
-
-        } catch (err) {
-
-        }
-    }
+    
     function handleClickFlase() {
         setIsMenuHidden(true);
     }
@@ -247,11 +222,11 @@ const Nav = () => {
                         <li >
                             <a
                                 type="button"
-                                onClick={handleLogout}
+                                onClick={()=>navigate('/logout')}
                                 className="block cursor-pointer py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
                                 id="triparDate_limite"
                             >
-                                Log Out
+                                LogOut
                             </a>
                         </li>
 
@@ -341,4 +316,4 @@ const Nav = () => {
     );
 };
 
-export default Nav;
+
