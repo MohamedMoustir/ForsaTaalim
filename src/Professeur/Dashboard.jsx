@@ -155,7 +155,7 @@ const Dashboard = () => {
                     <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="total" fill="#8874d8" />
+                    <Bar dataKey="total" fill="#f87171" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
