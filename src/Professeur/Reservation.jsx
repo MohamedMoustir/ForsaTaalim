@@ -13,9 +13,9 @@ import {
     faUsers,
     faEnvelope,
     faChartBar,
-    faDownload,
-    faPlus,
-    faBars,
+    faTimes,
+    faCheck,
+    faCalendarAlt,
 
 } from '@fortawesome/free-solid-svg-icons';
 import DashboardNav from '../components/dashboardNav';
@@ -165,135 +165,153 @@ const ReservationPage = () => {
 
 
     return (
-        <div className='flex'>
-        {loading && <Spinner />}
-            <div className="hidden lg:flex">
-                <DashboardNav id_={3} />
-            </div>
-            <div className="bg-neutral-50 min-h-screen py-10 px-4 w-full">
-                <div className="w-full mx-auto space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-white shadow-sm rounded-xl p-6 border border-slate-200">
-                            <div className="flex items-center space-x-2 mb-2 text-gray-500 text-sm uppercase">
-                                <FontAwesomeIcon icon={faChartBar} />
-                                <span>Total Reservations</span>
-                            </div>
-                            <p className="text-3xl font-bold text-gray-800">{reservations.length}</p>
-                        </div>
-                        <div className="bg-white shadow-sm rounded-xl p-6 border border-slate-200">
-                            <div className="flex items-center space-x-2 mb-2 text-gray-500 text-sm uppercase">
-                                <FontAwesomeIcon icon={faDollarSign} />
-                                <span>Approved Payments</span>
-                            </div>
-                            <p className="text-3xl font-bold text-gray-800">
-                                {reservations.filter(r => r.status === 'approved').length}
-                            </p>
-                        </div>
-                        <div className="bg-white shadow-sm rounded-xl p-6 border border-slate-200">
-                            <div className="flex items-center space-x-2 mb-2 text-gray-500 text-sm uppercase">
-                                <FontAwesomeIcon icon={faEnvelope} />
-                                <span>Total Amount</span>
-                            </div>
-                            <p className="text-3xl font-bold text-gray-800">
-                                {totalAmount} DH
-                            </p>
-                        </div>
-                    </div>
-
-
-
-                    <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                        <div className="bg-slate-100 px-6 py-4 border-b border-slate-200">
-                            <h1 className="text-xl font-semibold text-slate-800">Student Reservations</h1>
-                        </div>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full text-sm divide-y divide-slate-200">
-                                <thead className="bg-slate-50">
-                                    <tr>
-                                        {['ID', 'Student', 'date', 'time', 'Payment', 'Amount', 'Status', 'Actions'].map(header => (
-                                            <th key={header} className="px-6 py-3 text-left font-medium text-slate-500 uppercase tracking-wide">{header}</th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-slate-100">
-                                    {reservations.length === 0 ? (
-                                        <tr>
-                                            <td colSpan="8" className="px-6 py-4 text-center text-gray-400">No reservations found</td>
-                                        </tr>
-                                    ) : (
-                                        reservations.map((res) => (
-                                            <tr key={res.id} className="hover:bg-slate-50">
-                                                <td className="px-6 py-4">{res.id}</td>
-                                                <td className="px-6 py-4 text-slate-700">{res.etudiant}</td>
-                                                <td className="px-6 py-4 text-slate-700">
-                                                    {new Date(res.date_reservation).toLocaleDateString('en-US', {
-                                                        year: 'numeric',
-                                                        month: 'short',
-                                                        day: '2-digit',
-                                                    })}
-                                                </td>
-                                                <td className="px-6 py-4 text-slate-700">
-                                                    {new Date(`1970-01-01T${res.time_reservation}`).toLocaleTimeString('en-US', {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                        hour12: true,
-                                                    })}
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="space-y-0.5">
-                                                        <div className="text-xs text-slate-500">{res.payment_status}</div>
-                                                        <div className="text-xs text-slate-400">ID: {res.payment_id?.substring(0, 10)}...</div>
-                                                    </div>
-
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <span className="px-2 py-1 inline-flex text-xs font-medium rounded-full ">
-                                                        {res.amount} DH
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <span className={`px-2 py-1 inline-flex text-xs font-medium rounded-full ${getStatusColorClass(res.status)}`}>
-                                                        {res.status.charAt(0).toUpperCase() + res.status.slice(1)}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center space-x-2">
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.payer_email, res.user_id)}
-                                                            disabled={res.status === 'approved'}
-                                                            className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium ${res.status === 'approved'
-                                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                                : 'bg-emerald-600 text-white hover:bg-emerald-700'
-                                                                }`}
-                                                        >
-                                                            <div size={14} className="mr-1" /> Approve
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.payer_email, res.user_id)}
-                                                            disabled={res.status === 'refuser'}
-                                                            className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium ${res.status === 'refuser'
-                                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                                : 'bg-red-500 text-white hover:bg-red-600'
-                                                                }`}
-                                                        >
-                                                            <div size={14} className="mr-1" /> Refuse
-                                                        </button>
-                                                        <button onClick={() => handleChat(res.user_id, res.chat_user_id)} className='inline-flex items-center px-3 py-1.5 rounded text-xs font-medium'>
-                                                            <FontAwesomeIcon icon={faComments} />
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div className="flex">
+          {loading && <Spinner />}
+          <div className="hidden lg:flex">
+            <DashboardNav id_={3} />
+          </div>
+          <div className="flex-1 bg-gray-50 min-h-screen py-10 px-4 md:px-8">
+            <div className="max-w-7xl mx-auto space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white shadow-md rounded-xl p-6 border border-slate-200 transition-all hover:shadow-lg">
+                  <div className="flex items-center space-x-3 mb-3 text-gray-500 text-sm font-medium uppercase">
+                    <FontAwesomeIcon icon={faChartBar} className="text-blue-500" />
+                    <span>Réservations Totales</span>
+                  </div>
+                  <p className="text-3xl font-bold text-gray-800">{reservations.length}</p>
+                  <div className="mt-2 text-sm text-gray-500">Toutes les réservations</div>
                 </div>
+                
+                <div className="bg-white shadow-md rounded-xl p-6 border border-slate-200 transition-all hover:shadow-lg">
+                  <div className="flex items-center space-x-3 mb-3 text-gray-500 text-sm font-medium uppercase">
+                    <FontAwesomeIcon icon={faDollarSign} className="text-green-500" />
+                    <span>Paiments Approuvés</span>
+                  </div>
+                  <p className="text-3xl font-bold text-gray-800">
+                    {reservations.filter(r => r.status === 'approved').length}
+                  </p>
+                  <div className="mt-2 text-sm text-gray-500">Réservations confirmées</div>
+                </div>
+                
+                <div className="bg-white shadow-md rounded-xl p-6 border border-slate-200 transition-all hover:shadow-lg">
+                  <div className="flex items-center space-x-3 mb-3 text-gray-500 text-sm font-medium uppercase">
+                    <FontAwesomeIcon icon={faEnvelope} className="text-purple-500" />
+                    <span>Montant Total</span>
+                  </div>
+                  <p className="text-3xl font-bold text-gray-800">{totalAmount}DH</p>
+                  <div className="mt-2 text-sm text-gray-500">Revenus totaux</div>
+                </div>
+              </div>
+      
+              <div className="bg-white border border-slate-200 rounded-xl shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-red-400 to-red-500 px-6 py-4">
+                  <h1 className="text-xl font-semibold text-white">Réservations des Étudiants</h1>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm divide-y divide-slate-200">
+                    <thead className="bg-slate-50">
+                      <tr>
+                        {['ID', 'Étudiant', 'Date', 'Heure', 'Paiement', 'Montant', 'Statut', 'Actions'].map(header => (
+                          <th key={header} className="px-6 py-3 text-left font-medium text-slate-600 uppercase tracking-wider">{header}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-slate-100">
+                      {reservations.length === 0 ? (
+                        <tr>
+                          <td colSpan="8" className="px-6 py-12 text-center">
+                            <div className="flex flex-col items-center justify-center space-y-3">
+                              <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-300 text-4xl" />
+                              <p className="text-gray-400 font-medium">Aucune réservation trouvée</p>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        reservations.map((res) => (
+                          <tr key={res.id} className="hover:bg-slate-50 transition-colors">
+                            <td className="px-6 py-4 font-medium">{res.id}</td>
+                            <td className="px-6 py-4 text-slate-700 font-medium">{res.etudiant}</td>
+                            <td className="px-6 py-4 text-slate-700">
+                              {new Date(res.date_reservation).toLocaleDateString('fr-FR', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: '2-digit',
+                              })}
+                            </td>
+                            <td className="px-6 py-4 text-slate-700">
+                              {new Date(`1970-01-01T${res.time_reservation}`).toLocaleTimeString('fr-FR', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true,
+                              })}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="space-y-1">
+                                <div className="text-xs font-medium text-slate-700">{res.payment_status}</div>
+                                <div className="text-xs text-slate-500">ID: {res.payment_id?.substring(0, 10)}...</div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className="px-3 py-1 inline-flex text-sm font-medium bg-blue-50 text-blue-700 rounded-full">
+                                {res.amount} DH
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`px-3 py-1 inline-flex text-xs font-medium rounded-full ${
+                                res.status === 'approved' 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : res.status === 'refuser'
+                                  ? 'bg-red-100 text-red-700'
+                                  : 'bg-yellow-100 text-yellow-700'
+                              }`}>
+                                {res.status.charAt(0).toUpperCase() + res.status.slice(1)}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.payer_email, res.user_id)}
+                                  disabled={res.status === 'approved'}
+                                  className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                                    res.status === 'approved'
+                                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                      : 'bg-green-600 text-white hover:bg-green-700'
+                                  }`}
+                                >
+                                  <FontAwesomeIcon icon={faCheck} className="mr-1" /> Approuver
+                                </button>
+                                <button
+                                  onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.payer_email, res.user_id)}
+                                  disabled={res.status === 'refuser'}
+                                  className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                                    res.status === 'refuser'
+                                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                      : 'bg-red-500 text-white hover:bg-red-600'
+                                  }`}
+                                >
+                                  <FontAwesomeIcon icon={faTimes} className="mr-1" /> Refuser
+                                </button>
+                                <button 
+                                  onClick={() => handleChat(res.user_id, res.chat_user_id)} 
+                                  className='inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors'
+                                >
+                                  <FontAwesomeIcon icon={faComments} className="mr-1" /> Chat
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    );
+      );
+      
 
 
 
