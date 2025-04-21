@@ -93,7 +93,6 @@ const RejisterPro = () => {
 
     }, [token, navigate]);
 
-    const firstThreeCities = city.slice(0, 3);
 
     return (
         <div className="min-h-screen ">
