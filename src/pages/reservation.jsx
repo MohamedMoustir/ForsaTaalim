@@ -26,7 +26,6 @@ function ReservationTutors() {
             .then((response) => {
                 setDetilesprofiles(response.data.Profile);
                 console.log('ddd',response.data);
-
                 setLoading(false)
             })
     };
