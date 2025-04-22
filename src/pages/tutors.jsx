@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import MainLayout from "../components/MainLayout.jsX";
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 const Tutors = () => {
     const token = getToken();
@@ -19,6 +20,10 @@ const Tutors = () => {
     const [filterByLocation, setFilterByLocation] = useState('All');
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showAlert, setShowAlert] = useState(false);
+    const [type, setType] = useState('');
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
 
     const fetchProfesseurs = async (page) => {
         const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
@@ -29,11 +34,13 @@ const Tutors = () => {
         }
         console.log(res.data.AllProfile.data);
     };
-
+    useEffect(() => {
+        fetchProfesseurs(currentPage);
+    }, [])
     const navigate = useNavigate();
     useEffect(() => {
 
-        fetchProfesseurs(currentPage);
+
         if (token) {
             setUserAuth(true);
         }
@@ -50,7 +57,7 @@ const Tutors = () => {
         setIsMenuHidden(false);
     };
     const handleClickProfessor = (id) => {
-        navigate(`/detilesTutor/${id}`);
+       
     };
     function handlegetUser(userId) {
 
@@ -66,7 +73,14 @@ const Tutors = () => {
         })
             .then((response) => response.json())
             .then(() => {
-                alert('done');
+                setShowAlert(true)
+                setTitle('card Ajoute avec succès !')
+                setType('success')
+                setMessage('Votre card a ajouter avec succès.');
+                setInterval(() => {
+                    navigate('/favorites');
+                }, 2000)
+
             });
     }
 
@@ -78,9 +92,16 @@ const Tutors = () => {
         pages.push(i);
     }
 
-
     return (
         <>
+            {showAlert && (
+                <Alert
+                    type={type}
+                    title={title}
+                    message={message}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
             {loading && (
                 <Spinner />
             )}
@@ -141,7 +162,7 @@ const Tutors = () => {
                                         <div className="relative h-48 bg-gray-200">
                                             <img
                                                 key={prof.profe_id}
-                                                onClick={() => handleClickProfessor(prof.id)}
+                                                onClick={() =>  navigate(`/detilesTutor/${prof.profe_id}`)}
                                                 src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                                 alt={prof.prenom}
                                                 className="w-full h-full object-cover cursor-pointer"
@@ -175,7 +196,7 @@ const Tutors = () => {
                                             <div className="flex items-center mb-3">
                                                 <div className="flex items-center">
                                                     <span className="text-yellow-400">★</span>
-                                                    <span className="ml-1">{prof.average_rating?.split(0,3)}</span>
+                                                    <span className="ml-1">{prof.average_rating?.split(0, 3)}</span>
                                                     <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
                                                 </div>
                                                 <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
