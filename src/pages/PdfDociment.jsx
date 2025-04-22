@@ -1,38 +1,40 @@
 import React from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import MyDocument from './pdf';
+import Pdf from './pdf';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
 import { useState, useEffect } from 'react';
 import { Nav } from '../components/Nav';
 import Spinner from '../components/Spinner';
-function App() {
 
-    const [payment_By_id, setpayment_By_id] = useState([]);
-    const token = getToken();
-    const user = getUser();
-    const { id } = useParams();
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-    useEffect(() => {
-        const fetchPayments = async (id) => {
-            const response = await axios.get(`${API_URL}/Reservation/${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            setpayment_By_id(response.data.reservation);
-            console.log('dd', response.data.reservation);
+function PdfDociment({payment_By_id ,loading}) {
+console.log('fhhhhhhhhhhhh',payment_By_id);
 
-            if (response) {
-                setLoading(false)
-            }
-            console.error(response.data.reservation.data);
-        };
-        fetchPayments(id)
-    }, []);
+    // const [payment_By_id, setpayment_By_id] = useState([]);
+    // const token = getToken();
+    // const user = getUser();
+    // const { id } = useParams();
+    // const [loading, setLoading] = useState(true);
+    // const navigate = useNavigate();
+    // useEffect(() => {
+    //     const fetchPayments = async (id) => {
+    //         const response = await axios.get(`${API_URL}/Reservation/${id}`, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         });
+    //         setpayment_By_id(response.data.reservation);
+    //         console.log('dd', response.data.reservation);
+
+    //         if (response) {
+    //             setLoading(false)
+    //         }
+    //         console.error(response.data.reservation.data);
+    //     };
+    //     fetchPayments(id)
+    // }, []);
 
     return (
         <>
@@ -99,11 +101,10 @@ function App() {
                         </div>
                     </div>
                 </div>
-
                 <h2 className="text-xl font-semibold my-6">Générer un PDF</h2>
 
                 <PDFDownloadLink
-                    document={<MyDocument payment={payment_By_id} />}
+                    document={<Pdf payment={payment_By_id} />}
                     fileName="document-payment.pdf"
                     className="inline-block px-5 py-2 bg-red-400 text-white rounded hover:bg-red-500 transition"
                 >
@@ -114,4 +115,4 @@ function App() {
     );
 }
 
-export default App;
+export default PdfDociment;
