@@ -54,30 +54,14 @@ class ResevationServices implements ResevationInterface
     {
         return $this->resevationRepositories->deleteReservations($id);
     }
-    public function mesCours()
+  
+  
+    public function reserverProfesseur($id)
     {
-
+        return $this->resevationRepositories->reserverProfesseur($id);
     }
-    public function consulterProfils()
-    {
-
-    }
-    public function reserverProfesseur()
-    {
-        return $this->resevationRepositories->reserverProfesseur();
-    }
-    public function historiqueReservations()
-    {
-
-    }
-    public function ajouterPreferences(array $preferences)
-    {
-
-    }
-    public function suiviEtNotifications()
-    {
-
-    }
+ 
+  
 
 
 }

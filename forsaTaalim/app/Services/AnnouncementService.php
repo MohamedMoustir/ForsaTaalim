@@ -20,6 +20,9 @@ class AnnouncementService implements CrudInterface
     }
     public function create(array $data)
     {
+        
+
+        $data['image'] = $data['image']->store('images', 'public');
         return $this->AnnouncementRepository->create($data );
     }
     public function getAll()
@@ -28,14 +31,21 @@ class AnnouncementService implements CrudInterface
     }
     public function getById($id)
     {
-        return Announcement::findOrFail($id);
+        return $this->AnnouncementRepository->getById($id);
+        // return Announcement::where("professeur_id",'=',$id)->get();
     }
     public function update($id, array $data)
     {
+        $data['image'] = $data['image']->store('images', 'public');
+
         return $this->AnnouncementRepository->update($id, $data);
     }
     public function delete($id)
     {
         return $this->AnnouncementRepository->delete($id);
+    }
+    public function getByIdAnnonce($id){
+        return $this->AnnouncementRepository->getByIdAnnonce($id);
+
     }
 }

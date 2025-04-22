@@ -1,199 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ForsaTaalim - Find a Math Tutor</title>
-    <script src="tailwind.js"></script>
-    <script src="../js/index.js"></script>
-
+  <meta charset="UTF-8">
+  <title>Toast Notifications</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="">
-    <!-- Navigation -->
-    <!-- <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
-        <div class="text-2xl font-bold text-pink-500">
-            ForsaTaalim
+<body>
+
+  <div id="notifications" class="notification-container"></div>
+
+  <button onclick="createToast('success', 'fa-solid fa-check-circle', 'Succès', 'Opération terminée avec succès!')">Succès</button>
+  <button onclick="createToast('error', 'fa-solid fa-times-circle', 'Erreur', 'Une erreur s\'est produite!')">Erreur</button>
+  <button onclick="createToast('warning', 'fa-solid fa-exclamation-circle', 'Avertissement', 'Attention à cette action!')">Avertissement</button>
+
+ <script>
+  const notifications = document.getElementById("notifications");
+
+function createToast(type, icon, title, text) {
+  let newToast = document.createElement("div");
+
+  newToast.innerHTML = `
+    <div class="toast ${type}">
+        <i class="${icon}"></i>
+        <div class="content">
+            <div class="title">${title}</div>
+            <span>${text}</span>
         </div>
-        <div class="flex gap-4 items-center">
-            <a href="#" class="text-gray-600 rounded-full bg-slate-50 px-2 py-2  hover:text-gray-800">?</a>
-            <a href="#" class="bg-white px-4 py-2 rounded-full hover:bg-gray-50">Become a Tutor</a>
-            <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Log In</a>
-        </div>
-    </nav> -->
+        <i class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+    </div>
+  `;
 
-    <nav class="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto">
-        <div class="text-2xl font-bold text-pink-500">
-            ForsaTaalim
-        </div>
-        <div class="flex gap-4 items-center ">
-            <a href="#"
-                class="bg-red-400 border border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl">M</a>
-        </div>
-        <button data-collapse-toggle="navbar-hamburger" type="button"
-            class="inline-flex items-center justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg  absolute right-[180px] "
-            aria-controls="navbar-hamburger" aria-expanded="false" onclick="OpenMnue()">
-            <span class="sr-only">Open main menu</span>
-            <svg class="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M1 1h15M1 7h15M1 13h15" />
-            </svg>
+  notifications.appendChild(newToast);
 
-        </button>
-        <ul
-            class=" hidden z-2 flex flex-col font-medium mt-4 w-32 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center absolute right-[8%] bottom-[65%]">
-            <li>
-                <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded dark:bg-blue-600"
-                    aria-current="page">Sort
-                    bye</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    id="p1">Priority</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
-                    id="triparTiter">title</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    id="triparDate_limite">date limite</a>
-            </li>
-        </ul>
-        <button class="absolute top-4 right-[225px] p-1 rounded-full bg-white/80 hover:bg-white">
-            <svg class="w-8 h-8 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                </path>
-            </svg>
-    </nav>
-    <section class="bg-gray-50">
-        <div class="max-w-6xl mx-auto p-6">
-            <!-- Main Heading -->
-            <h1 class="text-2xl font-bold mb-8">
-                My favorites
-            </h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
-                    <div class="relative h-48 bg-gray-200">
-                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover">
-                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
-                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-3">
-                            <div class="flex items-center">
-                                <span class="text-yellow-400">★</span>
-                                <span class="ml-1">5</span>
-                                <span class="text-gray-500 text-sm ml-1">(104 reviews)</span>
-                            </div>
-                            <span class="ml-4 text-blue-600 text-sm">Ambassador</span>
-                        </div>
-                        <div class="flex gap-4">
-                            <h1 class="border border-red-400 w-20 h-8 rounded-3xl text-center font-bold text-red-400">
-                                30$</h1>
-                            <img class=" h-8 w-20 rounded-3xl text-center font-bold text-red-400"
-                                src="../image/image 10.png" alt="">
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    newToast.remove();
+  }, 5000);
+}
 
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <span
-                                class="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-full text-center mt-4 rounded-3xl">Finalise
-                                your request</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
-                    <div class="relative h-48 bg-gray-200">
-                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover">
-                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
-                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-3">
-                            <div class="flex items-center">
-                                <span class="text-yellow-400">★</span>
-                                <span class="ml-1">5</span>
-                                <span class="text-gray-500 text-sm ml-1">(104 reviews)</span>
-                            </div>
-                            <span class="ml-4 text-blue-600 text-sm">Ambassador</span>
-                        </div>
-                        <div class="flex gap-4">
-                            <h1 class="border border-red-400 w-20 h-8 rounded-3xl text-center font-bold text-red-400">
-                                30$</h1>
-                            <img class=" h-8 w-20 rounded-3xl text-center font-bold text-red-400"
-                                src="../image/image 10.png" alt="">
-
-                        </div>
-
-                        <div class="flex items-center justify-between">
-
-                            <span
-                                class="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-full text-center mt-4 rounded-3xl">Finalise
-                                your request</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden border border-red-400 ">
-                    <div class="relative h-48 bg-gray-200">
-                        <img src="../image/Mask Group.png" alt="" class="w-[100%] h-[100%] bg-cover">
-                        <button class="absolute top-4 right-4 p-1 rounded-full bg-white/80 hover:bg-white">
-                            <svg class="w-5 h-5  text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex items-center mb-3">
-                            <div class="flex items-center">
-                                <span class="text-yellow-400">★</span>
-                                <span class="ml-1">5</span>
-                                <span class="text-gray-500 text-sm ml-1">(104 reviews)</span>
-                            </div>
-                            <span class="ml-4 text-blue-600 text-sm">Ambassador</span>
-                        </div>
-                        <div class="flex gap-4">
-                            <h1 class="border border-red-400 w-20 h-8 rounded-3xl text-center font-bold text-red-400">
-                                30$</h1>
-                            <img class=" h-8 w-20 rounded-3xl text-center font-bold text-red-400"
-                                src="../image/image 10.png" alt="">
-
-                        </div>
-
-                        <div class="flex items-center justify-between">
-
-                            <span
-                                class="text-red-500 cursor-pointer text-sm bg-red-400 text-white p-4 w-full text-center mt-4 rounded-3xl">Finalise
-                                your request</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-
+ </script>
 </body>
-
 </html>

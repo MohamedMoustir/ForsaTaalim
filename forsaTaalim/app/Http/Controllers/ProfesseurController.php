@@ -25,7 +25,7 @@ class ProfesseurController extends Controller
     }
     public function create(ProfesseurRequests $request)
     {
-        
+   
         $validated = $request->validated();  
         $professeur = $this->professeurService->create($validated);
         return response()->json(['message' => 'Professeur created successfully!', 'Professeur' => $professeur], 201);
@@ -58,20 +58,17 @@ class ProfesseurController extends Controller
             return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
         
     }
-    // you want test
-    // public function getAll(request $request)
-    // {
-    //     if ($request->all()) {
-    //         $AllProfileProfesseur = $this->professeurService->getAllAndSerch($request->all());
-    //         return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
-    //     } else {
-    //         $AllProfileProfesseur = $this->professeurService->getAll();
-    //         return response()->json(['message' => 'ProfileProfesseur', 'AllProfile' => $AllProfileProfesseur]);
-    //     }
-    // }
-    public function update(ProfesseurRequests $request, $id)
+
+    public function update(request $request, $id)   
     {
-        $validate = $request->validated();
+        $validate = $request->validate([
+            'diplomes' => 'nullable|string|max:255',
+            'experiences' => 'nullable|string|max:255',
+            'tarifHoraire' => 'nullable|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'biographie' => 'nullable|string',
+            'video' => 'nullable|file',
+        ]);
         $profile = $this->professeurService->update($id, $validate);
         return response()->json(['message' => 'Professeur created successfully!', 'Professeur' => $profile], 200);
 
@@ -88,11 +85,8 @@ class ProfesseurController extends Controller
     }
     public function generateActivityReport()
     {
-        $generate = $this->professeurService->generateActivityReport();
-        return response()->json([
-            'total_users' => $generate['totalUsers'],
-            'total_Announcement' => $generate['totalAnnouncement'],
-            'total_reviews' => $generate['totalReviews'],
-        ]);
+      return  $generate = $this->professeurService->generateActivityReport();
+
+       
     }
 }

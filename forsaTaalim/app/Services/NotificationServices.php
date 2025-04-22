@@ -10,6 +10,7 @@ use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use NotificationSent;
 use Termwind\Components\Dd;
 
 class NotificationServices implements CrudInterface
@@ -24,13 +25,12 @@ class NotificationServices implements CrudInterface
     {
       
         $data['sender_id'] = Auth::id();
-       
         return $this->notificationRepositories->create($data);
     }
     public function getAll(){}
     public function getById($id)
     {
-        return Notification::findOrFail($id,'receiver_id');
+        return $this->notificationRepositories->getById($id); 
     }
     public function update($id, array $data){}
     public function delete($id)

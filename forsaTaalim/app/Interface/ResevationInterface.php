@@ -13,6 +13,4 @@ interface ResevationInterface
     public function updateStatusReservationsToApproved($id);
     public function deleteReservations($id);
     public function reserverProfesseur($id);
-    public function historiqueReservations();
-    public function ajouterPreferences(array $preferences);
 }

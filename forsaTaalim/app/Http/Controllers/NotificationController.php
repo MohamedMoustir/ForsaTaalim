@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NotificationRequests;
 use App\Services\NotificationServices;
 use Illuminate\Support\Facades\Auth;
+use App\Events\NotificationSent;
 use Termwind\Components\Dd;
 
 
@@ -19,6 +20,7 @@ class NotificationController extends Controller
     {
         $validated = $request->validated();
         $notification = $this->notificationServices->create($validated);
+        event(new NotificationSent($validated['title'],$validated['content'],$validated['receiver_id']));
         return response()->json(['message' => 'notification created successfully!', 'notification' => $notification], 201);
     }
     public function show()

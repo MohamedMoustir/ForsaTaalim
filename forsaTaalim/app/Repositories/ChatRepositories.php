@@ -40,8 +40,16 @@ class ChatRepositories
             'sender' => Auth::user()->role,
             'timestamp' => now()->format('h:i A'),
         ]);
+
   
-        return $this->model->create($data);
+      $chat = Chat::create([
+            'chat_user_id' => $data['chat_user_id'],
+            'message' => $data['message'],
+            'sender_id' => Auth::id(),
+        ]);
+
+      return $chat;
+
     }
 
 }

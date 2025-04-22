@@ -12,6 +12,7 @@ class Chat extends Model
         'chat_user_id',
         'message',
         'seen',
+        'sender_id'
     ];
 
     public function user()
@@ -19,25 +20,19 @@ class Chat extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relation entre le chat et l'utilisateur destinataire.
-     */
+   
     public function receiver()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relation pour récupérer le profil du vendeur destinataire.
-     */
+ 
     public function receiverSellerProfile()
     {
         return $this->belongsTo(User::class, 'receiver_id', 'id')->select(['id', 'name', 'email', 'role']);
     }
 
-    /**
-     * Relation pour récupérer le profil du vendeur expéditeur.
-     */
+  
     public function senderSellerProfile()
     {
         return $this->belongsTo(User::class, 'sender_id', 'id')->select(['id', 'name', 'email', 'role']);

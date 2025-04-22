@@ -11,12 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-
             $table->id();
             $table->unsignedBigInteger('etudiant_id');
             $table->unsignedBigInteger('professeur_id');
             $table->date('date_reservation');
             $table->time('time_reservation');
+            $table->time('dura');
             $table->enum('status',['pending','approved','refuser'])->default('pending');
             $table->foreign('etudiant_id')->on('users')->references('id')->onDelete('cascade');
             $table->foreign('professeur_id')->on('users')->references('id')->onDelete('cascade');

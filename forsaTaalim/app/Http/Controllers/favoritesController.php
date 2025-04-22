@@ -22,7 +22,7 @@ class FavoritesController extends Controller
         $existingFavorite = Favorite::where('user_id1', $user->id)
             ->where('user_id2', $userId)
             ->first();
-
+    
         if (!$existingFavorite) {
             Favorite::create([
                 'user_id1' => $user->id,
@@ -53,7 +53,7 @@ class FavoritesController extends Controller
         $user = Auth::id();
         $favorites = DB::table('favorites')
             ->join('users', 'favorites.user_id2', '=', 'users.id')  
-            ->join('professeurs as p', 'users.id', '=', 'p.id') 
+        ->join('professeurs as p', 'users.id', '=', 'p.user_id') 
             ->leftJoin('comments as comme1', 'users.id', '=', 'comme1.tuteur_id') 
             ->where('favorites.user_id1', '=', $user)  
             ->select(
@@ -66,7 +66,8 @@ class FavoritesController extends Controller
                 'users.photo as user_photo',
                 'p.id as prof_id',
                 'p.tarifHoraire',
-                DB::raw('COUNT(comme1.rating) as total_ratings')  
+                DB::raw('COUNT(comme1.rating) as total_ratings'),
+                DB::raw('AVG(comme1.rating) as average_rating') 
             )
             ->groupBy('favorites.id', 'favorites.user_id1', 'favorites.user_id2', 'users.id', 'users.name', 'users.email', 'users.photo', 'p.id')  
             ->get();

@@ -8,6 +8,7 @@ use App\Repositories\CategorieMatiereRepository;
 use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\ProfesseurRepositories;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class professeurService implements CrudInterface
@@ -18,10 +19,10 @@ class professeurService implements CrudInterface
     {
         $this->professeurRepositories = $professeurRepositories;
     }
-    public function create(array $data )
+    public function create(array $data)
     {
-        $lastInsertUser = User::latest()->first();
-        $data['user_id'] = $lastInsertUser->id;
+        // $lastInsertUser = User::latest()->first();
+        $data['user_id'] = Auth::id();
     
         if (isset($data['video'])) {
             $video = $data['video'];
@@ -67,5 +68,9 @@ class professeurService implements CrudInterface
     public function getAll()
     {
         return $this->professeurRepositories->getAllwithout();
+    }
+
+    public function generateActivityReport(){
+        return $this->professeurRepositories->generateActivityReport();
     }
 }

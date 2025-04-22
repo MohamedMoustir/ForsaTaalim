@@ -43,9 +43,23 @@ class AuthService
     }
     public function logout()
     {
-        Auth::user()->tokens()->delete();
-        return true;
+        
+        if (Auth::check()) {
+            Auth::user()->tokens->each(function ($token) {
+                $token->delete();
+            });
+    
+    
+            return response()->json([
+                'message' => 'Successfully logged out',
+            ], 200);
+        }
+    
+        return response()->json([
+            'message' => 'No user logged in',
+        ], 401);
     }
+    
     public function refresh()
     {
         try {

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('image');
             $table->text('description');
-            $table->json('subjects'); 
-            $table->json('levels'); 
-            $table->decimal('price', 8, 2);
+            $table->string('subjects'); 
+            $table->string('levels'); 
             $table->string('location');
             $table->date('date');
             $table->boolean('is_active')->default(true);

@@ -12,7 +12,9 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@react-pdf/renderer": "^4.3.0",
         "cors": "^2.8.5",
+        "dayjs": "^1.11.13",
         "laravel-echo": "^2.0.2",
         "pusher-js": "^8.4.0"
     }

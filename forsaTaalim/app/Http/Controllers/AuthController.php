@@ -56,10 +56,12 @@ class AuthController extends Controller
             'user' => $result['user'],
             'token' => $result['token']
         ]);
+        
     }
 
     public function logout(request $request)
     {
+       
         $this->authServices->logout();
         
         return response()->json([
