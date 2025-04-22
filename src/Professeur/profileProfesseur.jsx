@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardNav from "../components/dashboardNav";
+import Spinner from "../components/Spinner";
 
 const profilesilePage = () => {
     const [profiles, setprofilesiles] = useState([]);
@@ -21,6 +22,7 @@ const profilesilePage = () => {
     const [diplomes, setDiplomes] = useState('');
     const [experiences, setExperiences] = useState('');
     const [editId, setEditeId] = useState('');
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -32,6 +34,7 @@ const profilesilePage = () => {
                 }
             })
                 .then((response) => {
+                    setLoading(false )
                     console.log(response.data.Profile);
                     setprofilesiles(response.data.Profile);
 
@@ -40,7 +43,7 @@ const profilesilePage = () => {
         fetchprofilesesseurs();
     }, [user.id])
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         if (editId) {
             e.preventDefault();
                 const data = new FormData();
@@ -60,6 +63,7 @@ const profilesilePage = () => {
                 })
                     .then((response) => response.json())
                     .then((result) => {
+                        setIsopen(false)
                         console.log('Success:', result);
                     })
                     .catch((error) => {
@@ -88,6 +92,8 @@ const profilesilePage = () => {
 
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
+          {loading && <Spinner />}
+
             <div className="hidden lg:flex">
                 <DashboardNav />
             </div>
