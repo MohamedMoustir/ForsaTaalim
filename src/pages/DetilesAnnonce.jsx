@@ -51,8 +51,6 @@ const DetilesAnnonce = () => {
     }, []);
 
     const handleRegister = (id_touter) => {
-        
-       
           navigate(`/reservation/${id_touter}`);  
     }
 
