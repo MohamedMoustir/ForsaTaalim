@@ -23,10 +23,10 @@ import Spinner from '../components/Spinner';
 import { API_URL, getToken, getUser } from '../utils/config';
 const token = getToken();
 const user = getUser();
-const detiles = () => {
+const detiles = ({detile,loading,comment,annonces}) => {
     const [isUserAuth, setUserAuth] = useState(false);
-    const [detile, setDetilesprofiles] = useState([]);
-    const [comment, setComment] = useState([]);
+    // const [detile, setDetilesprofiles] = useState([]);
+    // const [comment, setComment] = useState([]);
     const [content, setContent] = useState('');
     const [rating, setRating] = useState('');
     const [error, setError] = useState('');
@@ -34,39 +34,40 @@ const detiles = () => {
     const [popUp, setPopUp] = useState(false);
     const [editId, setEditId] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [annonces, setAnnonces] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    // const [annonces, setAnnonces] = useState([]);
 
     const navigate = useNavigate();
     const { id } = useParams()
 
-    const fetchProfesseurs = async (tutor_id) => {
-        axios.get(`${API_URL}/Professeur/${tutor_id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => {
-                setDetilesprofiles(response.data.Profile);
-                setTutors(response.data.Profile.profe_id);
-                fetchAnnonces(response.data.Profile.profe_id);
-            })
-    };
-    const fetchComment = async (tutor) => {
-        axios.get(`${API_URL}/avis/${tutor}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => {
-                console.log(response.data.comments);
+    // const fetchProfesseurs = async (tutor_id) => {
+    //     axios.get(`${API_URL}/Professeur/${tutor_id}`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             'Content-Type': 'application/json',
+    //         }
+    //     })
+    //         .then((response) => {
+    //             setDetilesprofiles(response.data.Profile);
+    //             setTutors(response.data.Profile.profe_id);
+    //             fetchAnnonces(response.data.Profile.profe_id);
+    //         })
+    // };
 
-                setComment(response.data.comments);
+    // const fetchComment = async (tutor) => {
+    //     axios.get(`${API_URL}/avis/${tutor}`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             'Content-Type': 'application/json',
+    //         }
+    //     })
+    //         .then((response) => {
+    //             console.log(response.data.comments);
 
-            })
-    };
+    //             setComment(response.data.comments);
+
+    //         })
+    // };
 
     const handleAvis = async (e) => {
         e.preventDefault();
@@ -76,7 +77,7 @@ const detiles = () => {
             const formData = new FormData();
             formData.append("content", content);
             formData.append("rating", rating);
-            formData.append("tuteur_id", tutor);
+            formData.append("tuteur_id", detile.profe_id);
 
             if (editId) {
                 formData.append("_method", 'PUT');
@@ -111,17 +112,17 @@ const detiles = () => {
             console.error(error);
         }
     };
+console.log('loading',loading);
+
+    // useEffect(() => {
+        // if (tutor) {
+            // fetchComment(detile.profe_id);
+        // }
+
+    // }, [])
 
     useEffect(() => {
-        if (tutor) {
-            fetchComment(tutor);
-            setLoading(false);
-        }
-
-    }, [tutor])
-
-    useEffect(() => {
-        fetchProfesseurs(id);
+        // fetchAnnonces(detile.profe_id)
         if (token) {
             setUserAuth(true);
         }
@@ -172,26 +173,25 @@ const detiles = () => {
         setIsFormVisible(true);
     };
     const handleContact = () => {
-        navigate(`/contactTutors/${tutor}`)
+        navigate(`/contactTutors/${detile.profe_id}`)
     }
 
-    const fetchAnnonces = async (tutor) => {
+    // const fetchAnnonces = async (profe_id) => {
 
-        axios.get(`${API_URL}/announcment/${tutor}`, {
-            headers: {
-                authorization: `bearer ${token}`,
-            }
-        })
-            .then(response => {
-                console.log('dDDDDDDDDD', response.data.announcement);
-                setAnnonces(response.data.announcement);
-                setLoading(false)
-            })
-            .catch(error => {
-                console.error("There was an error fetching the announcements:", error);
-            });
+    //     axios.get(`${API_URL}/announcment/${profe_id}`, {
+    //         headers: {
+    //             authorization: `bearer ${token}`,
+    //         }
+    //     })
+    //         .then(response => {
+    //             console.log('dDDDDDDDDD', response.data.announcement);
+    //             setAnnonces(response.data.announcement);
+    //         })
+    //         .catch(error => {
+    //             console.error("There was an error fetching the announcements:", error);
+    //         });
 
-    }
+    // }
 
     const handleRegister = ($id_annonce) => {
         if ($id_annonce) {
@@ -201,10 +201,9 @@ const detiles = () => {
     };
 
     return (
-        <> {loading && (
+        <> {loading &&  (
             <Spinner />
         )}
-
 
             <MainLayout >
                 <div className="container px-4 py-8 max-w-7xl mx-auto  ">
@@ -382,11 +381,12 @@ const detiles = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-5">
+                        <div className="space-y-5 overflow-y-auto h-64">
                             {comment.map((item, index) => (
+
                                 <div
                                     key={index}
-                                    className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow duration-300"
+                                    className="bg-white  rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow duration-300"
                                 >
                                     <div className="flex items-center mb-3">
                                         <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-white font-bold mr-3 shadow-sm">
@@ -434,19 +434,19 @@ const detiles = () => {
                                 </div>
                             ))}
 
-                            <div className="text-center mt-8">
-                                <button
-                                    onClick={openPopUp}
-                                    className="flex items-center justify-center mx-auto bg-gradient-to-r from-red-300 to-red-400 text-white px-5 py-2.5 rounded-lg hover:from-red-500 hover:to-red-700 transition duration-300 shadow-sm font-medium"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-                                    </svg>
-                                    Add Review
-                                </button>
-                            </div>
-                        </div>
 
+                        </div>
+                        <div className="text-center mt-8">
+                            <button
+                                onClick={openPopUp}
+                                className="flex items-center justify-center mx-auto bg-gradient-to-r from-red-300 to-red-400 text-white px-5 py-2.5 rounded-lg hover:from-red-500 hover:to-red-700 transition duration-300 shadow-sm font-medium"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                                </svg>
+                                Add Review
+                            </button>
+                        </div>
                         {popUp && (
                             <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
                                 <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md transform transition-all duration-300">
