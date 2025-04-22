@@ -94,13 +94,11 @@ function Content() {
                 },
                 body: JSON.stringify(userData)
             });
-
             if (!response.ok) {
                 throw new Error('Erreur lors de la mise à jour du profil');
             }
 
             const updatedData = await response.json();
-
             const user = localStorage.getItem('user');
             if (user) {
 
@@ -116,9 +114,6 @@ function Content() {
             setError("Erreur lors de la mise à jour du profil.");
         }
     };
-
-
-
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -140,8 +135,6 @@ function Content() {
         }
         setIsOpen(false);
     };
-
-
     const handleDeleteAccount = async () => {
         if (!isChecked) {
             setError("Vous devez cocher la case pour confirmer.");
