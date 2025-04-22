@@ -107,13 +107,38 @@ function MyFullCalendar({ amount }) {
   }
   const handleDateClick = (arg) => {
     if (user.role === 'tuteur') {
-      setIsOpen(true)
-      setEvanteDte(arg.dateStr);
+      let filteredEvents = [];
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().slice(0, 10);
+
+      if (formattedDate > arg.dateStr) {
+        alert('this date dont found')
+      } else {
+
+        setIsOpen(true)
+        setEvanteDte(arg.dateStr);
+      }
+
     } else {
-      let filteredEvents = events.filter(
-        (item) => new Date(item.date).toISOString().slice(0, 10) === arg.dateStr
+      const formatDate = (date) => new Date(date).toISOString().slice(0, 10);
+      let filtered = events.filter((item) => {
+        formatDate(item.date) === formatDate(arg.dateStr);
+        if (formatDate(item.id) === formatDate(arg.dateStr)) {
+          alert();
+        }
+
+
+      }
       );
-      if (filteredEvents.length === 1) {
+      console.log('kkkkkkkkkkkkkk',filtered);
+
+
+      let filteredEvents = [];
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().slice(0, 10);
+      // console.log(formattedDate);
+
+      if (formattedDate > arg.dateStr) {
         alert('this date dont found')
       } else {
         setGetDateReserve(arg.dateStr);
@@ -175,7 +200,7 @@ function MyFullCalendar({ amount }) {
   }
   const handleReservation = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(false);
     let formData = new FormData();
     formData.append('date_reservation', getDateReserve);
     formData.append('time_reservation', timeReservation.replace(/ (AM|PM)/, ''));
@@ -196,11 +221,11 @@ function MyFullCalendar({ amount }) {
             console.log(response.data.reservation.original.message);
           }
         })
-        setShowAlert(true);
-        setTitle(' reservation ajoute  successyful')
-        setType('success')
-        setMessage('Votre reservation a été ajoutée avec succès.')
-        setShowAlert(true)
+      setShowAlert(true);
+      setTitle(' reservation ajoute  successyful')
+      setType('success')
+      setMessage('Votre reservation a été ajoutée avec succès.')
+      setShowAlert(true)
     } catch (error) {
       console.error("Erreur:", error);
       setShowAlert(true)
@@ -323,7 +348,7 @@ function MyFullCalendar({ amount }) {
                     Close
                   </button>
                   {user.role === 'tuteur' && (
-                    <button onClick={handleDelete}
+                    <button onClick={handleDelete} disabled={loading}
                       className="px-3 py-1.5 text-sm bg-red-400 text-white rounded hover:bg-red-500"
                     >
                       Remove
