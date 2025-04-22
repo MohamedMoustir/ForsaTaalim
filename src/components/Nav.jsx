@@ -5,7 +5,9 @@ import '../assets/style/style.css'
 import { useNavigate } from "react-router-dom";
 import { API_URL, getToken, getUser } from '../utils/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTimes ,
+} from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -14,7 +16,8 @@ dayjs.extend(relativeTime);
 dayjs.locale("En");
 import Pusher from "pusher-js";
 
-export  const Nav = () => {
+
+export  const Nav = ({total}) => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate()
@@ -23,7 +26,6 @@ export  const Nav = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [notificationCount, setNotificationCount] = useState(0);
     const [notifications, setNotifications] = useState([]);
-
     function BecomeTutor() {
         navigate('/Rejister')
     }
@@ -57,7 +59,7 @@ export  const Nav = () => {
             }
         })
             .then(response => {
-                console.log(response.data.notification);
+                console.log('notification',response.data.notification);
                 setNotifications(response.data.notification);
                 setNotificationCount(response.data.notification.length)
             })
@@ -89,18 +91,22 @@ export  const Nav = () => {
     function hanleProfile() {
         navigate('/profile');
     }
-    
     function handleClickFlase() {
         setIsMenuHidden(true);
     }
     function handleClickGoTofavorites() {
-        navigate('/favorites')
+        
     }
     function handleClickHome() {
         navigate('/')
     }
     useEffect(() => {
-        handleAfficheNotifications()
+        handleAfficheNotifications();
+        if (user) {
+          if (user.role == 'tuteur') {
+           navigate('/login'); 
+        }  
+        }
     }, []);
 
     useEffect(() => {
@@ -113,7 +119,6 @@ export  const Nav = () => {
         channel.bind('notification', function (data) {
             setNotifications(prevMessages => [...prevMessages, data]);
             console.log(data);
-
         });
         // Unmounting 
         return () => {
@@ -121,199 +126,191 @@ export  const Nav = () => {
             channel.unsubscribe();
         };
     }, [notificationCount])
-
-    
     
     return (
-        <nav className="navbar">
-            {!isUserAuth && (
-                <nav className="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto ">
-                    <div className="text-2xl font-bold text-pink-500">
-                        ForsaTaalim
-                    </div>
-                    <div className="flex gap-4 items-center">
-                        <a href="#" className="text-gray-600 rounded-full bg-slate-50 w-10 py-2 text-center  hover:text-gray-800">?</a>
-                        <a onClick={BecomeTutor} className="bg-white cursor-pointer px-4 py-2 rounded-full hover:bg-gray-50">Rejister</a>
-                        <a onClick={GoToLologin} className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-full hover:bg-blue-700 ">Log In</a>
-                    </div>
-                </nav>
-            )}
-            {isUserAuth && (
-
-                <nav className="px-4 py-4 flex justify-between items-center max-w-7xl mx-auto ">
-                    <div className="text-2xl font-bold text-pink-500">
-                        ForsaTaalim
-                    </div>
-                    <div className="flex gap-4 items-center ">
-                        <a onClick={hanleProfile}
-                            className="bg-red-400 border cursor-pointer border-red-400 text-white px-[10px] py-[10px] rounded-full hover:bg-red-400 rounded-full text-1xl absolute right-[100px]">{user.name.charAt(0).toUpperCase()}</a>
-                    </div>
-                    {isMenuHidden && (
-                        <button id="" onClick={handleClick} data-collapse-toggle="navbar-hamburger" type="button"
-                            className=" hamburger inline-flex itemsenter justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg absolute right-[180px] "
-                            aria-controls="navbar-hamburger" aria-expanded="false" >
-                            <span className="sr-only">Open main menu</span>
-                            <svg className="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M1 1h15M1 7h15M1 13h15" />
-                            </svg>
-                        </button>
-                    )}
-                    {!isMenuHidden && (
-
-                        <button
-                            id="close-btn"
-                            onClick={handleClickFlase}
-                            type="button"
-                            className="inline-flex items-center justify-center p-2 w-12 h-12 text-sm text-gray-500 rounded-lg absolute right-[180px] top-2"
-                            aria-label="Close menu"
-                        >
-                            <span className="sr-only">Close menu</span>
-                            <svg
-                                className="w-[110px] h-[110px] "
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-
-                    )}
-                    <ul
-                        className={`menu ${isMenuHidden ? 'hidden' : ''} 
-                        flex flex-col font-medium mt-4 w-[200px] bg-white shadow-sm dark:bg-red-400 dark:border-red-400 text-center absolute right-[8%] bottom-[65%] 
-                        rounded-lg border border-gray-200 dark:border-gray-600`}
-                        style={{ zIndex: 1 }}>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-3 text-white bg-red-400 dark:bg-blue-600 rounded-t-lg hover:bg-red-500 dark:hover:bg-blue-700 transition-colors"
-                                aria-current="page"
-                            >
-                                My Dashboard
-
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                onClick={handleClickHome}
-                                className="block cursor-pointer py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="p1"
-                            >
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                onClick={hanleProfile}
-                                className="block cursor-pointer py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="triparTiter"
-                            >
-                                My Profile
-                            </a>
-                        </li>
-                        <li >
-                            <a
-                                type="button"
-                                onClick={()=>navigate('/logout')}
-                                className="block cursor-pointer py-2 px-3 text-gray-900 hover:bg-red-50 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
-                                id="triparDate_limite"
-                            >
-                                LogOut
-                            </a>
-                        </li>
-
-                    </ul>
-                    <div className="relative">
-                        <button
-                            className="relative ml-[820px] p-2  text-gray-600 hover:text-gray-800"
-                            aria-label="Notifications"
-                            onClick={() => setShowNotifications(!showNotifications)}
-                        >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1"
-                                />
-                            </svg>
-
-                            {notificationCount > 0 && (
-                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-400 rounded-full transform translate-x-1/2 -translate-y-1/2">
-                                    {notificationCount}
-                                </span>
-                            )}
-                        </button>
-
-                        {showNotifications && (
-                             
-                            <div class="notifications-container absolute  left-[80%] mt-4 " style={{ zIndex: 1 }}>
-                                <div class="notifications-list h-[200px] overflow-y-auto">
-                                    {notifications.map((notif, index) => {
-                                        
-                                        return (
-                                            <div class="notification-item">
-                                                <div class="avatar-container">
-                                                    <img src={`http://127.0.0.1:8000/storage/${notif.photo}`} alt="Jese Leos" class="avatar" />
-                                                    <span class="status-indicator status-gray"></span>
-                                                </div>
-                                                <div class="notification-content">
-                                                    <div class="notification-text">
-                                                        <div class="notification-message">
-                                                            <span class="regular-text">{notif.content}</span>
-                                                        </div>
-                                                        <div class="delete-button" onClick={() => handleDeleteNotifications(notif.id)}>
-                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div class="timestamp"> {dayjs(notif.created_at).fromNow()}</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-
-                                </div>
-                                <div class="footer">
-                                    <button class="view-all">
-                                        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        Voir tous
-                                    </button>
-                                </div>
-                            </div>
-
-                        )}
-                    </div>
-                    <button className="absolute top-4 right-[225px] p-1 rounded-full bg-white/80 hover:bg-white" />
-                    <svg onClick={handleClickGoTofavorites} className="w-8 h-8 text-gray-600 cursor-pointer" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
+        <nav className="navbar  text-white">
+          {!isUserAuth && (
+            <div className="px-6 py-4 flex justify-between items-center max-w-7xl mx-auto">
+              <div className="text-red-400 text-3xl font-bold tracking-tight  drop-shadow-sm">
+                ForsaTaalim
+              </div>
+              <div className="flex gap-6 items-center">
+                <a href="#" className="bg-red-400 rounded-full  w-10 h-10 flex items-center justify-center backdrop-blur-sm  transition-all">?</a>
+                <a onClick={BecomeTutor} className="bg-white/10 cursor-pointer px-6 py-2.5 rounded-full border border-balck text-black transition-all backdrop-blur-sm">Register</a>
+                <a onClick={GoToLologin} className="bg-blue-500 cursor-pointer text-white px-6 py-2.5 rounded-full  transition-all font-medium shadow-md">Log In</a>
+              </div>
+            </div>
+          )}
+          
+          {isUserAuth && (
+            <div className="px-6 py-4 flex justify-between items-center max-w-7xl mx-auto relative">
+              <div className="text-3xl font-bold tracking-tight text-red-400 drop-shadow-sm">
+                ForsaTaalim
+              </div>
+              
+              <div className="flex items-center space-x-5">
+                <div className="relative">
+                  <button
+                    className="p-2 text-black transition-colors"
+                    aria-label="Notifications"
+                    onClick={() => setShowNotifications(!showNotifications)}
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1"
+                      />
                     </svg>
-
-                </nav>
-
-            )}
-
+                    {notificationCount > 0 && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-400 rounded-full transform translate-x-1/2 -translate-y-1/2 ring-2 ring-indigo-600">
+                        {notificationCount}
+                      </span>
+                    )}
+                  </button>
+      
+                  {showNotifications && (
+                    <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-xl z-50 overflow-hidden border border-purple-100">
+                      <div className="p-3  border-b border-red-100">
+                        <h3 className="font-semibold text-purple-800">Notifications</h3>
+                      </div>
+                      <div className="max-h-72 overflow-y-auto">
+                        {notifications.length > 0 ? (
+                          notifications.map((notif, index) => (
+                            <div key={index} className="flex items-start p-3 hover:bg-gray-50 border-b border-gray-100">
+                              <div className="relative mr-3">
+                                <img src={`http://127.0.0.1:8000/storage/${notif.photo}`} alt="User" className="w-12 h-12 rounded-full object-cover shadow-sm" />
+                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-gray-400 rounded-full border-2 border-white"></span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-gray-800">{notif.content}</p>
+                                <p className="text-xs text-gray-500 mt-1">{dayjs(notif.created_at).fromNow()}</p>
+                              </div>
+                              <button 
+                                onClick={() => handleDeleteNotifications(notif.id)}
+                                className="ml-2 text-gray-400 hover:text-red-500 transition-colors"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                              </button>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="p-6 text-center text-gray-500">
+                            <svg className="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1" />
+                            </svg>
+                            No notifications yet
+                          </div>
+                        )}
+                      </div>
+                      <div className="bg-red-to-r bg-red-500 to-red-500 p-2 text-center">
+                        <button className="text-white text-sm font-medium flex items-center justify-center w-full transition-transform hover:scale-105" onClick={() => setShowNotifications(false)}>
+                          <FontAwesomeIcon icon={faTimes} className="mr-1" />
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+      
+                <button className="p-2 text-black transition-colors">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+      
+                {isMenuHidden ? (
+                  <button
+                    onClick={handleClick}
+                    className="p-2 text-black  transition-colors"
+                    aria-controls="navbar-hamburger"
+                    aria-expanded="false"
+                  >
+                    <span className="sr-only">Open main menu</span>
+                    <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleClickFlase}
+                    className="p-2 text-black transition-colors"
+                    aria-label="Close menu"
+                  >
+                    <span className="sr-only">Close menu</span>
+                    <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+      
+                <button
+                  onClick={hanleProfile}
+                  className="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105"
+                >
+                  {user.name.charAt(0).toUpperCase()}
+                </button>
+              </div>
+      
+              <ul
+                className={`${isMenuHidden ? 'hidden' : 'block'} 
+                  absolute right-16 top-16 w-52 bg-white rounded-xl shadow-xl z-50 overflow-hidden transform transition-transform duration-200 ease-out`}
+              >
+                <li>
+                  <a
+                    href="#"
+                    className="block py-3.5 px-5 text-white bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 transition-colors font-medium"
+                    aria-current="page"
+                  >
+                    My Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={handleClickHome}
+                    className="block cursor-pointer py-3.5 px-5 text-gray-700 hover:bg-purple-50 transition-colors flex items-center"
+                  >
+                    <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={hanleProfile}
+                    className="block cursor-pointer py-3.5 px-5 text-gray-700 hover:bg-purple-50 transition-colors flex items-center"
+                  >
+                    <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    My Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => navigate('/logout')}
+                    className="block cursor-pointer py-3.5 px-5 text-gray-700 hover:bg-red-50 transition-colors flex items-center"
+                  >
+                    <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
         </nav>
-    );
+      );
 };
 
 

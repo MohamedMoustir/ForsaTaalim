@@ -56,7 +56,6 @@ function App() {
       cluster: 'eu'
     });
 
-
     const channel = pusher.subscribe('forsaTaalm-development');
     channel.bind('message', function (data) {
       setMessages(prevMessages => [...prevMessages, data]);
@@ -110,7 +109,7 @@ function App() {
       <div className="bg-gray-100 h-screen flex">
         
         {user.role == 'tuteur' && (
-          <DashboardNav />
+          <DashboardNav id_={4} />
         )}
 
         <div className="flex  mt-8 mb-8 w-full m-8 bg-white border border-gray-200 shadow-lg">

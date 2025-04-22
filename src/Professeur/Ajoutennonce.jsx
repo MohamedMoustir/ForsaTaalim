@@ -11,7 +11,7 @@ import {
     faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import DetilesAnnonce from "../pages/DetilesAnnonce";
-
+import { Navigate, useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
@@ -39,7 +39,7 @@ const Dashboard = () => {
     const [type, setType] = useState('');
     const [titles, setTitles] = useState('');
     const [message, setMessage] = useState('');
-
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         if (annonces.length == 3) {
@@ -107,6 +107,7 @@ const Dashboard = () => {
             }
         }
     }
+
     useEffect(() => {
         axios.get(`${API_URL}/announcment/${user.id}`, {
             headers: {
@@ -115,13 +116,36 @@ const Dashboard = () => {
         })
             .then(response => {
                 setLoading(false)
-                console.log(response.data.announcement);
+                console.log('feeeeeeeeeee', response.data.announcement);
                 setAnnonce(response.data.announcement);
             })
             .catch(error => {
                 console.error("There was an error fetching the announcements:", error);
             });
+
+
     }, []);
+
+    useEffect(() => {
+        let tody = new Date().toISOString().slice(0, 10);
+        for (let i = 0; i < annonces.length; i++) {
+
+             if (annonces[i].date === tody) {
+                setMessage(`C’est le moment de commencer la session ${annonces[i].title} pour l'annonce du ${annonces[i].date}`);  
+             }
+            let addDaytoDateAnnonce = new Date(annonces[i].date)
+            addDaytoDateAnnonce.setDate(addDaytoDateAnnonce.getDate()+1);
+            let formattedDate = addDaytoDateAnnonce.toISOString().slice(0, 10);
+
+            if (tody === formattedDate) {
+                handleDelete(annonces[i].id_annonce);
+                console.log('Date match found:', formattedDate );
+            } else {
+                console.log('No match:', annonces[i].date, '!==', tody);
+            }
+        }
+    })
+
 
     const handleDelete = async (id) => {
         try {
@@ -232,6 +256,7 @@ const Dashboard = () => {
                                         </svg>
                                     </button>
                                 </div>
+                                {message && <div className="bg-yellow-200 p-3 rounded mt-4 mb-20">{message}</div>}
 
                                 {annonces.filter((item) => {
 
@@ -253,7 +278,7 @@ const Dashboard = () => {
                                                 <div className="flex justify-between items-start">
                                                     <h3 className="text-xl font-semibold text-gray-800">{annonce.title}</h3>
                                                     <span className="text-sm text-gray-400">
-                                                        {new Date(annonce.created_at).toLocaleDateString()}
+                                                        {new Date(annonce.date).toLocaleDateString()}
                                                     </span>
                                                 </div>
 

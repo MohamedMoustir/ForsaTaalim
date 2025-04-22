@@ -2,7 +2,7 @@ import React from "react";
 import { Nav } from "./Nav";
 import Footer from "./Footer"; 
 import { useLocation } from 'react-router-dom';
-const MainLayout = ({ children , showNavFooter = true  }) => {
+const MainLayout = ({ children , showNavFooter = true ,length }) => {
     const location = useLocation();
     const isDetailPage = location.pathname.includes('/detilesTutor');
     const iscontactTutorsPage = location.pathname.includes('/contactTutors');
@@ -16,7 +16,7 @@ const MainLayout = ({ children , showNavFooter = true  }) => {
 
   return (
     <div className="layout">
-    <Nav /> 
+    <Nav total = {length} /> 
 
     <div className="content">
       {children} 
