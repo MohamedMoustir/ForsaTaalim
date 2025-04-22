@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MyDocument = ({ payment }) => {
+const pdf = ({ payment }) => {
 
 
   return (
@@ -105,4 +105,4 @@ const MyDocument = ({ payment }) => {
   );
 };
 
-export default MyDocument;
+export default pdf;
