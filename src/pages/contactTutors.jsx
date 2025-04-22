@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 
-const ContactTutors = () => {
+const ContactTutors = ({Detilesprofiles ,loading}) => {
 
     const token = getToken();
     const user = getUser();
@@ -17,40 +17,39 @@ const ContactTutors = () => {
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const [profiles, setprofiles] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);
-    const [Detilesprofiles, setDetilesprofiles] = useState(6);
+    // const [Detilesprofiles, setDetilesprofiles] = useState(6);
     const [message, setMessage] = useState(`Hello ,
         My name is ... and I am looking for a Mathematics tutor.
         I would like to take lessons at your place or mine.
         Ideally, I would like to start lessons as soon`);
-    const [address, setAddress] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [address, setAddress] = useState(Detilesprofiles.location);
+    const [phoneNumber, setPhoneNumber] = useState(Detilesprofiles.telephone);
     const [err, setError] = useState("");
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
-    const fetchProfesseurs = async (tutor_id) => {
-        axios.get(`${API_URL}/Professeur/${tutor_id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => {
-                console.log(response.data.Profile);
-                setDetilesprofiles(response.data.Profile);
-                setAddress(response.data.Profile.location)
-                setPhoneNumber(response.data.Profile.telephone)
+    // const fetchProfesseurs = async (tutor_id) => {
+    //     axios.get(`${API_URL}/Professeur/${tutor_id}`, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             'Content-Type': 'application/json',
+    //         }
+    //     })
+    //         .then((response) => {
+    //             console.log(response.data.Profile);
+    //             setDetilesprofiles(response.data.Profile);
+    //             setAddress(response.data.Profile.location)
+    //             setPhoneNumber(response.data.Profile.telephone)
                 
                 
-                setLoading(false)
-            })
-    };
-    useEffect(() => {
-        fetchProfesseurs(id);
-    }, [id])
+    //             setLoading(false)
+    //         })
+    // };
+    // useEffect(() => {
+    //     fetchProfesseurs(id);
+    // }, [id])
 
     const handleMessage = async (e) => {
-        setLoading(true)
         e.preventDefault();
 
         try {
@@ -67,7 +66,6 @@ const ContactTutors = () => {
             });
 
             if (response) {
-                setLoading(true)
                 navigate(`/chat/${id}/room/null`)
             }
             const user = response.data.user;
