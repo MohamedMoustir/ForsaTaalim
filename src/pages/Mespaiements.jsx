@@ -169,7 +169,7 @@ const Mespaiements = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{prof.updated_at}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
-                                                        <img className="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/42.jpg" alt="Student" />
+                                                        <img className="h-10 w-10 rounded-full" src={`http://127.0.0.1:8000/storage/${prof?.photo}`}  alt="Student" />
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900">Cours de {prof.nom}</div>
                                                             <div className="text-sm text-gray-500">avec {prof.professeur} </div>
