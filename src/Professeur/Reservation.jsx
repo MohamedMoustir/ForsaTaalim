@@ -65,15 +65,14 @@ const ReservationPage = () => {
                     Authorization: `bearer ${token}`
                 }
             });
+            console.log(status,email);
+            
             handleSendEmail(status, email);
             HandleSendNotification(user_id, status);
             if (response.data) {
                 setReservations(reservations.map(res =>
                     res.reservation_id === id ? { ...res, status: status } : res
                 ));
-
-
-
             }
 
         } catch (err) {
@@ -125,6 +124,8 @@ const ReservationPage = () => {
 
     const HandleSendNotification = async (user_id, status) => {
         try {
+            console.log('ee',user_id);
+            
             const response = await axios.post(`${API_URL}/notification`, {
                 receiver_id: user_id,
                 title: `Paiement ${status}`,
@@ -271,7 +272,7 @@ const ReservationPage = () => {
                             <td className="px-6 py-4">
                               <div className="flex items-center space-x-2">
                                 <button
-                                  onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.payer_email, res.user_id)}
+                                  onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.email, res.user_id)}
                                   disabled={res.status === 'approved'}
                                   className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                                     res.status === 'approved'
@@ -282,7 +283,7 @@ const ReservationPage = () => {
                                   <FontAwesomeIcon icon={faCheck} className="mr-1" /> Approuver
                                 </button>
                                 <button
-                                  onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.payer_email, res.user_id)}
+                                  onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.email, res.user_id)}
                                   disabled={res.status === 'refuser'}
                                   className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                                     res.status === 'refuser'
