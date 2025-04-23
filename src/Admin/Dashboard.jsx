@@ -17,7 +17,9 @@ import {
   Area,
   Funnel,
   FunnelChart,
-  LabelList
+  LabelList,
+  Pie,
+  PieChart
 } from "recharts";
 import axios from "axios";
 import { API_URL, getToken, getUser } from "../utils/config";
@@ -27,6 +29,8 @@ const AdminDashboard = () => {
   const token = getToken();
   const [error, setError] = useState("");
   const [datalist, setdatalist] = useState("");
+  const [activite, setActivite] = useState("");
+
 
   const reportsForsataalim = async () => {
     try {
@@ -37,7 +41,25 @@ const AdminDashboard = () => {
         }
       })
       const data = response.data;
+      console.log(data);
+
       setdatalist(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const Activitehebdomadaire = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/reports/performance`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-Type': 'aplication/json'
+        }
+      })
+      const data = response.data;
+      console.log(data);
+      setActivite(data);
 
     } catch (error) {
       console.error(error);
@@ -45,44 +67,24 @@ const AdminDashboard = () => {
   }
   useEffect(() => {
     reportsForsataalim();
+    Activitehebdomadaire();
   }, []);
 
-  const data = [
-    { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-    { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-    { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-    { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-    { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-    { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-    { name: "Page G", uv: 3490, pv: 4300, amt: 2100 }
-  ];
+
   const datas = [
-    {
-      "value": 100,
-      "name": "展现",
-      "fill": "#8884d8"
-    },
-    {
-      "value": 80,
-      "name": "点击",
-      "fill": "#83a6ed"
-    },
-    {
-      "value": 50,
-      "name": "访问",
-      "fill": "#8dd1e1"
-    },
-    {
-      "value": 40,
-      "name": "咨询",
-      "fill": "#82ca9d"
-    },
-    {
-      "value": 26,
-      "name": "订单",
-      "fill": "#a4de6c"
-    }
-  ]
+    { name: "Visites", value: activite['visits'] || 0, fill: "#8884d8" },
+    { name: "Inscriptions", value: activite['inscriptions'] || 0, fill: "#83a6ed" },
+    { name: "Cours", value: activite['cours'] || 0, fill: "#8dd1e1" }
+  ];
+
+  const datalis = [
+    { name: "Étudiants", value: datalist['totaletudiant'] },
+    { name: "Tuteurs", value: datalist['totaltuteur'] },
+    { name: "Réservations", value: datalist['totalBookings'] },
+    { name: "Avis", value: datalist['totalReviews'] },
+  ];
+
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <div className="w-full md:w-64 bg-white shadow-md">
@@ -166,7 +168,7 @@ const AdminDashboard = () => {
           <div className="relative w-full h-64 mt-14 -ml-4">
 
             <ResponsiveContainer>
-              <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <BarChart data={datalis} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -178,34 +180,35 @@ const AdminDashboard = () => {
             </ResponsiveContainer>
 
           </div>
-          <div className="flex relative w-full h-64 mt-14 -ml-4">
-            <div>
-              <ResponsiveContainer width={600} height="80%">
-                <AreaChart data={data}
-                  margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+          <div className="flex flex-col md:flex-row gap-6 justify-around items-center w-full mt-14">
+            <div className="w-full md:w-1/2 h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={datalis}>
                   <XAxis dataKey="name" />
                   <YAxis />
                   <CartesianGrid strokeDasharray="3 3" />
                   <Tooltip />
-                  <ReferenceLine x="Page C" stroke="green" label="Min PAGE" />
-                  <ReferenceLine y={4000} label="Max" stroke="red" strokeDasharray="3 3" />
-                  <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+                  <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div>
-              <FunnelChart width={600} height={250}>
-                <Tooltip />
-                <Funnel
-                  dataKey="value"
+
+            <div className="w-full md:w-1/2 flex justify-center h-72">
+              <PieChart width={300} height={300}>
+                <Pie
                   data={datas}
-                  isAnimationActive
-                >
-                  <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
-                </Funnel>
-              </FunnelChart>
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                />
+                <Tooltip />
+              </PieChart>
             </div>
           </div>
+
         </div>
       </div>
     </div>
