@@ -15,12 +15,10 @@ import {
   AreaChart,
   ReferenceLine,
   Area,
-  Funnel,
-  FunnelChart,
-  LabelList,
   Pie,
   PieChart
 } from "recharts";
+
 import axios from "axios";
 import { API_URL, getToken, getUser } from "../utils/config";
 const AdminDashboard = () => {
@@ -30,6 +28,7 @@ const AdminDashboard = () => {
   const [error, setError] = useState("");
   const [datalist, setdatalist] = useState("");
   const [activite, setActivite] = useState("");
+  const [perfData, setPerfData] = useState([]);
 
 
   const reportsForsataalim = async () => {
@@ -70,6 +69,15 @@ const AdminDashboard = () => {
     Activitehebdomadaire();
   }, []);
 
+  useEffect(() => {
+    fetch(`${API_URL}/api/performance`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPerfData([
+          { name: "Temps de chargement", value: data.load_time }
+        ]);
+      });
+  }, []);
 
   const datas = [
     { name: "Visites", value: activite['visits'] || 0, fill: "#8884d8" },
@@ -166,33 +174,17 @@ const AdminDashboard = () => {
           </div>
 
           <div className="relative w-full h-64 mt-14 -ml-4">
-
-            <ResponsiveContainer>
-              <BarChart data={datalis} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={datalis}>
                 <XAxis dataKey="name" />
                 <YAxis />
+                <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
+                <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+              </AreaChart>
             </ResponsiveContainer>
-
           </div>
           <div className="flex flex-col md:flex-row gap-6 justify-around items-center w-full mt-14">
-            <div className="w-full md:w-1/2 h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={datalis}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
             <div className="w-full md:w-1/2 flex justify-center h-72">
               <PieChart width={300} height={300}>
                 <Pie
@@ -207,6 +199,19 @@ const AdminDashboard = () => {
                 <Tooltip />
               </PieChart>
             </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={perfData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis unit=" ms" />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+
           </div>
 
         </div>
