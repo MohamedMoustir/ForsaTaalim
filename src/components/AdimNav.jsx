@@ -4,7 +4,7 @@ import '../assets/style/style.css'
 const AdminNav = () => {
 
     return (
-        <div className="sidebar w-56 text-white min-h-screen">
+        <div className="sidebar w-56 text-white min-h-[100%]" style={{ fontFamily: 'Open Sans' }}>
           <div className="p-6 flex items-center space-x-3">
             <div className="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center font-bold text-white">
               A

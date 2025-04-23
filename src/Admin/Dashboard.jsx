@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import AdminNav from "../components/AdimNav";
 import ReactDOM from "react-dom";
@@ -19,8 +19,34 @@ import {
   FunnelChart,
   LabelList
 } from "recharts";
-
+import axios from "axios";
+import { API_URL, getToken, getUser } from "../utils/config";
 const AdminDashboard = () => {
+
+  const user = getUser();
+  const token = getToken();
+  const [error, setError] = useState("");
+  const [datalist, setdatalist] = useState("");
+
+  const reportsForsataalim = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/reports/forsataalim`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-Type': 'aplication/json'
+        }
+      })
+      const data = response.data;
+      setdatalist(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    reportsForsataalim();
+  }, []);
+
   const data = [
     { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
     { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
@@ -84,7 +110,7 @@ const AdminDashboard = () => {
               </div>
               <div>
                 <h3 className="text-sm text-gray-500 font-medium">Students</h3>
-                <p className="text-2xl font-bold text-gray-800">932</p>
+                <p className="text-2xl font-bold text-gray-800">{datalist['totaletudiant']}</p>
               </div>
             </div>
 
@@ -94,7 +120,7 @@ const AdminDashboard = () => {
               </div>
               <div>
                 <h3 className="text-sm text-gray-500 font-medium">Teachers</h3>
-                <p className="text-2xl font-bold text-gray-800">754</p>
+                <p className="text-2xl font-bold text-gray-800">{datalist['totaltuteur']}</p>
               </div>
             </div>
 
@@ -103,8 +129,8 @@ const AdminDashboard = () => {
                 <i className="fas fa-calendar-alt"></i>
               </div>
               <div>
-                <h3 className="text-sm text-gray-500 font-medium">Events</h3>
-                <p className="text-2xl font-bold text-gray-800">40</p>
+                <h3 className="text-sm text-gray-500 font-medium">Reservations</h3>
+                <p className="text-2xl font-bold text-gray-800">{datalist['totalBookings']}</p>
               </div>
             </div>
 
@@ -113,8 +139,8 @@ const AdminDashboard = () => {
                 <i className="fas fa-money-bill-wave"></i>
               </div>
               <div>
-                <h3 className="text-sm text-gray-500 font-medium">Finance</h3>
-                <p className="text-2xl font-bold text-gray-800">32k</p>
+                <h3 className="text-sm text-gray-500 font-medium">Reviews</h3>
+                <p className="text-2xl font-bold text-gray-800">{datalist['totalReviews']}</p>
               </div>
             </div>
           </div>

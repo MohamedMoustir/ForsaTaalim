@@ -7,7 +7,7 @@ import image2 from '../../../forsaTaalim/resources/image/Frame 427319048.png';
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-900  text-white py-10">
+    <footer className="bg-blue-900  text-white py-10" style={{ fontFamily: 'Open Sans' }}>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6">
                     <div>
                         <h2 className="text-xl font-bold mb-3">FORSATAALIM</h2>
@@ -29,7 +29,7 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-bold mb-3">Resources</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="text-gray-300 hover:underline">Upcoming Events</a></li>
+                            <li><a href="#" className="text-gray-300 hover:underline">ForsaTaalim Events</a></li>
                             <li><a href="#" className="text-gray-300 hover:underline">Terms and Conditions</a></li>
                             <li><a href="#" className="text-gray-300 hover:underline">Become a Teacher</a></li>
                             <li><a href="#" className="text-gray-300 hover:underline">Contact Us</a></li>

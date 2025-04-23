@@ -40,7 +40,6 @@ const Login = () => {
         sessionStorage.setItem('alertShown', 'true');
       }
 
-
     } catch (err) {
       setShowAlert(true)
       setError('erorr login');
@@ -49,8 +48,6 @@ const Login = () => {
 
   };
   const google = (e) => {
-
-    e.preventDefault();
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
   useEffect(() => {

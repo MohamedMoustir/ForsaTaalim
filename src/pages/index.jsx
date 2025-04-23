@@ -11,7 +11,6 @@ import MainLayout from "../components/MainLayout.jsX";
 import { API_URL, getToken, getUser } from '../utils/config';
 import Alert from "../components/Alert";
 import Spinner from "../components/Spinner";
-import '../assets/style/fonts.css'
 const token = getToken();
 const user = getUser();
 const index = ({profiles ,loading}) => {
@@ -54,16 +53,16 @@ const index = ({profiles ,loading}) => {
                     />
                 )}
 
-                <div className="bg-[#FFF1F1] font-custom">
+                <div className="bg-[#FFF1F1] font-custom"  >
 
                     <section className="container mx-auto mt-24 lg:mt-0 px-8  py-12 ">
                         <div className="flex flex-col md:flex-row items-center justify-around gap-20 p-16">
                             <div className="md:w-1/2">
                                 <h1 className="text-4xl text-center lg:text-left md:text-5xl font-bold mb-6">
-                                    Unlock Your Potential with Byway
+                                    Unlock Your Potential with ForsaTaalim
                                 </h1>
                                 <p className="text-gray-600 mb-8 text-center max-w-[100%] lg:text-left">
-                                    Welcome to Byway, where learning knows no bounds. We believe that education is the key to personal
+                                    Welcome to ForsaTaalim, where learning knows no bounds. We believe that education is the key to personal
                                     and professional growth, and we're here to guide you on your journey to success. Whether you're a
                                     student, professional, or lifelong learner, our cutting-edge Learning Management System is designed
                                     to elevate your learning experience.

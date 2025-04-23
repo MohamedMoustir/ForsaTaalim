@@ -15,6 +15,8 @@ import "dayjs/locale/fr";
 dayjs.extend(relativeTime);
 dayjs.locale("En");
 import Pusher from "pusher-js";
+// import "@fontsource/open-sans/400.css";
+// import "@fontsource/open-sans/700.css";
 
 
 export  const Nav = ({total}) => {
@@ -128,7 +130,7 @@ export  const Nav = ({total}) => {
     }, [notificationCount])
     
     return (
-        <nav className="navbar  text-white">
+        <nav className="navbar  text-white "  style={{ fontFamily: 'Open Sans' }}>
           {!isUserAuth && (
             <div className="px-6 py-4 flex justify-between items-center max-w-7xl mx-auto">
               <div className="text-red-400 text-3xl font-bold tracking-tight  drop-shadow-sm">

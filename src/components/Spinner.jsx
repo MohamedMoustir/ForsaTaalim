@@ -3,7 +3,7 @@ import React from "react";
 
 const Spinner = () => {
     return (
-<div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gradient-to-br from-gray-100 to-white z-50">
+<div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-gradient-to-br from-gray-100 to-white z-50" style={{ fontFamily: 'Open Sans' }}>
 <div className="relative">
                 <div className="animate-spin rounded-full h-20 w-20 border-4 border-red-400 border-t-transparent"></div>
                 <div className="absolute inset-0 flex items-center justify-center">

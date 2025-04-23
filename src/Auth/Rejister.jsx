@@ -16,7 +16,7 @@ const Rejister = () => {
   const [age, setAge] = useState('');
   const [telephone, setTelephone] = useState('');
   const [photo, setphoto] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('tuteur');
   const [objectif, setObjectif] = useState('');
   const [ecole, setEcole] = useState('');
   const [niveau, setNiveau] = useState('');
@@ -53,7 +53,7 @@ const Rejister = () => {
         },
       });
 
-      const user = response.data.user;
+      const user = response.data.user.original.user;
       const token = response.data.user.original.token;
       sessionStorage.setItem('user', JSON.stringify(user));
       sessionStorage.setItem('token', token);
@@ -70,8 +70,7 @@ const Rejister = () => {
       }
       if (role == 'tuteur') {
         navigate('/RejisterPro');
-      }
-      if (role == 'etudiant') {
+      }else{
         navigate('/login');
       }
       setLoading(false)
@@ -201,7 +200,7 @@ const Rejister = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400"
                     />
                   </div>
-                  <div className="w-1/2">
+                  <div className="w-1/2 hidden">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                     <input
                       value={role}

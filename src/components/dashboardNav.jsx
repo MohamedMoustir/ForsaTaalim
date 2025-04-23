@@ -33,7 +33,7 @@ useEffect(()=>{
 },[])
   return (
     <>
-      <div className="w-64 bg-slate-900 text-white flex flex-col">
+      <div className="w-64 bg-slate-900 text-white flex flex-col" style={{ fontFamily: 'Open Sans' }}>
 
         <div className="p-4 border-b border-gray-700 flex items-center justify-between">
           <h1 className="font-bold text-lg">ForsaTaalim</h1>
@@ -64,8 +64,8 @@ useEffect(()=>{
               <FontAwesomeIcon icon={faBullhorn} className={`h-5 w-5 mr-3 ${id_ == 5 ? 'text-red-400':''}`} />
               Annoncement
             </a>
-            <a id="5" onClick={(e) => { navigate('/logout'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 5 ? 'text-red-400':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
-              <FontAwesomeIcon icon={faSignOutAlt} className={`h-5 w-5 mr-3 ${id_ == 6 ? 'text-red-400':''}`} />
+            <a id="" onClick={(e) => { navigate('/logout'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 5 ? '':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+              <FontAwesomeIcon icon={faSignOutAlt} className={`h-5 w-5 mr-3 ${id_ == 7 ? 'text-red-400':''}`} />
               log Out
             </a>
           </nav>

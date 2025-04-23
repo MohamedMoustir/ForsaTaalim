@@ -18,15 +18,12 @@ const Logout = () => {
                     }
                 }
             );
-
             if (response) {
                 sessionStorage.removeItem("user");
                 sessionStorage.removeItem("token");
                 navigate('/login')
                 setLoading(false)
             }
-
-
         }
         handleLogout()
         console.log('ddddd');

@@ -15,10 +15,10 @@ const MainLayout = ({ children , showNavFooter = true ,length }) => {
     
 
   return (
-    <div className="layout">
+    <div className="layout" style={{ fontFamily: 'Open Sans' }}>
     <Nav total = {length} /> 
 
-    <div className="content">
+    <div className="content" style={{ fontFamily: 'Open Sans' }}>
       {children} 
     </div>
     {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors && !Resiravtioon &&<Footer />} 

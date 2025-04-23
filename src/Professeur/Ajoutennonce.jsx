@@ -34,7 +34,6 @@ const Dashboard = () => {
     const [editeId, setEditeId] = useState(null);
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
-
     const [showAlert, setShowAlert] = useState(false);
     const [type, setType] = useState('');
     const [titles, setTitles] = useState('');
@@ -107,7 +106,6 @@ const Dashboard = () => {
             }
         }
     }
-
     useEffect(() => {
         axios.get(`${API_URL}/announcment/${user.id}`, {
             headers: {
@@ -125,7 +123,6 @@ const Dashboard = () => {
 
 
     }, []);
-
     useEffect(() => {
         let tody = new Date().toISOString().slice(0, 10);
         for (let i = 0; i < annonces.length; i++) {
@@ -145,8 +142,6 @@ const Dashboard = () => {
             }
         }
     })
-
-
     const handleDelete = async (id) => {
         try {
             await fetch(`${API_URL}/announcment/${id}`, {
@@ -172,7 +167,6 @@ const Dashboard = () => {
             setMessage('Erreur lors de la suppression')
         }
     };
-
     const handleUpdate = (annonce_id) => {
         setOpenPopUp(true)
         setEditeId(annonce_id);
@@ -213,7 +207,6 @@ const Dashboard = () => {
                                         </svg>
                                     </button>
                                 </div>
-
 
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                                     <div className="flex items-center gap-4">

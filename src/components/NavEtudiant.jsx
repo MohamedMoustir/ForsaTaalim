@@ -17,7 +17,7 @@ const NavEtudiant = ({ id_ }) => {
 
     return (
         <>
-            <nav className="bg-black py-3 shadow-md">
+            <nav className="bg-black py-3 shadow-md" style={{ fontFamily: 'Open Sans' }}>
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-between items-center">
                         <div className="flex space-x-6">

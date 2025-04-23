@@ -5,10 +5,10 @@ import '../assets/js/index';
 import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
-
+import "../assets/js/main"
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
-    const [subject, setSubject] = useState(null);
+    const [subject, setSubject] = useState('');
     const [diplome, setDiplomes] = useState('');
     const [error, setError] = useState('');
     const [lesson, setlessons] = useState('');
@@ -123,7 +123,7 @@ const RejisterPro = () => {
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </span>
-                                <input id="inputSerch" value={subject} onChange={(e) => setSubject(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
+                                <input id="inputSerch" value={subject} onChange={(e) => setSubject(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
 
                                 <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
@@ -189,7 +189,6 @@ const RejisterPro = () => {
                             Title of your
                         </h1>
                         <h1 className="text-3xl font-bold text-red-400 mb-2">diplomes</h1>
-                        {/* <!-- <p className="text-sm text-gray-500 mb-6">(1 minimum words)</p> */}
 
                         <div id="orders-container" className="  space-y-4 mb-12">
                             <div className="flex">
@@ -197,14 +196,7 @@ const RejisterPro = () => {
                                     type="text" id="input_2"
                                     className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="Enter diploma title" />
-                                {/* <button
-                                    className="bg-red-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M12 4v16m8-8H4" />
-                                    </svg>
-                                </button> */}
+                            
                             </div>
 
                         </div>

@@ -7,7 +7,7 @@ const Alert = ({ type = 'success', title, message, onClose }) => {
       ${type === 'success' ? 'bg-white border-green-500' : ''}
       ${type === 'error' ? 'bg-white border-red-500 ' : ''}
       ${type === 'warning' ? 'bg-white border-yellow-500' : ''}
-    `} style={{ zIndex: 1 }}>
+    `} style={{ zIndex: 1 ,fontFamily: 'Open Sans'}} >
       <i class={`text-xl 
         ${type === 'success' ? 'text-green-500' : ''}
         ${type === 'error' ? 'text-red-500' : ''}
