@@ -19,7 +19,7 @@ function Content() {
     const [email, setEmail] = useState("");
     const token = getToken();
     const user = getUser();
-
+    const [showPopup, setShowPopup] = useState(false);
     useEffect(() => {
         if (user) {
             try {
@@ -173,7 +173,7 @@ function Content() {
             {loading && (
                 <Spinner />
             )}
-            <NavEtudiant></NavEtudiant>
+            <NavEtudiant id_={5}></NavEtudiant>
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
@@ -393,15 +393,37 @@ function Content() {
                             {error && <p className="text-red-500 text-sm">{error}</p>}
                             <button
                                 className="w-full bg-gray-300 hover:bg-gray-400 text-white py-2 rounded-md transition-colors"
-                                onClick={handleDeleteAccount}
+                                onClick={() => setShowPopup(true)}
                                 disabled={loading}
                             >
                                 {loading ? 'Suppression en cours...' : 'Supprimer mon compte'}
                             </button>
                         </div>
                     </div>
-
-                    {/* Column 3: ID Document and Communication */}
+                    {showPopup && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
+                                <h2 className="text-xl font-semibold text-red-600 mb-4">⚠️ ATTENTION !</h2>
+                                <p className="text-gray-700 mb-6">
+                                    Toutes vos données (contacts, paramètres, emails,...) seront supprimées <strong>définitivement</strong> et ne pourront pas être restaurées.
+                                </p>
+                                <div className="flex justify-center gap-4">
+                                    <button
+                                        onClick={() => setShowPopup(false)}
+                                        className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded"
+                                    >
+                                        Annuler
+                                    </button>
+                                    <button
+                                        onClick={handleDeleteAccount}
+                                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+                                    >
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="space-y-6">
                         <div className="bg-white rounded-lg shadow-sm p-6">
                             <div className="pb-3 border-b mb-4">

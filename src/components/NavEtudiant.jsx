@@ -2,35 +2,42 @@ import React, { useEffect, useRef, useState } from "react";
 import '../assets/js/main';
 import '../assets/style/style.css';
 import { useNavigate } from "react-router-dom";
-const NavEtudiant =  ()=>{
+const NavEtudiant = ({ id_ }) => {
     const navigate = useNavigate()
 
 
-function PgeHome() {
-    navigate('/')
-}
-function Mespaiements() {
-    navigate('/Mespaiements')
-}
-function profile() {
-    navigate('/profile')
-}
-function MesMessages(){
-    navigate('/chat')
-}
-return (
-    <>
-          <nav className="bg-black py-3">
+    function PgeHome() {
+    }
+    function Mespaiements() {
+
+    }
+    function profile() {
+
+    }
+
+    return (
+        <>
+            <nav className="bg-black py-3 shadow-md">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex justify-between items-center">
-                        <div className="text-white space-x-8">
-                            <a href="#" className=" cursor-pointer text-gray-300 hover:text-white transition-colors">
+                        <div className="flex space-x-6">
+                            <a
+                                id="1"
+                                className={`text-gray-500 font-medium ${id_ == 1 ? 'text-black font-semibold border-b-2 border-red-500 pb-1 hover:text-red-500 transition-all duration-200' : ''} cursor-pointer hover:text-red-500 transition-colors`}
+                            >
                                 Tableau de bord
                             </a>
-                            <a onClick={MesMessages}  className="cursor-pointer  text-gray-300 hover:text-white transition-colors">
+                            <a
+                                id="3"
+                                onClick={() => navigate('/Chat/1/room/1')}
+                                className={`text-gray-500 font-medium ${id_ == 3 ? 'text-black font-semibold border-b-2 border-red-500 pb-1 hover:text-red-500 transition-all duration-200' : ''} cursor-pointer hover:text-red-500 transition-colors`}
+                            >
                                 Mes Messages
                             </a>
-                            <a onClick={PgeHome} className="cursor-pointer text-gray-300 hover:text-white transition-colors">
+                            <a
+                                onClick={()=> navigate('/')}
+                                className="cursor-pointer text-gray-300 hover:text-white text-sm font-medium transition-colors"
+                            >
                                 Home
                             </a>
                         </div>
@@ -38,19 +45,28 @@ return (
                 </div>
             </nav>
 
-            <div className="border-b bg-white">
+            <div className="border-b bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex space-x-8 py-4">
-                        <a onClick={profile}  className="text-black font-medium border-b-2 border-red-400 pb-1">
+                        <a
+                            id="5"
+                            onClick={() => navigate('/profile')}
+                            className={`text-gray-500 font-medium ${id_ == 5 ? 'text-black font-semibold border-b-2 border-red-500 pb-1 hover:text-red-500 transition-all duration-200' : ''} cursor-pointer hover:text-red-500 transition-colors`}
+                        >
                             Mon Profil
                         </a>
-                        <a onClick={Mespaiements} className="text-gray-500 cursor-pointer hover:text-black transition-colors">
+                        <a
+                            id="4"
+                            onClick={(e) => { navigate('/Mespaiements') }}
+                            className={`text-gray-500 font-medium ${id_ == 4 ? 'text-black font-semibold border-b-2 border-red-500 pb-1 hover:text-red-500 transition-all duration-200' : ''} cursor-pointer hover:text-red-500 transition-colors`}
+                        >
                             Mes paiements
                         </a>
                     </div>
                 </div>
             </div>
-    </>
-)
+        </>
+    );
+
 }
 export default NavEtudiant;

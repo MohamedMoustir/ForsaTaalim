@@ -143,7 +143,7 @@ export default function Myfavorites() {
                                                 <div className="flex items-center">
                                                     <div className="flex items-center bg-yellow-50 px-2.5 py-1 rounded-full">
                                                         <span className="text-yellow-500 text-sm font-semibold">★</span>
-                                                        <span className="ml-1 text-sm font-semibold text-gray-900">{item?.average_rating?.split(0, 3)}</span>
+                                                        <span className="ml-1 text-sm font-semibold text-gray-900">{Number(item.average_rating).toFixed(0)}</span>
                                                     </div>
                                                     <span className="text-gray-500 text-sm ml-2">
                                                         ({item.total_ratings} reviews)

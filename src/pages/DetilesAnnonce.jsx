@@ -43,7 +43,7 @@ const DetilesAnnonce = () => {
                 setLoading(false)
                 console.log(response.data.announcement);
                 setAnnonce(response.data.announcement);
-             
+
             })
             .catch(error => {
                 console.error("There was an error fetching the announcements:", error);
@@ -51,18 +51,43 @@ const DetilesAnnonce = () => {
     }, []);
 
     const handleRegister = (id_touter) => {
-          navigate(`/reservation/${id_touter}`);  
+        navigate(`/reservation/${id_touter}`);
     }
 
-  
+
     return (
         <>
-         {loading && (
+            {loading && (
                 <Spinner />
             )}
             <Nav></Nav>
-            <div className="max-w-[85%] mt-14 mx-auto mb-14 bg-white rounded-2xl shadow-xl overflow-hidden">
-                <div className="relative h-80">
+
+            <div className="max-w-[85%] mt-14 mx-auto mb-14  rounded-2xl shadow-xl overflow-hidden">
+                <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm p-4">
+                    <div
+                        className="text-gray-500 cursor-pointer hover:text-red-500 transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50"
+                        aria-label="Go back"
+                    >
+                        <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span onClick={() => navigate(-1)} className="hidden sm:inline">Back</span>
+                    </div>
+
+                    <div className="text-center">
+                        <h1 className="text-xl font-bold text-gray-900 mb-1">Schedule</h1>
+                        <p className="text-sm text-gray-500">Your first class with </p>
+                    </div>
+
+                    <div className="w-20" />
+                </div>
+                <div className="relative h-80 bg-white">
                     <img
                         src={`http://127.0.0.1:8000/storage/${annonces.image}`}
                         alt={annonces.title}
@@ -126,11 +151,9 @@ const DetilesAnnonce = () => {
                             <div className="mb-6">
                                 <h2 className="text-lg font-semibold text-gray-700 mb-2">Subject Areas</h2>
                                 <div className="flex flex-wrap gap-2">
-                                    {/* {subjectArray.map((subject, index) => ( */}
                                     <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
                                         {annonces.subjects}
                                     </span>
-                                    {/* ))} */}
                                 </div>
                             </div>
 
@@ -185,7 +208,7 @@ const DetilesAnnonce = () => {
                                     </div>
                                 </div>
 
-                                <button onClick={()=>handleRegister(annonces.user_id)}
+                                <button onClick={() => handleRegister(annonces.user_id)}
                                     className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2"
                                 >
                                     <FontAwesomeIcon icon={faSignInAlt} />

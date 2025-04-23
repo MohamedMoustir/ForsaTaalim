@@ -27,19 +27,17 @@ import PdfDociment from "./pages/PdfDociment.jsx";
 import ProfilePage from "./Professeur/profileProfesseur.jsx";
 import { API_URL, getUser, getToken } from "./utils/config.jsx";
 import { useParams } from "react-router-dom";
+import AdminDashboard from "./Admin/Dashboard.jsx"
+
 function App() {
 
   const [profiles, setprofiles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [Detilesprofiles, setDetilesprofiles] = useState([]);
-  const [comment, setComment] = useState([]);
-  const [annonces, setAnnonces] = useState([]);
-  const [payment_By_id, setpayment_By_id] = useState([]);
 
+
+  const { id } = useParams();
   const token = getToken();
   const user = getUser();
-  const pathParts = window.location.pathname.split('/');
-  const id = pathParts[pathParts.length - 1];
 
   const fetchProfesseurs = async () => {
     try {
@@ -58,85 +56,14 @@ function App() {
       console.log('data not found')
     }
   }
-  const fetchProfesseursById = async () => {
-    axios.get(`${API_URL}/Professeur/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((response) => {
-        console.log('hada', response.data.Profile);
-        setDetilesprofiles(response.data.Profile);
-        fetchComment(response.data.Profile.profe_id);
-        fetchAnnonces(response.data.Profile.profe_id);
-        setLoading(false)
-      })
-  };
-  const fetchComment = async (tutor) => {
-    axios.get(`${API_URL}/avis/${tutor}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((response) => {
-        console.log('ddddddddddddddddsssss', response.data.comments);
-
-        setComment(response.data.comments);
-
-      })
-  };
-  const fetchAnnonces = async (profe_id) => {
-
-    axios.get(`${API_URL}/announcment/${profe_id}`, {
-      headers: {
-        authorization: `bearer ${token}`,
-      }
-    })
-      .then(response => {
-        console.log('dDDDDDDDDD', response.data.announcement);
-        setAnnonces(response.data.announcement);
-      })
-      .catch(error => {
-        console.log('data not found')
-
-        // console.error("There was an error fetching the announcements:", error);
-      });
-
-  }
-  const fetchPayments = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/Reservation/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      setpayment_By_id(response.data.reservation);
-      console.log('dd', response.data.reservation);
-
-      if (response) {
-        setLoading(false)
-      }
+  
+ 
 
 
-    } catch (error) {
-      console.log('data not found')
-    }
-
-  };
-
-
+  
   useEffect(() => {
-   
-    // if (!check) {
-      fetchProfesseurs();
-      fetchProfesseursById();
-      fetchPayments()
-    // }
-
-  }, [])
+    fetchProfesseurs();
+  }, []);
 
   return (
     <Router>
@@ -150,8 +77,8 @@ function App() {
         <Route path="/Rejister" element={<Rejister />} />
         <Route path="/Chat/:id/room/:chat_user_id" element={<Chat />} />
         <Route path="/tutors" element={<Tutors />} />
-        <Route path="/detilesTutor/:id" element={<DetilesTutor detile={Detilesprofiles} loading={loading} comment={comment} annonces={annonces} />} />
-        <Route path="/contactTutors/:id" element={<ContactTutors Detilesprofiles={Detilesprofiles} loading={loading} />} />
+        <Route path="/detilesTutor/:id" element={<DetilesTutor />} />
+        <Route path="/contactTutors/:id" element={<ContactTutors  />} />
         <Route path="/reservation/:id" element={<Reservation />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/favorites" element={<Myfavorites />} />
@@ -162,12 +89,9 @@ function App() {
         <Route path="/dashboard-tuteur/reservation" element={<ReservationEtudient />} />
         <Route path="/detileAnnonce/:id" element={<DetileAnnonce />} />
         <Route path="/donePayment/:id" element={<DonePayment />} />
-        {/* <Route path="/pdf/:id" element={<Pdf payment={payment_By_id}  />} /> */}
         <Route path="/profilePage" element={<ProfilePage />} />
-        <Route path="/pdfDociment/:id" element={<PdfDociment payment_By_id={payment_By_id} loading={loading} />} />
-
-
-
+        <Route path="/pdfDociment/:id" element={<PdfDociment  />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
 
       </Routes>
     </Router>

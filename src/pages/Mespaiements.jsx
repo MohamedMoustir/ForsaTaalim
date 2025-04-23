@@ -35,7 +35,7 @@ const Mespaiements = () => {
         });
         setpaymentlength(response.data.reservation.total);
         setMespaiements(response.data.reservation.data);
-        console.log('ccc', response.data.reservation.data);
+        console.log('ccc', response.data.reservation.data.length);
 
         if (response) {
             setLoading(false);
@@ -46,7 +46,6 @@ const Mespaiements = () => {
     const navigate = useNavigate();
     useEffect(() => {
 
-        // fetchPayments(currentPage);
         if (token) {
             setUserAuth(true);
         }
@@ -74,14 +73,15 @@ const Mespaiements = () => {
             });
             const data = response.data.reservation.data;
             if (response.data) {
+                await fetchPayments(currentPage);
                 setMespaiements(Mespaiements.map(res =>
-                    res.reservation_id === id ? { ...res, data } : res
+                    res.reservation_id != id
                 ));
             }
 
         } catch (err) {
             console.error('Error updating reservation status:', err);
-            alert('Failed to update reservation status');
+            alert('Failed to remove reservation status');
         }
     };
 
@@ -99,7 +99,7 @@ const Mespaiements = () => {
             {loading && (
                 <Spinner />
             )}
-            <NavEtudiant></NavEtudiant>
+            <NavEtudiant id_={4} ></NavEtudiant>
             <div className='m-24 mb-0'>
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
                     <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
@@ -163,7 +163,6 @@ const Mespaiements = () => {
                                 })
                                     .map((prof, index) => (
 
-
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             <tr>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{prof.updated_at}</td>
@@ -199,7 +198,7 @@ const Mespaiements = () => {
                                                 </td>
 
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button onClick={() => navigate(`/pdf/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                                    <button onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
                                                         <FontAwesomeIcon icon={faReceipt} />
                                                     </button>
                                                     <button onClick={() => handleStatusUpdate(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import '../assets/style/style.css'
-const AdminDashboard = () => {
+const AdminNav = () => {
 
     return (
         <div className="sidebar w-56 text-white min-h-screen">
@@ -42,4 +42,4 @@ const AdminDashboard = () => {
       );
       
 }
-export default AdminDashboard;
+export default AdminNav;

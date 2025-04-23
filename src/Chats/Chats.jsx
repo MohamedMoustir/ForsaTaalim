@@ -104,7 +104,7 @@ function App() {
   return (
     <>
       {user.role == 'etudiant' && (
-        <NavEtudiant />
+        <NavEtudiant id_={3} />
       )}
       <div className="bg-gray-100 h-screen flex">
         

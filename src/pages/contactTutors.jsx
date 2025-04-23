@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 
-const ContactTutors = ({Detilesprofiles ,loading}) => {
+const ContactTutors = ({ }) => {
 
     const token = getToken();
     const user = getUser();
@@ -17,7 +17,7 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const [profiles, setprofiles] = useState([]);
     const [isUserAuth, setUserAuth] = useState(false);
-    // const [Detilesprofiles, setDetilesprofiles] = useState(6);
+    const [Detilesprofiles, setDetilesprofiles] = useState(6);
     const [message, setMessage] = useState(`Hello ,
         My name is ... and I am looking for a Mathematics tutor.
         I would like to take lessons at your place or mine.
@@ -26,28 +26,26 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
     const [phoneNumber, setPhoneNumber] = useState(Detilesprofiles.telephone);
     const [err, setError] = useState("");
     const navigate = useNavigate();
-    // const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [ishidden, setIshidden] = useState(false);
+    const fetchProfesseursById = async () => {
+        const response = await axios.get(`${API_URL}/Professeur/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        const profile = response.data.Profile;
+        console.log('hada', profile);
+        setDetilesprofiles(profile);
+        setAddress(profile.location);
+        setPhoneNumber(profile.telephone)
+        setLoading(false)
+    };
 
-    // const fetchProfesseurs = async (tutor_id) => {
-    //     axios.get(`${API_URL}/Professeur/${tutor_id}`, {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //             'Content-Type': 'application/json',
-    //         }
-    //     })
-    //         .then((response) => {
-    //             console.log(response.data.Profile);
-    //             setDetilesprofiles(response.data.Profile);
-    //             setAddress(response.data.Profile.location)
-    //             setPhoneNumber(response.data.Profile.telephone)
-                
-                
-    //             setLoading(false)
-    //         })
-    // };
-    // useEffect(() => {
-    //     fetchProfesseurs(id);
-    // }, [id])
+    useEffect(() => {
+        fetchProfesseursById(id);
+    }, [id])
 
     const handleMessage = async (e) => {
         e.preventDefault();
@@ -64,9 +62,11 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
                     'Content-Type': 'application/json',
                 }
             });
-
-            if (response) {
+            console.log('ddddddddd', response.data.chat_user_id);
+            if (response.data.chat_user_id > 0) {
                 navigate(`/chat/${id}/room/null`)
+            } else {
+                setIshidden(true)
             }
             const user = response.data.user;
 
@@ -79,16 +79,56 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
     return (
         <>
             {loading && <Spinner />}
-    
+
             <MainLayout>
+
                 <div className="min-h-screen w- flex justify-center items-start  py-10 px-4">
+                    {ishidden && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center  z-50">
+                            <div className="bg-white rounded-lg p-6 shadow-lg w-96 text-center">
+                                <h2 className="text-xl font-semibold text-red-600 mb-4">Inscription requise</h2>
+                                <p className="text-gray-700 mb-6">Vous devez vous inscrire à un cours avant d’envoyer un message au tuteur.</p>
+                                <div className="flex justify-center gap-4">
+                                    <button onClick={() => navigate(`/detilesTutor/${id}`)} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                                        Voir les cours
+                                    </button>
+                                    <button onClick={() => setIshidden(false)} className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <form
                         onSubmit={handleMessage}
                         className="w-full max-w-[1300px] p-8 rounded-xl shadow-md"
                     >
-                        <h2 className="text-2xl font-bold mb-1 text-gray-800">Schedule</h2>
-                        <p className="text-gray-600 mb-6">Your first class with {Detilesprofiles.prenom}</p>
-    
+                        <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm p-4">
+                            <div
+                                className="text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50"
+                                aria-label="Go back"
+                            >
+                                <svg
+                                    className="h-5 w-5"
+                                    fill="none"
+                                    strokeWidth="2"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                <span onClick={() => navigate(`/detilesTutor/${id}`)} className="hidden sm:inline">Back</span>
+                            </div>
+
+                            <div className="text-center">
+                                <h1 className="text-xl font-bold text-gray-900 mb-1">Schedule</h1>
+                                <p className="text-sm text-gray-500">Your first class with {Detilesprofiles.prenom}</p>
+                            </div>
+
+                            <div className="w-20" />
+                        </div>
+
+
                         <div className="flex items-center justify-center mb-6">
                             <div className="w-[300px] bg-white rounded-2xl shadow-lg hover:shadow-xl transition">
                                 <div className="flex flex-col items-center pt-10 pb-6">
@@ -109,19 +149,19 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
                                             {[...Array(5)].map((_, i) => <i key={i} className="fas fa-star" />)}
                                         </div>
                                         <span className="ml-2 text-gray-500">
-                                            {Detilesprofiles.average_rating?.slice(0, 3)} ({Detilesprofiles.total_ratings} reviews)
+                                            {Number(Detilesprofiles.average_rating).toFixed(0)} ({Detilesprofiles.total_ratings} reviews)
                                         </span>
                                     </div>
                                     <div className="text-xs text-red-400 mt-1">1st lesson is free</div>
                                 </div>
                             </div>
                         </div>
-    
+
                         <div className="text-sm text-gray-600 text-center mb-8 flex items-center justify-center">
                             <span className="bg-green-400 rounded-full w-2 h-2 block mr-2 animate-pulse"></span>
                             Available and responds in 2 hours
                         </div>
-    
+
                         <div className="mb-6">
                             <label className="block text-gray-700 font-medium mb-2">Your message</label>
                             <textarea
@@ -131,20 +171,20 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
                                 placeholder="Write your message here..."
                             />
                         </div>
-    
+
                         <div className="mb-8">
                             <h3 className="text-gray-700 font-medium mb-2">Contact information</h3>
                             <p className="text-sm text-gray-600 mb-3 flex items-center">
                                 <i className="fas fa-lock text-gray-400 mr-1" />
                                 They are only given to the tutors you select.
                             </p>
-    
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    
+
                                     <label className="block text-gray-600 text-sm mb-1">Address</label>
                                     <div className="relative">
-                                        
+
                                         <input
                                             type="text"
                                             className="w-full border border-gray-300 rounded-md py-2 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-red-300"
@@ -152,7 +192,7 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
                                             onChange={(e) => setAddress(e.target.value)}
                                         />
                                         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                        <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400" />
+                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400" />
                                         </div>
                                     </div>
                                 </div>
@@ -173,14 +213,14 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
                                 </div>
                             </div>
                         </div>
-    
+
                         <div className="flex items-center mb-6">
                             <input type="checkbox" id="save-info" className="rounded text-red-500 focus:ring-red-300 mr-2" />
                             <label htmlFor="save-info" className="text-sm text-gray-600">
                                 Save my contact information for future bookings
                             </label>
                         </div>
-    
+
                         <button
                             type="submit"
                             className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 rounded-md flex items-center justify-center transition-colors"
@@ -193,7 +233,7 @@ const ContactTutors = ({Detilesprofiles ,loading}) => {
             </MainLayout>
         </>
     );
-    
+
 
 }
 

@@ -282,3 +282,106 @@
     }
   }
   
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f1f5f9;
+}
+
+.sidebar {
+  background-color: #5145cd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.nav-link {
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.stat-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+} */
+.stat-icon {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.students-icon {
+  background-color: #5145cd;
+  color: white;
+}
+
+.teachers-icon {
+  background-color: #f87171;
+  color: white;
+}
+
+.events-icon {
+  background-color: #fbbf24;
+  color: white;
+}
+
+.finance-icon {
+  background-color: #1e40af;
+  color: white;
+}
+
+.search-input {
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(81, 69, 205, 0.3);
+}
+
+.table-row {
+  transition: all 0.2s ease;
+}
+
+.table-row:hover {
+  background-color: #f9fafb;
+}
+
+.action-btn {
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  transform: scale(1.2);
+}
+
+
+.chart-container {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 8.33% 100%;
+  background-position: 0 0;
+}
+
+
+body {
+  font-family: 'Roboto', sans-serif; 
+}

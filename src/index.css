@@ -1,4 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@font-face {
+    font-family: 'Winky Rough';
+    src: url('./assets/fonts/WinkyRough.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

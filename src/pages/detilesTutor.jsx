@@ -23,10 +23,10 @@ import Spinner from '../components/Spinner';
 import { API_URL, getToken, getUser } from '../utils/config';
 const token = getToken();
 const user = getUser();
-const detiles = ({detile,loading,comment,annonces}) => {
+const detiles = () => {
     const [isUserAuth, setUserAuth] = useState(false);
-    // const [detile, setDetilesprofiles] = useState([]);
-    // const [comment, setComment] = useState([]);
+    const [detile, setDetilesprofiles] = useState([]);
+    const [comment, setComment] = useState([]);
     const [content, setContent] = useState('');
     const [rating, setRating] = useState('');
     const [error, setError] = useState('');
@@ -34,41 +34,55 @@ const detiles = ({detile,loading,comment,annonces}) => {
     const [popUp, setPopUp] = useState(false);
     const [editId, setEditId] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
-    // const [loading, setLoading] = useState(true);
-    // const [annonces, setAnnonces] = useState([]);
-
+    const [loading, setLoading] = useState(true);
+    const [annonces, setAnnonces] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams()
 
-    // const fetchProfesseurs = async (tutor_id) => {
-    //     axios.get(`${API_URL}/Professeur/${tutor_id}`, {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //             'Content-Type': 'application/json',
-    //         }
-    //     })
-    //         .then((response) => {
-    //             setDetilesprofiles(response.data.Profile);
-    //             setTutors(response.data.Profile.profe_id);
-    //             fetchAnnonces(response.data.Profile.profe_id);
-    //         })
-    // };
 
-    // const fetchComment = async (tutor) => {
-    //     axios.get(`${API_URL}/avis/${tutor}`, {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //             'Content-Type': 'application/json',
-    //         }
-    //     })
-    //         .then((response) => {
-    //             console.log(response.data.comments);
+    const fetchProfesseursById = async () => {
+        const response = await axios.get(`${API_URL}/Professeur/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
 
-    //             setComment(response.data.comments);
+        const profile = response.data.Profile;
+        console.log('hada', profile);
+        setDetilesprofiles(profile);
+        await fetchComment(profile.profe_id);
+        await fetchAnnonces(profile.profe_id);
+        setLoading(false)
+    };
 
-    //         })
-    // };
 
+    const fetchComment = async (id_) => {
+        const response = await axios.get(`${API_URL}/avis/${id_}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        const comments = response.data.comments;
+        setComment(comments);
+
+    };
+    const fetchAnnonces = async (profe_id) => {
+        try {
+            const response = await axios.get(`${API_URL}/announcment/${profe_id}`, {
+                headers: {
+                    authorization: `bearer ${token}`,
+                }
+            })
+            const annonce = response.data.announcement;
+            setAnnonces(annonce);
+        }
+        catch (error) {
+            console.error("There was an error fetching the announcements:", error);
+        }
+
+    };
     const handleAvis = async (e) => {
         e.preventDefault();
         try {
@@ -89,7 +103,9 @@ const detiles = ({detile,loading,comment,annonces}) => {
                     },
 
                 });
-                console.log(response)
+                if (response) {
+                    setPopUp(false);
+                }
             } else {
 
                 response = await axios.post(`${API_URL}/avis`, formData, {
@@ -98,12 +114,13 @@ const detiles = ({detile,loading,comment,annonces}) => {
                     },
                 });
 
-                if (response.status === 200) {
+                if (response) {
+                    setPopUp(false);
+                    const setNewcomment = { content: content, rating: rating, tuteur_id: detile.profe_id }
+                    setComment([...comment, setNewcomment])
                     alert('Commentaire ajouté avec succès');
-                    fetchComment(tutor);
-                    setIsFormVisible(false);
+                    await fetchComment(detile.profe_id);
                 } else {
-
                     alert('Erreur lors de l\'ajout');
                 }
             }
@@ -112,26 +129,6 @@ const detiles = ({detile,loading,comment,annonces}) => {
             console.error(error);
         }
     };
-console.log('loading',loading);
-
-    // useEffect(() => {
-        // if (tutor) {
-            // fetchComment(detile.profe_id);
-        // }
-
-    // }, [])
-
-    useEffect(() => {
-        // fetchAnnonces(detile.profe_id)
-        if (token) {
-            setUserAuth(true);
-        }
-        if (!token) {
-            navigate("/login");
-        } else if (user && user.role === "tuteur") {
-            navigate("/login");
-        }
-    }, [id]);
     function openPopUp() {
         setPopUp(true)
     }
@@ -175,24 +172,17 @@ console.log('loading',loading);
     const handleContact = () => {
         navigate(`/contactTutors/${detile.profe_id}`)
     }
-
-    // const fetchAnnonces = async (profe_id) => {
-
-    //     axios.get(`${API_URL}/announcment/${profe_id}`, {
-    //         headers: {
-    //             authorization: `bearer ${token}`,
-    //         }
-    //     })
-    //         .then(response => {
-    //             console.log('dDDDDDDDDD', response.data.announcement);
-    //             setAnnonces(response.data.announcement);
-    //         })
-    //         .catch(error => {
-    //             console.error("There was an error fetching the announcements:", error);
-    //         });
-
-    // }
-
+    useEffect(() => {
+        fetchProfesseursById();
+        if (token) {
+            setUserAuth(true);
+        }
+        if (!token) {
+            navigate("/login");
+        } else if (user && user.role === "tuteur") {
+            navigate("/login");
+        }
+    }, [id]);
     const handleRegister = ($id_annonce) => {
         if ($id_annonce) {
             navigate(`/detileAnnonce/${$id_annonce}`);
@@ -201,14 +191,29 @@ console.log('loading',loading);
     };
 
     return (
-        <> {loading &&  (
+        <> {loading && (
             <Spinner />
         )}
 
             <MainLayout >
                 <div className="container px-4 py-8 max-w-7xl mx-auto  ">
-
+                    <button
+                        className="text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2 px-4 py-2 mb-8 rounded-lg hover:bg-red-50"
+                        aria-label="Go back"
+                    >
+                        <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span onClick={() => navigate('/')} className="hidden sm:inline">Back</span>
+                    </button>
                     <div className="flex flex-wrap gap-2 mb-6">
+
                         <span className="bg-red-100 text-red-500 px-3 py-1 rounded-full text-xs flex items-center">
                             <i className="fa fa-plus mr-1"></i> {detile.nom_matiere}
                         </span>
@@ -261,7 +266,7 @@ console.log('loading',loading);
                                     <h3 className="font-bold text-lg">{detile.prenom}</h3>
                                     <div className="flex items-center text-sm mb-4">
                                         <i className="fas fa-star text-yellow-400"></i>
-                                        <span className="ml-1">{detile.average_rating?.split(0, 3)}  ({detile.total_ratings} reviews)</span>
+                                        <span className="ml-1">{Number(detile.average_rating).toFixed(0)}  ({detile.total_ratings} reviews)</span>
                                     </div>
                                 </div>
 
@@ -344,7 +349,6 @@ console.log('loading',loading);
                                                 </div>
                                             </div>
 
-                                            {/* bouton tjrs ltaht */}
                                             <div className="mt-auto">
                                                 <button
                                                     onClick={() => handleRegister(item.id_annonce)}
@@ -377,7 +381,7 @@ console.log('loading',loading);
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
-                                <span className="ml-1 font-medium">{detile.average_rating?.split(0, 3)}  <span className="text-gray-500 font-normal">({detile.total_ratings} reviews)</span></span>
+                                <span className="ml-1 font-medium">{Number(detile.average_rating).toFixed(0)}  <span className="text-gray-500 font-normal">({detile.total_ratings} reviews)</span></span>
                             </div>
                         </div>
 
@@ -390,11 +394,10 @@ console.log('loading',loading);
                                 >
                                     <div className="flex items-center mb-3">
                                         <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-white font-bold mr-3 shadow-sm">
-                                            {item.prenom.charAt(0).toUpperCase()}
-                                        </div>
+                                            {(item?.prenom?.charAt(0).toUpperCase()) || (user?.prenom?.charAt(0).toUpperCase())}                                        </div>
 
                                         <div>
-                                            <span className="font-semibold text-gray-800">{item.prenom}</span>
+                                            <span className="font-semibold text-gray-800">{(item?.prenom) || (user?.prenom)}</span>
                                             <div className="flex items-center text-yellow-500 text-sm mt-0.5">
                                                 {Array.from({ length: 5 }).map((_, i) => (
                                                     <svg key={i} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${i < item.rating ? 'text-yellow-400' : 'text-gray-300'}`} viewBox="0 0 20 20" fill="currentColor">

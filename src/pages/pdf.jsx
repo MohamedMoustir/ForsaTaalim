@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 
 const pdf = ({ payment }) => {
 
+console.log(payment);
 
   return (
     <>

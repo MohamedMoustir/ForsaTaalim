@@ -8,33 +8,33 @@ import { useState, useEffect } from 'react';
 import { Nav } from '../components/Nav';
 import Spinner from '../components/Spinner';
 
-function PdfDociment({payment_By_id ,loading}) {
-console.log('fhhhhhhhhhhhh',payment_By_id);
+function PdfDociment() {
 
-    // const [payment_By_id, setpayment_By_id] = useState([]);
-    // const token = getToken();
-    // const user = getUser();
-    // const { id } = useParams();
-    // const [loading, setLoading] = useState(true);
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     const fetchPayments = async (id) => {
-    //         const response = await axios.get(`${API_URL}/Reservation/${id}`, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         });
-    //         setpayment_By_id(response.data.reservation);
-    //         console.log('dd', response.data.reservation);
 
-    //         if (response) {
-    //             setLoading(false)
-    //         }
-    //         console.error(response.data.reservation.data);
-    //     };
-    //     fetchPayments(id)
-    // }, []);
+    const [payment_By_id, setpayment_By_id] = useState([]);
+    const token = getToken();
+    const user = getUser();
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const fetchPayments = async (id) => {
+            const response = await axios.get(`${API_URL}/Reservation/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setpayment_By_id(response.data.reservation);
+            console.log('dd', response.data.reservation);
+
+            if (response) {
+                setLoading(false)
+            }
+            console.error(response);
+        };
+        fetchPayments(id)
+    }, []);
 
     return (
         <>

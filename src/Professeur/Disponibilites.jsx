@@ -33,10 +33,11 @@ function MyFullCalendar({ amount }) {
   const [timeReservation, setTimeReservation] = useState(null);
   const [isOpenPoupupDate, setIsOpenPoupupDate] = useState(null);
   const [durationOption, setDurationOptions] = useState([{ time: '1:00' }, { time: '2:00' }, { time: '3:00' }]);
-  const [time, setTime] = useState(null);
+  const [times, setTime] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [type, setType] = useState('');
   const [title, setTitle] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const availableTimes = [
     { time: '08:00 AM' },
@@ -112,7 +113,7 @@ function MyFullCalendar({ amount }) {
       const formattedDate = currentDate.toISOString().slice(0, 10);
 
       if (formattedDate > arg.dateStr) {
-        alert('this date dont found')
+        setShowModal(true); 
       } else {
 
         setIsOpen(true)
@@ -139,7 +140,7 @@ function MyFullCalendar({ amount }) {
       // console.log(formattedDate);
 
       if (formattedDate > arg.dateStr) {
-        alert('this date dont found')
+        setShowModal(true); 
       } else {
         setGetDateReserve(arg.dateStr);
         setIsOpenPoupupDate(true)
@@ -205,7 +206,7 @@ function MyFullCalendar({ amount }) {
     formData.append('date_reservation', getDateReserve);
     formData.append('time_reservation', timeReservation.replace(/ (AM|PM)/, ''));
     formData.append('amount', parseFloat(amount.replace(/[^\d.]/g, '')));
-    formData.append('dura', time);
+    formData.append('dura', times);
 
     try {
       axios.post(`${API_URL}/Etudiant/pay/${id}`, formData, {
@@ -239,6 +240,19 @@ function MyFullCalendar({ amount }) {
   return (
     <>
       {loading && <Spinner />}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-96 text-center">
+            <h2 className="text-xl text-red-600 font-semibold mb-3">Date invalide</h2>
+            <p className="text-gray-700 mb-5">Cette date n'est pas disponible. Veuillez en choisir une autre.</p>
+            <button 
+              onClick={()=> setShowModal(false) } 
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
       {isOpen && user.role === 'tuteur' && (
         <>
 
@@ -401,8 +415,8 @@ function MyFullCalendar({ amount }) {
               <button
                 key={index}
                 id={time.time}
-                onClick={(e) => setTimeReservation(e.target.id)}
-                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${time === time.time ? 'bg-red-100' : 'bg-white'
+                onClick={(e) =>setTimeReservation(e.target.id)}
+                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time.time ? 'bg-red-400 text-white shadow-md' : 'bg-white'
                   }`}
               >
                 {time.time}
@@ -413,23 +427,23 @@ function MyFullCalendar({ amount }) {
           <h3 className="font-medium text-gray-800 mt-8 mb-4">Choisissez une durée de réservation</h3>
           <div className="grid grid-cols-2 gap-3 mb-8">
 
+      {durationOption.map((time, index) => (
+        <button
+          key={index}
+          id={time.time}
+          onClick={(e) => setTime(e.target.id)}
+          className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 
+            ${times === time.time.toString() ? 'bg-red-400 text-white shadow-md' : 'bg-white hover:bg-red-50'}`}
+        >
+          {time.time} hour
+        </button>
+      ))}
 
-            {durationOption.map((time, index) => (
-              <button
-                key={index}
-                id={time.time}
-                onClick={(e) => setTime(e.target.id)}
-                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 ${durationOption === time.time ? 'bg-red-100 shadow-md' : 'bg-white hover:bg-red-50'
-                  }`}
-              >
-                {time.time} hour
-              </button>
-            ))}
           </div>
           <form onSubmit={handleReservation} className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
             <div>
               <p className="font-medium">Selected session:</p>
-              <p className="text-gray-600">{getDateReserve} at {timeReservation}({time} hour)</p>
+              <p className="text-gray-600">{getDateReserve} at {timeReservation}({times} hour)</p>
             </div>
             <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
               Confirm
@@ -438,11 +452,17 @@ function MyFullCalendar({ amount }) {
         </>
       )}
       {isOpenPoupupDate && (
-        <div id="modal" class="fixed inset-0  z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div class="bg-white p-8 rounded shadow-lg max-w-sm w-full">
-            <p id="modalMessage" class="text-lg mb-4">YO CHOSE DATE {getDateReserve}</p>
-            <button onClick={() => setIsOpenPoupupDate(false)} id="modalClose" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none">
-              Add
+        <div id="modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full transform transition-all scale-100 duration-300 ease-out hover:scale-105">
+            <p id="modalMessage" className="text-lg text-gray-800 font-semibold mb-4">
+              YO CHOSE DATE {getDateReserve}
+            </p>
+            <button
+              onClick={() => setIsOpenPoupupDate(false)}
+              id="modalClose"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none transition duration-200 transform active:scale-95"
+            >
+              Ajouter
             </button>
           </div>
         </div>
