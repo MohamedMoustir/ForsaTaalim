@@ -62,7 +62,7 @@ const DetilesAnnonce = () => {
             )}
             <Nav></Nav>
 
-            <div className="max-w-[85%] mt-14 mx-auto mb-14  rounded-2xl shadow-xl overflow-hidden">
+            <div className="max-w-[85%] mt-14 mx-auto mb-14  rounded-2xl shadow-xl overflow-hidden" style={{ fontFamily: 'Open Sans' }}>
                 <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm p-4">
                     <div
                         className="text-gray-500 cursor-pointer hover:text-red-500 transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50"
