@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Models\Announcement;
 use App\Models\CategorieMatiere;
+use App\Models\User;
 use App\Repositories\AdminRepositories;
 use App\Repositories\AnnouncementRepositories;
 use App\Repositories\CategorieMatiereRepository;
 use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
+use DB;
 use Illuminate\Support\Facades\Log;
 
 class AdminServices implements CrudInterface
@@ -18,6 +20,16 @@ class AdminServices implements CrudInterface
     public function __construct(AdminRepositories $adminRepositories)
     {
         $this->adminRepositories = $adminRepositories;
+    }
+    public function getstudent(){
+        return User::where('role','=','etudiant')->paginate(6);
+    }
+    public function getTuteur(){
+        return DB::table('users')
+        ->join('professeurs','users.id','=','professeurs.user_id')
+        ->join('categorie_matieres','professeurs.categorieMatiere_id','=','categorie_matieres.id')
+        ->select('users.photo','users.prenom','users.email','users.telephone','categorie_matieres.nom','users.isActive','users.*')
+        ->where('users.role','=','tuteur')->paginate(8);
     }
     public function create(array $data)
     {
@@ -57,8 +69,8 @@ class AdminServices implements CrudInterface
     public function generateActivityReport(){
         return $this->adminRepositories->generateActivityReport();
     }
-    public function generatePerformanceReport(){
-        return $this->adminRepositories->generatePerformanceReport();
+    public function Activitehebdomadaire(){
+        return $this->adminRepositories->Activitehebdomadaire();
     }
     
 }
