@@ -28,7 +28,9 @@ import ProfilePage from "./Professeur/profileProfesseur.jsx";
 import { API_URL, getUser, getToken } from "./utils/config.jsx";
 import { useParams } from "react-router-dom";
 import AdminDashboard from "./Admin/Dashboard.jsx"
-
+import Students from "./Admin/Students.jsx";
+import Teachers from "./Admin/Teachers.jsx"
+import Categories from "./Admin/Categories.jsx";
 function App() {
 
   const [profiles, setprofiles] = useState([]);
@@ -92,6 +94,11 @@ function App() {
         <Route path="/profilePage" element={<ProfilePage />} />
         <Route path="/pdfDociment/:id" element={<PdfDociment  />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/admin/students" element={<Students />} />
+        <Route path="/admin/teachers" element={<Teachers />} />
+        <Route path="/admin/categories" element={<Categories />} />
+
+
 
       </Routes>
     </Router>
