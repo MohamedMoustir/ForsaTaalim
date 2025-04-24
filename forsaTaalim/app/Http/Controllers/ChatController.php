@@ -21,15 +21,14 @@ class ChatController extends Controller
     public function message(ChatRequests $request, $id)
     {
         $validatedata = $request->validated();
-        $this->chatService->create($validatedata, auth::user()->id, $id);
+        $data = $this->chatService->create($validatedata, auth::user()->id, $id);
         event(new Message($request->input('username'), $request->input('message'), $id));
-        return [];
+        return $data;
     }
 
     public function getMessage($id, $chat_user_id)
     {
-        // // $authId = Auth::id(); 
-        // dd($chat_user_id);
+       
 
         $chats = DB::table('chat_users as cha_u')
             ->join('chats as ch', 'ch.chat_user_id', '=', 'cha_u.id')
