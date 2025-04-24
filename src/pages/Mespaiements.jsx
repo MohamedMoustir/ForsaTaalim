@@ -62,7 +62,7 @@ const Mespaiements = () => {
     }, [currentPage]);
 
   
-    const handleStatusUpdate = async (id) => {
+    const handleDelete = async (id) => {
         try {
             const formData = new FormData();
             formData.append("_method", 'Delete');
@@ -74,9 +74,7 @@ const Mespaiements = () => {
             const data = response.data.reservation.data;
             if (response.data) {
                 await fetchPayments(currentPage);
-                setMespaiements(Mespaiements.map(res =>
-                    res.reservation_id != id
-                ));
+               
             }
 
         } catch (err) {
@@ -201,7 +199,7 @@ const Mespaiements = () => {
                                                     <button onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
                                                         <FontAwesomeIcon icon={faReceipt} />
                                                     </button>
-                                                    <button onClick={() => handleStatusUpdate(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">
+                                                    <button onClick={() => handleDelete(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">
                                                         <FontAwesomeIcon icon={faTimes} className='text-red-400' />
                                                     </button>
                                                 </td>
