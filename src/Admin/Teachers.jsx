@@ -15,7 +15,7 @@ const TeacherList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [profileslength, setprofileslength] = useState(6);
-    const [showMenu, setShowMenu] = useState();
+    const [showMenu, setShowMenu] = useState(false);
     const [role, setRole] = useState();
 
 
@@ -47,19 +47,69 @@ const TeacherList = () => {
     for (let i = 0; i < profileslength / itemsPerPage; i++) {
         pages.push(i);
     }
+
+    const handleStatusUpdate = async (e) => {
+
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append("role", role);
+            formData.append("_method", 'PUT');
+            const response = await axios.post(`${API_URL}/users/${showMenu}/role`, formData, {
+                headers: {
+                    Authorization: `bearer ${token}`
+                }
+            });
+
+            if (response.data) {
+                setShowMenu(0)
+                setTuteur(tuteur.map(res =>
+                    res.id === showMenu ? { ...res, role: role } : res
+                ));
+            }
+
+        } catch (err) {
+            console.error('Error updating reservation status:', err);
+            alert('Failed to update reservation status');
+        }
+    };
+
+    const handleSuspend = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("_method", 'patch');
+
+            const response = await axios.post(`${API_URL}/users/${showMenu}/suspend`, formData, {
+                headers: {
+                    Authorization: `bearer ${token}`
+                }
+            });
+
+            if (response.data) {
+                console.log(response.data);
+                
+                setShowMenu(0)
+            }
+
+        } catch (err) {
+            console.error('Error updating reservation status:', err);
+            alert('Failed to update reservation status');
+        }
+    };
+    
     return (
         <div className=" flex bg-gray-50 min-h-screen" style={{ fontFamily: 'Open Sans' }}>
-      
-                {loading && (
-                    <Spinner />
-                )}
-                <div className="w-full md:w-64 bg-white shadow-md">
-                    <AdminNav />
-                </div>
-      
-            
+
+            {loading && (
+                <Spinner />
+            )}
+            <div className="w-full md:w-64 bg-white shadow-md">
+                <AdminNav />
+            </div>
+
+
             <div className=" px-6 py-8">
-           
+
                 <div className="flex justify-between px-6 py-8 items-center mb-8 w-[1200px]">
                     <h1 className="text-2xl font-semibold text-indigo-800">Teachers</h1>
                     <div className="flex items-center gap-4">
@@ -78,7 +128,7 @@ const TeacherList = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                    
+
                     <div className="relative w-full sm:w-64">
                         <div className="absolute inset-y-0 left-3 flex items-center text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,7 +144,7 @@ const TeacherList = () => {
                     </div>
 
                     <div className="flex gap-2">
-                        
+
                         <button className="flex items-center gap-1 px-4 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-100">
                             Newest
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" stroke="currentColor" viewBox="0 0 24 24" fill="none">
@@ -109,7 +159,7 @@ const TeacherList = () => {
 
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    
+
                     {tuteur.filter((item) => {
                         if (search) {
                             return search.toLowerCase() === 'all' ? item : item.prenom.toLowerCase().includes(search);
@@ -117,7 +167,53 @@ const TeacherList = () => {
                             setSearch('all');
                         }
                     }).map((user, index) => (
-                        <div key={index} className="bg-white p-5 rounded-xl shadow-md text-center hover:shadow-lg transition">
+                        <div key={index} className="relative bg-white p-5 rounded-xl shadow-md text-center hover:shadow-lg transition">
+                            {showMenu === user.id && (
+                                <div className="absolute right-0 mt-2 w-52 bg-white rounded-md shadow-lg z-50 border">
+                                    <form onSubmit={handleStatusUpdate} className="py-2 px-4 text-sm text-gray-700">
+                                        <label className="block text-gray-600 mb-1">Role:</label>
+
+                                        <select
+                                            onChange={(e) => setRole(e.target.value)}
+                                            className="w-full px-2 py-1 border rounded-md focus:outline-none focus:ring"
+                                        >
+                                            <option value="etudiant">Etudiant</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="tuteur">Tuteur</option>
+                                        </select>
+
+
+                                        <button
+
+                                            className="w-full px-4 py-2 text-left text-green-600 hover:bg-gray-100"
+                                        >
+                                            <i className="fas fa-save mr-2"></i> Enregistrer
+                                        </button>
+                                    </form>
+                                    {user.isActive  ? (
+                                        <button
+                                            onClick={() => handleSuspend(user.id)}
+                                            className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
+                                        >
+                                            <i className="fas fa-ban mr-2"></i> Suspendre
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleSuspend(user.id)}
+                                            className="w-full px-4 py-2 text-left text-green-600 hover:bg-green-100"
+                                        >
+                                            <i className="fas fa-ban mr-2"></i> Active
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                            <button
+                                onClick={() => setShowMenu(user.id)}
+
+                                className="text-gray-400 hover:text-gray-600 transition absolute left-[90%]"
+                            >
+                                <i className="fas fa-ellipsis-h"></i>
+                            </button>
                             <div className="mb-4">
                                 <img
                                     className="h-16 w-16 mx-auto rounded-full border border-gray-200 object-cover"
