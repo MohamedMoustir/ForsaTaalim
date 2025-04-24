@@ -1,77 +1,187 @@
-import React from "react";
+
+import React, { useEffect, useState } from "react";
+import AdminDashboard from "./Dashboard";
+import AdminNav from "../components/AdimNav";
+import axios from "axios";
+import { API_URL, getToken } from "../utils/config";
+import Spinner from "../components/Spinner";
 
 const TeacherList = () => {
-  return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold text-indigo-900">Teachers</h1>
-        <div className="flex items-center gap-4">
-          <button className="text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Nadine A.</span>
-            <div className="h-8 w-8 bg-purple-300 rounded-full"></div>
-          </div>
-        </div>
-      </div>
 
-      <div className="flex justify-between mb-6">
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <input
-            type="text"
-            placeholder="Search here..."
-            className="pl-10 pr-4 py-2 w-48 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-        <div className="flex gap-2">
-          <button className="px-4 py-2 rounded-md border border-gray-300 bg-white text-sm flex items-center justify-between gap-2">
-            <span>Newest</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <button className="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm">
-            + New Student
-          </button>
-        </div>
-      </div>
+    const token = getToken();
+    const [tuteur, setTuteur] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('all');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [profileslength, setprofileslength] = useState(6);
+    const [showMenu, setShowMenu] = useState();
+    const [role, setRole] = useState();
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-          <div className="flex justify-between items-center mb-4">
-            <div className="h-16 w-16 bg-purple-200 rounded-full mx-auto"></div>
-            <button className="text-gray-400">...</button>
-          </div>
-          <h3 className="font-bold text-indigo-900">Tom Housenburg</h3>
-          <p className="text-gray-500 text-sm mb-4">Science</p>
-          <div className="flex justify-center gap-2">
-            <button className="p-2 bg-indigo-600 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-            </button>
-            <button className="p-2 bg-indigo-600 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </button>
-          </div>
+
+
+
+    const fetchStudents = async (page) => {
+        const response = await axios.get(`${API_URL}/admin/Tuteur?page=${page}`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'content-Type': 'aplication/json'
+            }
+        })
+        const data = response.data.Tuteur;
+        console.log(data.data);
+        setprofileslength(data.total);
+
+        setLoading(false);
+        setTuteur(data.data);
+
+    }
+    useEffect(() => {
+        fetchStudents(currentPage);
+    }, [currentPage])
+
+    const lastItemsIndex = currentPage * itemsPerPage;
+    const firstItemsIndex = lastItemsIndex - itemsPerPage
+    const thisPageItems = tuteur.slice(firstItemsIndex, lastItemsIndex)
+    const pages = [];
+    for (let i = 0; i < profileslength / itemsPerPage; i++) {
+        pages.push(i);
+    }
+    return (
+        <div className=" flex bg-gray-50 min-h-screen" style={{ fontFamily: 'Open Sans' }}>
+      
+                {loading && (
+                    <Spinner />
+                )}
+                <div className="w-full md:w-64 bg-white shadow-md">
+                    <AdminNav />
+                </div>
+      
+            
+            <div className=" px-6 py-8">
+           
+                <div className="flex justify-between px-6 py-8 items-center mb-8 w-[1200px]">
+                    <h1 className="text-2xl font-semibold text-indigo-800">Teachers</h1>
+                    <div className="flex items-center gap-4">
+                        <button className="text-gray-500 hover:text-indigo-600 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0..." />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm text-gray-700 font-medium">Nadine A.</span>
+                            <div className="h-9 w-9 bg-purple-400 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+                    
+                    <div className="relative w-full sm:w-64">
+                        <div className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7..." />
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search here..."
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full py-2 pl-10 pr-4 rounded-md border border-gray-300 shadow-sm focus:ring-indigo-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div className="flex gap-2">
+                        
+                        <button className="flex items-center gap-1 px-4 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-100">
+                            Newest
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" stroke="currentColor" viewBox="0 0 24 24" fill="none">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <button className="px-4 py-2 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition">
+                            + New Student
+                        </button>
+                    </div>
+                </div>
+
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    {tuteur.filter((item) => {
+                        if (search) {
+                            return search.toLowerCase() === 'all' ? item : item.prenom.toLowerCase().includes(search);
+                        } else {
+                            setSearch('all');
+                        }
+                    }).map((user, index) => (
+                        <div key={index} className="bg-white p-5 rounded-xl shadow-md text-center hover:shadow-lg transition">
+                            <div className="mb-4">
+                                <img
+                                    className="h-16 w-16 mx-auto rounded-full border border-gray-200 object-cover"
+                                    src={`http://127.0.0.1:8000/storage/${user.photo}`}
+                                    alt={user.name}
+                                />
+                            </div>
+                            <h3 className="font-semibold text-indigo-900">{user.prenom}</h3>
+                            <p className="text-gray-500 text-sm">{user.nom}</p>
+                            <div className="flex justify-center gap-3 mt-4">
+                                <a href={`tel:${user.telephone}`} className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition">
+                                    <i className="fas fa-phone-alt"></i>
+                                </a>
+                                <a href={`mailto:${user.email}`} className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition">
+                                    <i className="fas fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="flex justify-center mt-12">
+                    <ul className="inline-flex items-center space-x-1">
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                className="px-3 py-2 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100"
+                            >
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
+                                </svg>
+                            </button>
+                        </li>
+
+                        {pages.map((pageIndex) => (
+                            <li key={pageIndex}>
+                                <button
+                                    onClick={() => setCurrentPage(pageIndex + 1)}
+                                    className={`px-4 py-2 border ${currentPage === pageIndex + 1
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                                        }`}
+                                >
+                                    {pageIndex + 1}
+                                </button>
+                            </li>
+                        ))}
+
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
+                                className="px-3 py-2 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100"
+                            >
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
+
 };
 
 export default TeacherList;
