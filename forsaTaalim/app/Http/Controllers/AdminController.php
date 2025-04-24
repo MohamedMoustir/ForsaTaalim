@@ -13,11 +13,22 @@ class AdminController extends Controller
     {
         $this->adminServices = $adminServices;
     }
+
     // Gestion user
     public function deleteUser($id)
     {
         $this->adminServices->delete($id);
         return response()->json(['message' => 'announcement deleted successfully!'], 200);
+    }
+    public function getstudent()
+    {
+        $Students = $this->adminServices->getstudent();
+        return response()->json(['message' => 'Student affiche successfully!', 'student' => $Students], 200);
+    }
+    public function getTuteur()
+    {
+        $Tuteur = $this->adminServices->getTuteur();
+        return response()->json(['message' => 'Tuteur affiche successfully!', 'Tuteur' => $Tuteur], 200);
     }
     public function update(request $request, $id)
     {
@@ -27,7 +38,7 @@ class AdminController extends Controller
         $upadetrole = $this->adminServices->Update($id, $validateData);
         return response()->json(['message' => 'role updated successfully!', 'role' => $upadetrole], 200);
     }
-    public function suspended($id)
+    public function Suspendre($id)
     {
         $suspended = $this->adminServices->suspended($id);
         return response()->json(['message' => 'suspended updated successfully!', 'suspended' => $suspended], 200);
@@ -65,27 +76,19 @@ class AdminController extends Controller
             "top_sold_User" => $Announce
         ], 200);
     }
-
-    // you want test 
     public function generateActivityReport()
     {
-        $generate = $this->adminServices->generateActivityReport();
-        return response()->json([
-            'total_users' => $generate['totalUsers'],
-            'total_Announcement' => $generate['totalAnnouncement'],
-            'total_reviews' => $generate['totalReviews'],
-        ]);
+        return $generate = $this->adminServices->generateActivityReport();
+
     }
 
-    public function generatePerformanceReport()
+    public function Activitehebdomadaire()
     {
-        $averageRating = $this->adminServices->generatePerformanceReport();
-        return response()->json([
-            'average_teacher_rating' => $averageRating,
-        ]);
+        return $averageRating = $this->adminServices->Activitehebdomadaire();
+
     }
 
-  
+
 }
 
 
