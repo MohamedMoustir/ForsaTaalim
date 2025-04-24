@@ -33,7 +33,7 @@ const Login = () => {
         } else if (user.role === 'tuteur') {
           navigate('/dashboard-tuteur');
         } else if (user.role === 'admin') {
-          navigate('/admin/dashboard');
+          navigate('/admindashboard');
         } else {
           navigate('/login');
         }

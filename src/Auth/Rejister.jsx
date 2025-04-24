@@ -69,8 +69,8 @@ const Rejister = () => {
         setLoading(false)
       }
       if (role == 'tuteur') {
-        navigate('/RejisterPro');
-      }else{
+        window.location.href = '/RejisterPro'
+      } else {
         navigate('/login');
       }
       setLoading(false)
@@ -82,8 +82,8 @@ const Rejister = () => {
     }
 
   };
-  
- 
+
+
 
   if (loading && !data) {
     return (
@@ -110,17 +110,50 @@ const Rejister = () => {
             <div className="w-full max-w-lg">
               <h1 className="text-2xl font-bold mb-8 text-center lg:text-left">Create Your Account</h1>
 
-              <div className="flex text-center gap-8 mb-6">
-                <button id="tuteur" onClick={(e) => setRole(e.target.id)} type="button" className="flex items-center justify-center gap-2 bg-white-400 border text-black border-red-400 hover:bg-red-500 px-6 py-2 rounded-md transition">
+              <div className="flex justify-center gap-24 mb-8">
+                <button
+                  id="tuteur"
+                  onClick={(e) => setRole(e.target.id)}
+                  type="button"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl border ${role == 'tuteur' ? 'bg-red-500 text-white ' : 'border-red-400 text-red-500 hover:bg-red-500'} hover:text-white transition-all duration-300 shadow-md hover:shadow-lg bg-white`}
+                >
                   I'm a Tutor
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </button>
-                <button id="etudiant" onClick={(e) => setRole(e.target.id)} type="button" className="flex items-center justify-center gap-2 bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-md transition">
+
+                <button
+                  id="etudiant"
+                  onClick={(e) => setRole(e.target.id)}
+                  type="button"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl border ${role == 'etudiant' ? 'bg-red-500 text-white ' : 'border-red-400 text-red-500 hover:bg-red-500'} hover:text-white transition-all duration-300 shadow-md hover:shadow-lg bg-white`}
+                >
                   I'm a Student
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </button>
               </div>

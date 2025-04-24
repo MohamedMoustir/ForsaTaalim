@@ -6,6 +6,7 @@ import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
 import "../assets/js/main"
+import Spinner from "../components/Spinner";
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
     const [subject, setSubject] = useState('');
@@ -21,7 +22,10 @@ const RejisterPro = () => {
     const [city, setcity] = useState([]);
     const token = getToken();
     const user = getUser();
+    const [loading, setLoading] = useState(true);
+
     const handleRejisterProfesseur = async (e) => {
+        setLoading(true)
         e.preventDefault();
         try {
             const formData = new FormData();
@@ -40,11 +44,10 @@ const RejisterPro = () => {
                 },
             });
             if (response) {
-                alert('User registered successfully');
+                setLoading(false)
                 navigate('/login')
             } else {
-                
-                alert('Error during registration');
+
                 console.error(error);
             }
         } catch (error) {
@@ -85,6 +88,10 @@ const RejisterPro = () => {
 
     return (
         <div className="min-h-screen ">
+
+            {loading && (
+                <Spinner />
+            )}
             <header className="p-6">
                 <div className="text-xl font-bold text-red-400">
                     ForsaTaalim
@@ -94,7 +101,7 @@ const RejisterPro = () => {
                     <div data-step="4" className="step hidden w-[56%] h-0.5 bg-red-400 mt-1"></div>
                     <div data-step="5" className="step hidden w-[70.5%] h-0.5 bg-red-400 mt-1"></div>
                     <div data-step="6" className="step hidden w-[85%] h-0.5 bg-red-400 mt-1"></div>
-                    <div data-step="7" className="step hidden w-[100%] h-0.5 bg-red-400 mt-1"></div>
+                    {/* <div data-step="7" className="step hidden w-[100%] h-0.5 bg-red-400 mt-1"></div> */}
                 </div>
             </header>
             <form onSubmit={handleRejisterProfesseur} encType="multipart/form-data">
@@ -123,7 +130,7 @@ const RejisterPro = () => {
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </span>
-                                <input id="inputSerch" value={subject} onChange={(e) => setSubject(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
+                                <input id="inputSerch" value={subject} onChange={(e) => setSubject(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
 
                                 <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Try &quot;Math&quot;"
@@ -143,7 +150,7 @@ const RejisterPro = () => {
                                     return (
                                         <div key={index} id={Categorie.id} onClick={(e) => setSubject(e.target.id)}
                                             className={`subjects flex items-center h-8 justify-between p-4 rounded-md cursor-pointer 
-                                            ${parseInt(subject) === Categorie.id ? 'bg-red-400 text-white' : 'bg-gray-50'} hover:bg-red-400 hover:text-white`} >
+                                            ${parseInt(subject) === Categorie.id ? 'bg-red-400 text-white' : 'bg-gray-50 hover:text-white'} hover:bg-red-400 hover:text-white`} >
                                             <span className={` ${parseInt(subject) === Categorie.id ? 'font-medium text-white' : ' text-black'}`}>{Categorie.nom}</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +203,7 @@ const RejisterPro = () => {
                                     type="text" id="input_2"
                                     className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="Enter diploma title" />
-                            
+
                             </div>
 
                         </div>
@@ -285,7 +292,7 @@ const RejisterPro = () => {
                                 <div className="prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                     back</div>
                                 <div
-                                    className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                                    className="next-btn  cursor-pointer px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
 
                             </div>
                         </div>
@@ -324,7 +331,7 @@ const RejisterPro = () => {
                         <div>
                             <h3 className="text-sm font-medium text-gray-500 mb-4">Where will the lesson take place?</h3>
                             <div className="space-y-3 ">
-                            <input id="inputSerch" value={location} onChange={(e) => setLocation(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
+                                <input id="inputSerch" value={location} onChange={(e) => setLocation(e.target.value)} type="hidden" placeholder="Try &quot;Math&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
                                 <input id="inputSerch" value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Try &quot;City&quot;"
                                     className="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
@@ -336,7 +343,7 @@ const RejisterPro = () => {
                                             <div key={index} id={city.city} onClick={(e) => setLocation(e.target.id)}
                                                 className={`subjects flex  h-8 items-center  justify-between p-4 rounded-md cursor-pointer 
                                             ${city.city === location ? 'bg-red-400 text-white' : 'bg-gray-50'} hover:bg-red-400 hover:text-white`} >
-                                                <span className={` ${city.city === location  ? 'font-medium text-white' : ' text-black'}`}>{city.city}</span>
+                                                <span className={` ${city.city === location ? 'font-medium text-white' : ' text-black'}`}>{city.city}</span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -357,7 +364,7 @@ const RejisterPro = () => {
                             <div className=" prev-btn px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                 back</div>
                             <div id="Next"
-                                className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                                className="next-btn  cursor-pointer px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
                         </div>
                     </div>
                 </div>
@@ -391,13 +398,13 @@ const RejisterPro = () => {
                         <div className=" prev-btn flex items-center justify-between mt-12">
                             <div className="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                 back</div>
-                            <div
-                                className="next-btn px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</div>
+                            <button type="submit"
+                                className="px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
 
                         </div>
                     </div>
                 </div>
-                <div data-step="7"
+                {/* <div data-step="7"
                     className=" step-content hidden flex flex-col md:flex-row items-start justify-center max-w-6xl mx-auto px-6 py-12 gap-12">
                     <div className="w-full md:w-80 bg-red-50 rounded-3xl p-6">
                         <h2 className="font-bold text-xl mb-4">Good to know</h2>
@@ -424,10 +431,7 @@ const RejisterPro = () => {
                                 <input type="file" onChange={(e) => setVideo(e.target.files[0])}
                                     className=" flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400 mr-2"
                                     placeholder="" />
-                                {/* <img src="../../assets/img/image.png" alt="" className="cursor-pointer" /> */}
-                            </div>
-                            {/* <div  className="px-6 py-3 text-white text-center ml-[19%] rounded-full bg-red-400">Upload a
-                                video</div> */}
+                             
                         </div>
                         <div className="flex items-center justify-between mt-12 mr-24">
                             <div className="prev-btn  px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
@@ -437,7 +441,9 @@ const RejisterPro = () => {
 
                         </div>
                     </div>
-                </div>
+                    </div>
+
+                </div> */}
             </form>
         </div>
 
