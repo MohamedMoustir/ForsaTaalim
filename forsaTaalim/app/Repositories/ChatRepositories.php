@@ -37,7 +37,7 @@ class ChatRepositories
        
         $pusher->trigger('forsaTaalm-development', 'message', [
             'message' => $data['message'],
-            'sender' => Auth::user()->role,
+            'sender_id' => Auth::id(),
             'timestamp' => now()->format('h:i A'),
         ]);
 

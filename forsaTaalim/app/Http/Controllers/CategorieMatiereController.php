@@ -25,7 +25,11 @@ class CategorieMatiereController extends Controller
         $categorieMatiere = $this->categorieMatiereService->getAll();
         return response()->json(['AllCategorieMatiere' => $categorieMatiere]);
     }
- 
+    public function getAllCategorieMatiere()
+    {
+        $categorieMatiere = $this->categorieMatiereService->getAllCategorieMatiere();
+        return response()->json(['AllCategorieMatiere' => $categorieMatiere]);
+    }
     public function update(CategorieMatiereRequests $request, $id)
     {
         $validated = $request->validated();

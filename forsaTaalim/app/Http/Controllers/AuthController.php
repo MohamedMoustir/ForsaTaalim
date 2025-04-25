@@ -72,41 +72,15 @@ class AuthController extends Controller
     public function refresh()
     {
       
-        return   $result = $this->authServices->refresh();
+        return  $this->authServices->refresh();
     }
-
     // public function forgotPassword(request $request)
     // {
-        // $status = $this->authServices->forgotPassword($request->email);
-        
-    //     if ($status === Password::RESET_LINK_SENT) {
-    //         return response()->json([
-    //             'message' => 'Password reset link sent to your email'
-    //         ]);
-    //     }
-        
-    //     return response()->json([
-    //         'message' => 'Unable to send password reset link'
-    //     ], 400);
-    // }
+    //     return  $this->authServices->forgotPassword($request->email);
 
-    // public function resetPassword(Request $request)
-    // {
-  
-    //     $request->validate([
-    //         'token' => 'required|string',
-    //         'password' => 'required|string',
-    //     ]);
-    
-    //     $status = $this->authServices->resetPassword($request->token ,$request->password);
-    //         if ($status) {
-    //         return response()->json([
-    //             'message' => 'Password has been reset successfully'
-    //         ]);
-    //     }
-    
-    //     return response()->json([
-    //         'message' => 'Unable to reset password. Invalid token or user.'
-    //     ], 400);
     // }
+    public function resetpassword(request $request)
+    {
+        return redirect()->away("http://localhost:3000/reset-password");
+    }
 }

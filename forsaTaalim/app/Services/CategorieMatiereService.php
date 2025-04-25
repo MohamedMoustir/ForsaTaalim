@@ -6,6 +6,7 @@ use App\Models\CategorieMatiere;
 use App\Repositories\CategorieMatiereRepository;
 use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
+use DB;
 use Illuminate\Support\Facades\Log;
 
 class CategorieMatiereService implements CrudInterface
@@ -23,6 +24,16 @@ class CategorieMatiereService implements CrudInterface
     public function getAll()
     {
         return CategorieMatiere::all();
+    }
+    function getAllCategorieMatiere(){
+      
+            return DB::table('categorie_matieres as c')
+                ->leftjoin('professeurs as p', 'c.id', '=', 'p.categorieMatiere_id')
+               ->select('c.id','c.nom' ,DB::raw('COUNT(p.id) as count') )
+               ->groupBy('c.id','c.nom')
+               ->paginate(6);
+    
+        
     }
     public function getById($id)
     {

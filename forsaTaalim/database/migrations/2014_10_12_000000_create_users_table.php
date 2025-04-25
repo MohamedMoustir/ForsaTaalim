@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('photo');
             $table->integer('age');
             $table->string('telephone');
-            $table->enum('role', ['tuteur', 'etudiant', 'parent', 'admin']);
+            $table->enum('role', ['tuteur', 'etudiant', 'admin']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('isActive')->default(true);

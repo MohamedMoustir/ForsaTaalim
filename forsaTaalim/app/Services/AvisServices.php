@@ -40,4 +40,8 @@ class AvisServices implements CrudInterface
     {
         return $this->avisRepositories->delete($id);
     }
+    public function getTopAvies()
+    {
+        return $this->avisRepositories->getTopAvies();
+    }
 }

@@ -29,8 +29,11 @@ class SocialiteController extends Controller
             $user = User::where('email', $googleUser->email)->first();
 
             if ($user) {
+
                 $user->update(['google_id' => $googleUser->id]);
+
             } else {
+                
                 $user = User::create([
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,

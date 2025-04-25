@@ -33,7 +33,7 @@ class Message implements ShouldBroadcast
 
     public function create()
     {
-        
+
         $newMessage = new chat();
         $newMessage->sender_id = Auth::id();
         $newMessage->receiver_id = $this->receive_id;

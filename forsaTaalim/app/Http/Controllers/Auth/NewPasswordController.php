@@ -9,22 +9,20 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use PharIo\Manifest\Email;
-// error
+
 class NewPasswordController extends Controller
 {
     public function store(Request $request)
     {
-      
+     
             $request->validate([
                 'current_password' => 'required|string',
                 'password' => 'required|string',
                 'email' => 'required',
-
             ]);
-        
+
             $user = User::where('email',$request->email)->first();
-        
-           
+            
             if (!Hash::check($request->current_password, $user->password)) {
                 return response()->json(['message' => 'Please enter the correct current password.'], 400);
             }

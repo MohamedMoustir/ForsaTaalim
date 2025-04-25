@@ -12,6 +12,7 @@ use App\Interface\CrudInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\ChatRepositories;
 use Auth;
+use DB;
 use Spatie\ErrorSolutions\Solutions\Laravel\GenerateAppKeySolution;
 
 
@@ -26,13 +27,22 @@ class ChatService
     }
     public function create(array $data, $sender_id, $id)
     {
+        $authUserId = Auth::id(); 
+        $receiverId = $id;
 
-        $chekifreser = Reservation::where('etudiant_id', '=', Auth::id())
-            ->Where('professeur_id', '=', $id)
-            ->count();
+        //  chak is user inscre in cours
+        $chatUser = DB::table('chat_users')
+            ->where(function($query) use ($authUserId, $receiverId) {
+                $query->where('user_id1', '=', $authUserId)
+                      ->where('user_id2', '=', $receiverId);
+            })
+            ->orWhere(function($query) use ($authUserId, $receiverId) {
+                $query->where('user_id1', '=', $receiverId)
+                      ->where('user_id2', '=', $authUserId);
+            })
+            ->first();
 
-        if ($chekifreser > 0) {
-
+        if ($chatUser) {
             $chat_user = Chat_user::where(function ($query) use ($sender_id, $id) {
                 $query->where('user_id1', $sender_id)
                     ->where('user_id2', $id);

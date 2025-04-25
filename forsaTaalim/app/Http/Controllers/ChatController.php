@@ -20,6 +20,7 @@ class ChatController extends Controller
     }
     public function message(ChatRequests $request, $id)
     {
+       
         $validatedata = $request->validated();
         $data = $this->chatService->create($validatedata, auth::user()->id, $id);
         event(new Message($request->input('username'), $request->input('message'), $id));
@@ -40,6 +41,7 @@ class ChatController extends Controller
             return [
                 'message' => $chat->message,
                 'sender' => $chat->sender,
+                'sender_id'=> $chat->sender_id,
                 'timestamp' => now()->format('h:i A')
             ];
         });

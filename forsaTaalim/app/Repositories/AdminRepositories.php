@@ -4,7 +4,9 @@ namespace App\Repositories;
 use App\Models\Announcement;
 use App\Models\CategorieMatiere;
 use App\Models\Comment;
+use App\Models\Reservation;
 use App\Models\User;
+use App\Models\Visit;
 use DB;
 use Illuminate\Console\Command;
 use Mail;
@@ -27,9 +29,19 @@ class AdminRepositories
     }
     public function suspended($id)
     {
-        $update = $this->model->findOrFail($id)->update(['isActive' => 0]);
-        return $update;
+        $user = User::findOrFail($id);
+        
+        $user->isActive = !$user->isActive;
+        $user->save();
+    
+        return response()->json([
+            'success' => true,
+            'message' => $user->isActive ? 'Utilisateur activé' : 'Utilisateur suspendu',
+            'isActive' => $user->isActive,
+        ]);
     }
+    
+
     public function TotalUser()
     {
         return $this->model->where('role','=','etudiant')->count();
@@ -55,22 +67,30 @@ class AdminRepositories
 
     }
     public function generateActivityReport(){
-        $totalUsers = User::count();
+        $totaletudiant = User::where('role','=','etudiant')->count();
+        $totaltuteur= User::where('role','=','tuteur')->count();
         $totalAnnouncement = Announcement::count();
         $totalReviews = Comment::count();
-
+        
         return response()->json([
-            'totalUsers' => $totalUsers,
+            'totaletudiant' => $totaletudiant,
+            'totaltuteur' => $totaltuteur,
             'totalBookings' => $totalAnnouncement,
             'totalReviews' => $totalReviews,
         ]);
     }
 
-    public function generatePerformanceReport(){
-        return  DB::table('users u')
-        ->join('comments c','c.tuteur_id','=','u.id')
-        ->select(DB::AVG('c.rating'))
-        ->get();
+    public function Activitehebdomadaire (){
+        $visits = Visit::selectRaw('DATE(created_at) as day, COUNT(*) as total')->count();
+       $inscriptions = User::selectRaw('DATE(created_at) as day')->count();
+       $cours = Reservation::selectRaw('DATE(created_at) as day')->count();
+       
+        return response()->json(['visits'=>$visits ,'inscriptions'=>$inscriptions,'cours'=>$cours]);
     }
     
 }
+
+
+
+
+  

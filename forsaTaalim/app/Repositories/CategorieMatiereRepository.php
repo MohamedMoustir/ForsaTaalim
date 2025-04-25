@@ -23,6 +23,7 @@ class CategorieMatiereRepository
     }
     public function update($id ,$data){
         $categorie = CategorieMatiere::findOrFail($id); 
+
         $categorie->update($data);
     }
     public function delete($id)

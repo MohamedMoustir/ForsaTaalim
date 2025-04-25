@@ -86,23 +86,23 @@ class AuthService
     // }
 
 
-    // public function resetPassword($token, $password)
-    // {
-    //     try {
-    //         $user = JWTAuth::toUser($token);
+    public function resetpassword($token, $password)
+    {
+        try {
+            $user = JWTAuth::toUser($token);
 
-    //         if (!$user) {
-    //             return response()->json(['message' => 'Invalid token'], 400);
-    //         }
-    //         $user->password = Hash::make($password);
-    //         $user->save();
-    //         return response()->json(['message' => 'Password has been reset successfully']);
+            if (!$user) {
+                return response()->json(['message' => 'Invalid token'], 400);
+            }
+            $user->password = Hash::make($password);
+            $user->save();
+            return response()->json(['message' => 'Password has been reset successfully']);
 
-    //     } catch (\Exception $e) {
+        } catch (\Exception $e) {
 
-    //         return response()->json(['message' => 'Unable to reset password'], 400);
-    //     }
-    // }
+            return response()->json(['message' => 'Unable to reset password'], 400);
+        }
+    }
 }
 
 

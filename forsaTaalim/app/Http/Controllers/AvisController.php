@@ -40,5 +40,8 @@ class AvisController extends Controller
     }
 
     
-
+    public function getTopAvies(){
+        $comments = $this->avisServices->getTopAvies();
+        return response()->json(['message' => 'comment Ajoute successfully!', 'comments' => $comments], 200);
+    }
 }

@@ -1,45 +1,303 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Toast Notifications</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration des Catégories</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-
-<body>
-
-  <div id="notifications" class="notification-container"></div>
-
-  <button onclick="createToast('success', 'fa-solid fa-check-circle', 'Succès', 'Opération terminée avec succès!')">Succès</button>
-  <button onclick="createToast('error', 'fa-solid fa-times-circle', 'Erreur', 'Une erreur s\'est produite!')">Erreur</button>
-  <button onclick="createToast('warning', 'fa-solid fa-exclamation-circle', 'Avertissement', 'Attention à cette action!')">Avertissement</button>
-
- <script>
-  const notifications = document.getElementById("notifications");
-
-function createToast(type, icon, title, text) {
-  let newToast = document.createElement("div");
-
-  newToast.innerHTML = `
-    <div class="toast ${type}">
-        <i class="${icon}"></i>
-        <div class="content">
-            <div class="title">${title}</div>
-            <span>${text}</span>
-        </div>
-        <i class="fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex">
+    <!-- Sidebar -->
+    <div class="w-64 bg-indigo-800 min-h-screen p-4 fixed">
+      <div class="text-white text-2xl font-bold mb-8 flex items-center">
+        <i class="fas fa-th-large mr-3"></i>
+        <span>Administration</span>
+      </div>
+      <nav>
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="text-white opacity-75 hover:opacity-100 flex items-center p-2 rounded hover:bg-indigo-700">
+              <i class="fas fa-tachometer-alt mr-3"></i>
+              <span>Tableau de bord</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="bg-indigo-900 text-white flex items-center p-2 rounded">
+              <i class="fas fa-tags mr-3"></i>
+              <span>Catégories</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-white opacity-75 hover:opacity-100 flex items-center p-2 rounded hover:bg-indigo-700">
+              <i class="fas fa-box-open mr-3"></i>
+              <span>Produits</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-white opacity-75 hover:opacity-100 flex items-center p-2 rounded hover:bg-indigo-700">
+              <i class="fas fa-users mr-3"></i>
+              <span>Utilisateurs</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-white opacity-75 hover:opacity-100 flex items-center p-2 rounded hover:bg-indigo-700">
+              <i class="fas fa-cog mr-3"></i>
+              <span>Paramètres</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-  `;
 
-  notifications.appendChild(newToast);
+    <div class="ml-64 flex-1 p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Gestion des Catégories</h1>
+        <button id="openModalBtn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 flex items-center">
+          <i class="fas fa-plus mr-2"></i>
+          Ajouter une catégorie
+        </button>
+      </div>
 
-  // Auto remove after 5 seconds
-  setTimeout(() => {
-    newToast.remove();
-  }, 5000);
-}
+      <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <div class="relative">
+              <input type="text" class="w-full border rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Rechercher...">
+              <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+          </div>
+          <div>
+            <select class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option>Toutes les catégories</option>
+              <option>Science</option>
+              <option>Technologies</option>
+              <option>Art</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
- </script>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+          <div class="flex justify-between items-center mb-4">
+            <div class="h-16 w-16 bg-purple-200 rounded-full mx-auto flex items-center justify-center">
+              <i class="fas fa-flask text-purple-600 text-xl"></i>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100 text-left">
+                  <i class="fas fa-edit mr-2"></i> Modifier
+                </a>
+                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-100 text-left">
+                  <i class="fas fa-trash mr-2"></i> Supprimer
+                </a>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-bold text-indigo-900">Science</h3>
+          <p class="text-gray-500 text-sm mb-4">18 produits</p>
+          <div class="flex justify-center gap-2">
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-eye text-white text-xs"></i>
+            </button>
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-edit text-white text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Card 2 -->
+        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+          <div class="flex justify-between items-center mb-4">
+            <div class="h-16 w-16 bg-blue-200 rounded-full mx-auto flex items-center justify-center">
+              <i class="fas fa-laptop-code text-blue-600 text-xl"></i>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100 text-left">
+                  <i class="fas fa-edit mr-2"></i> Modifier
+                </a>
+                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-100 text-left">
+                  <i class="fas fa-trash mr-2"></i> Supprimer
+                </a>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-bold text-indigo-900">Technologie</h3>
+          <p class="text-gray-500 text-sm mb-4">24 produits</p>
+          <div class="flex justify-center gap-2">
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-eye text-white text-xs"></i>
+            </button>
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-edit text-white text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Card 3 -->
+        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+          <div class="flex justify-between items-center mb-4">
+            <div class="h-16 w-16 bg-green-200 rounded-full mx-auto flex items-center justify-center">
+              <i class="fas fa-leaf text-green-600 text-xl"></i>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100 text-left">
+                  <i class="fas fa-edit mr-2"></i> Modifier
+                </a>
+                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-100 text-left">
+                  <i class="fas fa-trash mr-2"></i> Supprimer
+                </a>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-bold text-indigo-900">Nature</h3>
+          <p class="text-gray-500 text-sm mb-4">12 produits</p>
+          <div class="flex justify-center gap-2">
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-eye text-white text-xs"></i>
+            </button>
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-edit text-white text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Card 4 -->
+        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+          <div class="flex justify-between items-center mb-4">
+            <div class="h-16 w-16 bg-yellow-200 rounded-full mx-auto flex items-center justify-center">
+              <i class="fas fa-palette text-yellow-600 text-xl"></i>
+            </div>
+            <div class="relative group">
+              <button class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden group-hover:block">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100 text-left">
+                  <i class="fas fa-edit mr-2"></i> Modifier
+                </a>
+                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-100 text-left">
+                  <i class="fas fa-trash mr-2"></i> Supprimer
+                </a>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-bold text-indigo-900">Art</h3>
+          <p class="text-gray-500 text-sm mb-4">9 produits</p>
+          <div class="flex justify-center gap-2">
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-eye text-white text-xs"></i>
+            </button>
+            <button class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+              <i class="fas fa-edit text-white text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex justify-between items-center">
+        <p class="text-gray-600">Affichage de 1-4 sur 10 catégories</p>
+        <div class="flex gap-2">
+          <button class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100">Précédent</button>
+          <button class="px-3 py-1 border rounded bg-indigo-600 text-white">1</button>
+          <button class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100">2</button>
+          <button class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100">3</button>
+          <button class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100">Suivant</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="categoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-gray-800">Ajouter une catégorie</h2>
+        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="categoryName">
+            Nom de la catégorie
+          </label>
+          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" id="categoryName" type="text" placeholder="Ex: Science, Art, Technologie...">
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="categoryIcon">
+            Icône
+          </label>
+          <div class="grid grid-cols-6 gap-2">
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-flask"></i>
+            </button>
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-laptop-code"></i>
+            </button>
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-leaf"></i>
+            </button>
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-palette"></i>
+            </button>
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-book"></i>
+            </button>
+            <button type="button" class="p-2 border rounded hover:bg-gray-100 flex items-center justify-center">
+              <i class="fas fa-music"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="categoryColor">
+            Couleur
+          </label>
+          <div class="grid grid-cols-6 gap-2">
+            <button type="button" class="h-8 w-8 rounded-full bg-purple-200 hover:ring-2 hover:ring-purple-400"></button>
+            <button type="button" class="h-8 w-8 rounded-full bg-blue-200 hover:ring-2 hover:ring-blue-400"></button>
+            <button type="button" class="h-8 w-8 rounded-full bg-green-200 hover:ring-2 hover:ring-green-400"></button>
+            <button type="button" class="h-8 w-8 rounded-full bg-yellow-200 hover:ring-2 hover:ring-yellow-400"></button>
+            <button type="button" class="h-8 w-8 rounded-full bg-red-200 hover:ring-2 hover:ring-red-400"></button>
+            <button type="button" class="h-8 w-8 rounded-full bg-pink-200 hover:ring-2 hover:ring-pink-400"></button>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="categoryDescription">
+            Description (optionnel)
+          </label>
+          <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" id="categoryDescription" placeholder="Description de la catégorie..."></textarea>
+        </div>
+        
+        <div class="flex justify-end gap-2">
+          <button type="button" id="cancelBtn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+            Annuler
+          </button>
+          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+            Sauvegarder
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
 </body>
 </html>

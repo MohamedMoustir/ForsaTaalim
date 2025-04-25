@@ -248,8 +248,8 @@ class ProfesseurRepositories
             'totalUsers' => $totalUsers,
             'totalMessage' => $totalMessage,
             'totalComment' => $totalComment,
-            'PaymentApproved' => $totalComment,
-            'PaymentRefuser' => $totalComment,
+            'PaymentApproved' => $PaymentRefuser,
+            'PaymentRefuser' => $PaymentRefuser,
         ]);
     }
     
