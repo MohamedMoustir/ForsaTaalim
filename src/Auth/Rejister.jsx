@@ -103,7 +103,7 @@ const Rejister = () => {
           />
         </div>
         <div className="w-full lg:w-1/2 flex flex-col p-8 bg-gray-50 shadow-lg rounded-lg">
-          <MainLayout >
+          <MainLayout id_ ={1} >
           </MainLayout >
 
           <div className="flex-grow flex items-center justify-center py-8">
