@@ -110,7 +110,7 @@ const Login = () => {
             </div>
 
 
-            <MainLayout >
+            <MainLayout id_ ={1} >
             </MainLayout >
             <div className="flex-grow flex items-center justify-center">
               <div className="w-full max-w-md">
