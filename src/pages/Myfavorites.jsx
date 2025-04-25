@@ -25,7 +25,6 @@ export default function Myfavorites() {
     const [message, setMessage] = useState('');
 
     const fetchFavorites = () => {
-        
         fetch(`${API_URL}/favorites`, {
             method: 'GET',
             headers: {
@@ -35,21 +34,16 @@ export default function Myfavorites() {
         })
             .then(response => response.json())
             .then(data => {
-
                 setFavorites(data);
                 console.log('ccc', data);
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Erreur lors de la récupération des favoris:', error);
+                console.error('Error while fetching favorites:', error);
             });
     }
 
-    useEffect(() => {
-        fetchFavorites()
-    }, [])
     function handlegetUser(userId) {
-
         fetch(`${API_URL}/favorites/${userId}`, {
             method: 'DELETE',
             headers: {
@@ -59,13 +53,16 @@ export default function Myfavorites() {
         })
             .then((response) => response.json())
             .then(() => {
-                setShowAlert(true)
+                setShowAlert(true);
                 setFavorites(prevFavorites => prevFavorites.filter(item => item.user_id2 !== userId));
-                setTitles('Catd Delete avec succès !')
-                setType('success')
-                setMessage('Votre Card a Delete avec succès.')
+                setTitles('Card Deleted Successfully!');
+                setType('success');
+                setMessage('Your favorite card has been deleted successfully.');
             });
     }
+    useEffect(() => {
+        fetchFavorites()
+    }, [])
 
     return (
         <>
@@ -76,7 +73,7 @@ export default function Myfavorites() {
             <MainLayout >
                 {showAlert && (
                     <Alert
-                        type= {type}
+                        type={type}
                         title={titles}
                         message={message}
                         onClose={() => setShowAlert(false)}
@@ -84,7 +81,7 @@ export default function Myfavorites() {
                 )}
                 <section className="bg-gradient-to-b from-gray-50 to-white py-16">
                     <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm p-4">
+                        <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm p-4">
                             <button
                                 className="text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50"
                                 aria-label="Go back"
@@ -98,7 +95,7 @@ export default function Myfavorites() {
                                 >
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                                 </svg>
-                                <span onClick={()=>navigate('/tutors')} className="hidden sm:inline">Back</span>
+                                <span onClick={() => navigate('/tutors')} className="hidden sm:inline">Back</span>
                             </button>
 
                             <div className="text-center">
@@ -108,7 +105,7 @@ export default function Myfavorites() {
 
                             <div className="w-20" />
                         </div>
-                      
+
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                             {favorites && favorites.length > 0 ? (

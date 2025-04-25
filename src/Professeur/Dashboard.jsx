@@ -64,7 +64,7 @@ const Dashboard = () => {
     { date: "Payment Refuser", total: statistic['PaymentRefuser'] },
   ];
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100" style={{ fontFamily: 'Open Sans' }}>
        {loading && <Spinner />}
       <div className="flex h-screen">
       <div className="hidden lg:flex">

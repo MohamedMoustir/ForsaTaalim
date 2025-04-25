@@ -31,10 +31,13 @@ import AdminDashboard from "./Admin/Dashboard.jsx"
 import Students from "./Admin/Students.jsx";
 import Teachers from "./Admin/Teachers.jsx"
 import Categories from "./Admin/Categories.jsx";
+import ResetPassword from "./Auth/ResetPassword.jsx";
 function App() {
 
   const [profiles, setprofiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState([]);
+
 
 
   const { id } = useParams();
@@ -59,12 +62,27 @@ function App() {
     }
   }
   
- 
-
-
+  const getTopAvies = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/avies/index`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+      if (response.data) {
+        setLoading(false)
+      }
+      console.log('hhhh', response.data.comments);
+      setComment(response.data.comments)
+    } catch (error) {
+      console.log('data not found')
+    }
+  }
   
   useEffect(() => {
     fetchProfesseurs();
+    getTopAvies()
   }, []);
 
   return (
@@ -72,9 +90,10 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Index profiles={profiles} loading={loading} />} />
+        <Route path="/" element={<Index profiles={profiles} loading={loading} comment={comment} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/reset-password" element={<ResetPassword  />} />
         <Route path="/RejisterPro" element={<RejisterPro />} />
         <Route path="/Rejister" element={<Rejister />} />
         <Route path="/Chat/:id/room/:chat_user_id" element={<Chat />} />
@@ -97,7 +116,6 @@ function App() {
         <Route path="/admin/students" element={<Students />} />
         <Route path="/admin/teachers" element={<Teachers />} />
         <Route path="/admin/categories" element={<Categories />} />
-
 
 
       </Routes>

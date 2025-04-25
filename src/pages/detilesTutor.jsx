@@ -66,7 +66,7 @@ const detiles = () => {
         })
         const comments = response.data.comments;
         console.log(comments);
-        
+
         setComment(comments);
 
     };
@@ -306,7 +306,7 @@ const detiles = () => {
                                                 src={`http://127.0.0.1:8000/storage/${item.image}`}
                                                 alt={item.title}
                                                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                                                />
+                                            />
                                         </div>
 
                                         <div className="p-6 flex flex-col flex-grow">

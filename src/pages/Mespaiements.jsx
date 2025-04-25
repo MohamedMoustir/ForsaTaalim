@@ -6,7 +6,7 @@ import NavEtudiant from "../components/NavEtudiant"
 import Spinner from '../components/Spinner';
 import { API_URL, getToken, getUser } from '../utils/config';
 import {
-    faEllipsisV,
+    faComments ,
     faReceipt,
     faTimes
 } from '@fortawesome/free-solid-svg-icons';
@@ -61,7 +61,7 @@ const Mespaiements = () => {
         fetchPayments(currentPage);
     }, [currentPage]);
 
-  
+
     const handleDelete = async (id) => {
         try {
             const formData = new FormData();
@@ -74,7 +74,7 @@ const Mespaiements = () => {
             const data = response.data.reservation.data;
             if (response.data) {
                 await fetchPayments(currentPage);
-               
+
             }
 
         } catch (err) {
@@ -91,7 +91,9 @@ const Mespaiements = () => {
         pages.push(i);
     }
 
-
+    const handleChat = (id_user, chat_user_id) => {
+        navigate(`/chat/${id_user}/room/${chat_user_id}`);
+    }
     return (
         <>
             {loading && (
@@ -153,11 +155,11 @@ const Mespaiements = () => {
                             {
                                 Mespaiements.filter((item) => {
                                     console.log(item);
-                                    
-                                        return search.toLowerCase() === ''
-                                            ? item
-                                            : item.professeur.toLowerCase().includes(search.toLowerCase());
-                                    
+
+                                    return search.toLowerCase() === ''
+                                        ? item
+                                        : item.professeur.toLowerCase().includes(search.toLowerCase());
+
                                 })
                                     .map((prof, index) => (
 
@@ -166,7 +168,7 @@ const Mespaiements = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{prof.updated_at}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
-                                                        <img className="h-10 w-10 rounded-full" src={`http://127.0.0.1:8000/storage/${prof?.photo}`}  alt="Student" />
+                                                        <img className="h-10 w-10 rounded-full" src={`http://127.0.0.1:8000/storage/${prof?.photo}`} alt="Student" />
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900">Cours de {prof.nom}</div>
                                                             <div className="text-sm text-gray-500">avec {prof.professeur} </div>
@@ -201,6 +203,12 @@ const Mespaiements = () => {
                                                     </button>
                                                     <button onClick={() => handleDelete(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">
                                                         <FontAwesomeIcon icon={faTimes} className='text-red-400' />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleChat(prof.user_id, prof.chat_user_id)}
+                                                        className='inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors'
+                                                    >
+                                                        <FontAwesomeIcon icon={faComments} className="mr-1" /> Chat
                                                     </button>
                                                 </td>
 

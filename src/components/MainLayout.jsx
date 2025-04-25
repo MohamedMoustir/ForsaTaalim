@@ -11,6 +11,8 @@ const MainLayout = ({ children , showNavFooter = true ,length }) => {
     const favorites = location.pathname.includes('/favorites');
     const Tutors = location.pathname.includes('/Tutors');
     const Resiravtioon = location.pathname.includes('/reservation');
+    const ResetPassword = location.pathname.includes('/ResetPassword');
+
 
     
 
@@ -21,7 +23,7 @@ const MainLayout = ({ children , showNavFooter = true ,length }) => {
     <div className="content" style={{ fontFamily: 'Open Sans' }}>
       {children} 
     </div>
-    {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors && !Resiravtioon &&<Footer />} 
+    {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors && !Resiravtioon && ResetPassword &&<Footer />} 
   </div>
   );
 };

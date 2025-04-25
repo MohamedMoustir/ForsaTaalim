@@ -11,7 +11,7 @@ const Footer = () => {
                 <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6">
                     <div>
                         <h2 className="text-xl font-bold mb-3">FORSATAALIM</h2>
-                        <p className="text-gray-300">Edumodo is perfectly suitable for school, college, and university
+                        <p className="text-gray-300">forsataalim is perfectly suitable for school, college, and university
                             websites with
                             an online education system.</p>
                     </div>

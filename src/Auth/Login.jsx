@@ -110,7 +110,7 @@ const Login = () => {
             </div>
 
 
-            <MainLayout id_ ={1} >
+            <MainLayout id_={1} >
             </MainLayout >
             <div className="flex-grow flex items-center justify-center">
               <div className="w-full max-w-md">
@@ -126,7 +126,14 @@ const Login = () => {
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password" placeholder="Enter Password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400" />
                   </div>
-
+                  <div className='mb-8'>
+                    <a
+                    onClick={() => navigate('/reset-password')}
+                    className="text-sm  text-red-500 hover:underline font-medium cursor-pointer transition duration-150  "
+                  >
+                    Forgot password?
+                  </a>
+                  </div>
                   <button type="submit" className="flex items-center justify-center gap-2 bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-md transition">
                     Sign In
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -14,25 +14,57 @@ const Categories = () => {
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [profileslength, setprofileslength] = useState(6);
     const [loading, setLoading] = useState(true);
+    const [id_, setEditeId] = useState(null);
+
 
     const CreateCategories = async (e) => {
-        e.preventDefault()
-        const formData = new FormData();
-        formData.append('nom', nomCategories)
-        const response = axios.post(`${API_URL}/categorie_matiere`, formData, {
-            headers: {
-                authorization: `Bearer ${token}`,
-                'content-type': 'aplication/json'
+        e.preventDefault();
+
+
+
+        try {
+            if (id_) {
+
+                const response = await axios.put(`${API_URL}/categorie_matiere/${id_}`, {
+                    nom: nomCategories
+                }, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                setShowPopUp(false)
+                setCategories((prevAnnonces) =>
+                    prevAnnonces.map((a) =>
+                        a.id === id_ ? { ...a, nom: nomCategories } : a
+                    )
+                );
+                // alert('Catégorie mise à jour avec succès');
+            } else {
+                const formData = new FormData();
+                formData.append('nom', nomCategories);
+                const response = await axios.post(`${API_URL}/categorie_matiere`, formData, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    }
+                });
+                setShowPopUp(false)
+                setCategories((prevAnnonces) =>
+                    prevAnnonces.map((a) =>
+                        a.id === id_ ? { ...a, nom: nomCategories } : a
+                    )
+                );
+                // alert('Catégorie ajoutée avec succès');
             }
-        })
-        let data = response.data;
-        setCategories(data)
-
-
+        } catch (error) {
+            console.error("Erreur lors de la création/mise à jour :", error);
+            alert("Une erreur s'est produite");
+        }
     }
 
+
     const fetchCategories = async (page) => {
-        const response = await axios.get(`${API_URL}/categorie_matiere?page=${page}`, {
+        const response = await axios.get(`${API_URL}/admin/categorie_matiere?page=${page}`, {
             headers: {
                 authorization: `Bearer ${token}`,
                 'content-type': 'aplication/json',
@@ -48,9 +80,37 @@ const Categories = () => {
 
     }
 
+    const HandlEdite = (id_cat) => {
+        setShowPopUp(true)
+        setEditeId(id_cat);
+        const categorie = categories.filter((a) => a.id == id_cat);
+        console.log(categorie);
+
+        setNomCategories(categorie[0].nom);
+    }
+
+    const HandlDelete = async (id_cat) => {
+        try {
+            const response = await axios.delete(`${API_URL}/categorie_matiere/${id_cat}`, {
+                headers: {
+                    Authorization: `bearer ${token}`
+                }
+            });
+
+            if (response.data) {
+                console.log(response.data);
+                
+                setShowPopUp(false)
+            }
+
+        } catch (err) {
+            console.error('Error updating reservation status:', err);
+            alert('Failed to update reservation status');
+        }
+    }
     useEffect(() => {
         fetchCategories(currentPage);
-
+        
     }, [nomCategories, currentPage])
 
 
@@ -66,7 +126,7 @@ const Categories = () => {
         <div className="flex bg-gray-50 min-h-screen" style={{ fontFamily: 'Open Sans' }}>
 
             <div className="w-full md:w-64 shadow-md">
-                <AdminNav />
+                <AdminNav id_={5} />
             </div>
 
             <div className=" flex-1 p-6">
@@ -108,7 +168,7 @@ const Categories = () => {
                     {categories.filter((item) => {
                         if (search) {
                             return search.toLowerCase() === 'all' ? item : item.nom.toLowerCase().includes(search);
-                        } else{
+                        } else {
                             setSearch('all')
                         }
 
@@ -136,10 +196,10 @@ const Categories = () => {
                                 <h3 className="font-bold text-indigo-900">{item.nom}</h3>
                                 <p className="text-gray-500 text-sm mb-4">{item.count} produits</p>
                                 <div className="flex justify-center gap-2">
-                                    <button className="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+                                    <button onClick={() => HandlDelete(item.id)} className="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
                                         <i className="fas fa-eye text-white text-xs"></i>
                                     </button>
-                                    <button className="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
+                                    <button onClick={() => HandlEdite(item.id)} className="p-2 bg-indigo-600 rounded-full hover:bg-indigo-700">
                                         <i className="fas fa-edit text-white text-xs"></i>
                                     </button>
                                 </div>
@@ -206,11 +266,12 @@ const Categories = () => {
                                         Nom de la catégorie
                                     </label>
                                     <input
-                                        value={nomCategories}
+
                                         onChange={(e) => setNomCategories(e.target.value)}
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         id="categoryName"
                                         type="text"
+                                        value={nomCategories}
                                         placeholder="Ex: Science, Art, Technologie..."
                                     />
                                 </div>

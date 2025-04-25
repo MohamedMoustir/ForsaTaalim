@@ -166,7 +166,7 @@ const ReservationPage = () => {
 
 
     return (
-        <div className="flex">
+        <div className="flex" style={{ fontFamily: 'Open Sans' }}>
           {loading && <Spinner />}
           <div className="hidden lg:flex">
             <DashboardNav id_={3} />

@@ -13,8 +13,8 @@ import Alert from "../components/Alert";
 import Spinner from "../components/Spinner";
 const token = getToken();
 const user = getUser();
-const index = ({profiles ,loading}) => {
- 
+const index = ({ profiles, loading, comment }) => {
+
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
     function handleMoreTuter() {
@@ -67,10 +67,18 @@ const index = ({profiles ,loading}) => {
                                     student, professional, or lifelong learner, our cutting-edge Learning Management System is designed
                                     to elevate your learning experience.
                                 </p>
-                                <button
-                                    className="bg-pink-500 relative  ml-10 mr-10 lg:m-0 text-white px-6 py-3 rounded-lg hover:bg-pink-600 transition">
-                                    Start your instructor journey
-                                </button>
+                                {user ? (
+                                    <button onClick={() => navigate('/Rejister')}
+                                        className="bg-pink-500 relative  ml-10 mr-10 lg:m-0 text-white px-6 py-3 rounded-lg hover:bg-pink-600 transition">
+                                        See more tutors
+                                    </button>
+                                ) : (
+                                    <button onClick={() => navigate('/Rejister')}
+                                        className="bg-pink-500 relative  ml-10 mr-10 lg:m-0 text-white px-6 py-3 rounded-lg hover:bg-pink-600 transition">
+                                        Start your instructor journey
+                                    </button>
+                                )}
+
                             </div>
                             <div className="md:w-1/2 relative ">
                                 <div className="rounded-lg p-6 relative">
@@ -238,116 +246,32 @@ const index = ({profiles ,loading}) => {
                                 Learn with a math tutor that tailors classNamees to your unique needs
                             </h1>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ">
-                                <div className="flex bg-white border p-2 rounded-md  items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
+                                {comment.map((comm, index) => {
+                                    return (
+                                        <div key={index} className="flex bg-white border p-2 rounded-md  items-start gap-4">
+                                            <div className="flex-shrink-0">
+                                                <img src={`http://127.0.0.1:8000/storage/${comm.photo}`} alt={comm.prenom}
+                                                    className="w-10 h-10 rounded-full object-cover cursor-pointer " />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-1 mb-1">
+                                                    <h3 className="font-semibold">{comm.prenom}</h3>
+                                                    <span className="text-sm text-gray-500">{comm.nom}</span>
+                                                </div>
+                                                <div className="flex text-yellow-400 mb-2">{'★'.repeat(comm.rating)}</div>
+                                                <p className="text-sm text-gray-700 mb-2">
+                                                    {comm.content}
+                                                </p>
+                                                <p className="text-xs text-gray-500">{new Date(comm.created_at).toLocaleDateString('EG', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}</p>
+                                            </div>
                                         </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="flex bg-white border p-2 rounded-md   items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
-                                        </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="flex bg-white border p-2 rounded-md   items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
-                                        </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="flex bg-white border p-2 rounded-md   items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
-                                        </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="flex bg-white border p-2 rounded-md   items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
-                                        </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="flex bg-white border p-2 rounded-md   items-start gap-4">
-                                    <div className="flex-shrink-0">
-                                        <img src="../image/images (8).jpg" alt="Irina"
-                                            className="w-10 h-10 rounded-full object-cover cursor-pointer " />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-1 mb-1">
-                                            <h3 className="font-semibold">Irina</h3>
-                                            <span className="text-sm text-gray-500">Mathematics tutor</span>
-                                        </div>
-                                        <div className="flex text-yellow-400 mb-2">★★★★★</div>
-                                        <p className="text-sm text-gray-700 mb-2">
-                                            I explain topics thoroughly and clearly cares about the student's understanding of the
-                                            material.
-                                        </p>
-                                        <p className="text-xs text-gray-500">10 hours ago</p>
-                                    </div>
-                                </div>
+                                    )
+                                }
 
-
+                                )}
 
                             </div>
 
@@ -359,7 +283,6 @@ const index = ({profiles ,loading}) => {
                                 <div className="absolute w-32 h-32 border border-white/20 rounded-full -top-16 -right-16"></div>
                                 <div className="absolute w-48 h-48 border border-white/20 rounded-full top-32 -right-24"></div>
                                 <div className="absolute w-full h-full">
-                                    {/* // style="background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent); background-size: 15px 15px;"> */}
                                 </div>
                             </div>
 
@@ -384,7 +307,7 @@ const index = ({profiles ,loading}) => {
                                         <p className="text-gray-300 mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                                             odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh.
                                         </p>
-                                        <button
+                                        <button onClick={() => navigate('/login')}
                                             className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2">
                                             Apply For Admission
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +357,7 @@ const index = ({profiles ,loading}) => {
                                 <p className="text-gray-600 mb-6">
                                     Join us and conquer math, one equation at a time, with a private math className
                                 </p>
-                                <button
+                                <button onClick={() => navigate('/login')}
                                     className="inline-flex items-center gap-2 bg-red-400 text-white px-6 py-3 rounded-lg hover:bg-red-500 transition-colors">
                                     See more tutors
                                     <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">

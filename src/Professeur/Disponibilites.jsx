@@ -38,6 +38,9 @@ function MyFullCalendar({ amount }) {
   const [type, setType] = useState('');
   const [title, setTitle] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [isClikConfme, setIsClikConfme] = useState(false);
+
+
 
   const availableTimes = [
     { time: '08:00 AM' },
@@ -113,7 +116,7 @@ function MyFullCalendar({ amount }) {
       const formattedDate = currentDate.toISOString().slice(0, 10);
 
       if (formattedDate > arg.dateStr) {
-        setShowModal(true); 
+        setShowModal(true);
       } else {
 
         setIsOpen(true)
@@ -131,7 +134,7 @@ function MyFullCalendar({ amount }) {
 
       }
       );
-      console.log('kkkkkkkkkkkkkk',filtered);
+      console.log('kkkkkkkkkkkkkk', filtered);
 
 
       let filteredEvents = [];
@@ -140,7 +143,7 @@ function MyFullCalendar({ amount }) {
       // console.log(formattedDate);
 
       if (formattedDate > arg.dateStr) {
-        setShowModal(true); 
+        setShowModal(true);
       } else {
         setGetDateReserve(arg.dateStr);
         setIsOpenPoupupDate(true)
@@ -201,6 +204,7 @@ function MyFullCalendar({ amount }) {
   }
   const handleReservation = async (e) => {
     e.preventDefault();
+    setIsClikConfme(false)
     setLoading(false);
     let formData = new FormData();
     formData.append('date_reservation', getDateReserve);
@@ -234,6 +238,8 @@ function MyFullCalendar({ amount }) {
       setType('error')
       setMessage('Erreur lors de l\'ajout de la reservation')
     }
+
+
   };
 
 
@@ -241,12 +247,12 @@ function MyFullCalendar({ amount }) {
     <>
       {loading && <Spinner />}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ fontFamily: 'Open Sans' }}>
           <div className="bg-white p-6 rounded-lg shadow-md w-96 text-center">
             <h2 className="text-xl text-red-600 font-semibold mb-3">Date invalide</h2>
             <p className="text-gray-700 mb-5">Cette date n'est pas disponible. Veuillez en choisir une autre.</p>
-            <button 
-              onClick={()=> setShowModal(false) } 
+            <button
+              onClick={() => setShowModal(false)}
               className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
               Fermer
             </button>
@@ -373,7 +379,6 @@ function MyFullCalendar({ amount }) {
               </div>
             </div>
           </div>
-
         </div>
 
       )}
@@ -392,7 +397,8 @@ function MyFullCalendar({ amount }) {
             onClose={() => setShowAlert(false)}
           />
         )}
-        <div className="w-full m-8 h-full  cursor-pointer">
+
+        <div className="w-full m-8 h-[10%]  cursor-pointer">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
@@ -415,7 +421,7 @@ function MyFullCalendar({ amount }) {
               <button
                 key={index}
                 id={time.time}
-                onClick={(e) =>setTimeReservation(e.target.id)}
+                onClick={(e) => setTimeReservation(e.target.id)}
                 className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time.time ? 'bg-red-400 text-white shadow-md' : 'bg-white'
                   }`}
               >
@@ -427,29 +433,54 @@ function MyFullCalendar({ amount }) {
           <h3 className="font-medium text-gray-800 mt-8 mb-4">Choisissez une durée de réservation</h3>
           <div className="grid grid-cols-2 gap-3 mb-8">
 
-      {durationOption.map((time, index) => (
-        <button
-          key={index}
-          id={time.time}
-          onClick={(e) => setTime(e.target.id)}
-          className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 
+            {durationOption.map((time, index) => (
+              <button
+                key={index}
+                id={time.time}
+                onClick={(e) => setTime(e.target.id)}
+                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 
             ${times === time.time.toString() ? 'bg-red-400 text-white shadow-md' : 'bg-white hover:bg-red-50'}`}
-        >
-          {time.time} hour
-        </button>
-      ))}
+              >
+                {time.time} hour
+              </button>
+            ))}
 
           </div>
-          <form onSubmit={handleReservation} className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
+          <div  className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
             <div>
               <p className="font-medium">Selected session:</p>
               <p className="text-gray-600">{getDateReserve} at {timeReservation}({times} hour)</p>
             </div>
-            <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
+            <button onClick={()=>setIsClikConfme(true)} className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
               Confirm
             </button>
-          </form>
+          </div>
         </>
+      )}
+      {isClikConfme && (
+
+        <form onSubmit={handleReservation} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
+            <h2 className="text-xl font-semibold text-yellow-600 mb-4">Payment Required</h2>
+            <p className="text-gray-700 mb-6">
+            To complete your reservation, you need to proceed with the payment.
+            </p>
+            <div className="flex justify-center gap-4">
+              <div onClick={()=>setIsClikConfme(false)}
+                
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-xl"
+              > 
+                Annuler
+              </div>
+              <button 
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl"
+              >
+                Continuer
+              </button>
+            </div>
+          </div>
+        </form>
+
       )}
       {isOpenPoupupDate && (
         <div id="modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

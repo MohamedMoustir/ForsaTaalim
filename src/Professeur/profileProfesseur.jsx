@@ -90,8 +90,9 @@ const profilesilePage = () => {
     };
 
 
+
     return (
-        <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
+        <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row" style={{ fontFamily: 'Open Sans' }}>
           {loading && <Spinner />}
 
             <div className="hidden lg:flex">

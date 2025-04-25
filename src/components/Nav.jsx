@@ -15,11 +15,11 @@ import "dayjs/locale/fr";
 dayjs.extend(relativeTime);
 dayjs.locale("En");
 import Pusher from "pusher-js";
-// import "@fontsource/open-sans/400.css";
+import "@fontsource/open-sans/500.css";
 // import "@fontsource/open-sans/700.css";
 
 
-export  const Nav = ({total}) => {
+export  const Nav = ({id_}) => {
     const [isUserAuth, setUserAuth] = useState(false);
     const [isMenuHidden, setIsMenuHidden] = useState(true);
     const navigate = useNavigate()
@@ -138,8 +138,8 @@ export  const Nav = ({total}) => {
               </div>
               <div className="flex gap-6 items-center">
                 <a href="#" className="bg-red-400 rounded-full  w-10 h-10 flex items-center justify-center backdrop-blur-sm  transition-all">?</a>
-                <a onClick={BecomeTutor} className="bg-white/10 cursor-pointer px-6 py-2.5 rounded-full border border-balck text-black transition-all backdrop-blur-sm">Register</a>
-                <a onClick={GoToLologin} className="bg-blue-500 cursor-pointer text-white px-6 py-2.5 rounded-full  transition-all font-medium shadow-md">Log In</a>
+                <a onClick={BecomeTutor} className={` ${ id_ === 2 ?'bg-blue-500' : 'bg-white/10'} cursor-pointer px-6 py-2.5 rounded-full border border-balck text-black transition-all backdrop-blur-sm`}>Register</a>
+                <a  onClick={GoToLologin} className={`${ id_ != 1 ?'bg-blue-500' : 'bg-white/10'} cursor-pointer text-white px-6 py-2.5 rounded-full  transition-all font-medium shadow-md`}>Log In</a>
               </div>
             </div>
           )}
@@ -213,7 +213,7 @@ export  const Nav = ({total}) => {
                           </div>
                         )}
                       </div>
-                      <div className="bg-red-to-r bg-red-500 to-red-500 p-2 text-center">
+                      <div  className="bg-red-to-r bg-red-500 to-red-500 p-2 text-center">
                         <button className="text-white text-sm font-medium flex items-center justify-center w-full transition-transform hover:scale-105" onClick={() => setShowNotifications(false)}>
                           <FontAwesomeIcon icon={faTimes} className="mr-1" />
                           Close
@@ -223,7 +223,7 @@ export  const Nav = ({total}) => {
                   )}
                 </div>
       
-                <button className="p-2 text-black transition-colors">
+                <button onClick={()=> navigate('/favorites')} className="p-2 text-black transition-colors">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                   </svg>

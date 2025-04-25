@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { API_URL } from '../utils/config';
+import { Nav } from '../components/Nav';
+import MainLayout from '../components/MainLayout.jsX';
 
 const ResetPassword = () => {
     const { token } = useParams();
@@ -10,6 +12,8 @@ const ResetPassword = () => {
     const [current_password, setcurrent_password] = useState('');
     const [message, setMessage] = useState('');
     const Navigate = useNavigate()
+      const [showAlert, setShowAlert] = useState(false);
+    
     const handleReset = async (e) => {
         e.preventDefault();
         try {
@@ -19,77 +23,78 @@ const ResetPassword = () => {
                 password,
                 current_password,
             });
+            setEmail('');
+            setPassword('');
+            setcurrent_password('')
             setMessage("Your password has been successfully reset!");
         } catch (error) {
             setMessage("An error occurred while resetting the password.");
         }
     };
+ 
 
-    return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <div className="flex justify-center mb-6">
-                <div className="bg-red-400 text-white p-3 rounded-lg">
-                    <span className="text-xl font-bold">S</span>
-                </div>
+
+
+return (
+    <>
+      {showAlert && (
+        <Alert
+          type="error"
+          title="Login Failed"
+          message="Email or password is incorrect."
+          onClose={() => setShowAlert(false)}
+        />
+      )}
+      <div className="bg-white">
+
+        <div className="flex min-h-screen">
+
+          <div className="w-full lg:w-1/2 flex flex-col p-8">
+            <div>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6 text-center">Reset Password</h2>
 
-            {message && (
-                <div className={`mb-4 text-center ${message.includes('match') ? 'text-red-600' : 'text-green-600'}`}>
-                    {message}
-                </div>
-            )}
+            <MainLayout id_ ={1} >
+            </MainLayout >
+            <div className="flex-grow flex items-center justify-center">
+              <div className="w-full max-w-md">
+                <h1 className="text-2xl font-bold mb-8 text-center lg:text-left"> Réinitialiser le mot de passe</h1>
 
-            <form onSubmit={handleReset} className="space-y-4">
-                <div>
-                    <label className="block mb-2 text-sm text-gray-600">Email Address</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-2 rounded-lg"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2 text-sm text-gray-600">Password</label>
-                    <input
-                        type="password"
-                        value={current_password}
-                        onChange={(e) => setcurrent_password(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-2 rounded-lg"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2 text-sm text-gray-600">New Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-2 rounded-lg"
-                        required
-                    />
-                </div>
+                <form onSubmit={handleReset}>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" id="email" placeholder="Username or Email ID" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400" />
+                  </div>
 
+                  <div className="mb-6">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input value={current_password}  onChange={(e) => setcurrent_password(e.target.value)} type="password" id="password" placeholder="Enter  Password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400" />
+                  </div>
+                  <div className="mb-6">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                    <input value={password}   onChange={(e) => setPassword(e.target.value)} type="password" id="password" placeholder="Enter New Password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-400" />
+                  </div>
+                  <button  className="flex items-center justify-center gap-2 bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-md transition">
+                  Réinitialiser
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </form>
 
-
-                <button
-                    type="submit"
-                    className="w-full bg-red-400 text-white py-3 rounded-lg hover:bg-red-500 transition duration-200"
-                >
-                    Reset Password
-                </button>
-            </form>
-
-            <div className="mt-6 text-center text-gray-500">
-                <span>Remember your password? </span>
-                <a onClick={() => Navigate('/login')} className="cursor-pointer text-black font-medium">Log in</a>
+              </div>
             </div>
+          </div>
+
+          <div className="hidden lg:block lg:w-1/2">
+            <img src="https://img.freepik.com/photos-gratuite/appareil-protege-par-cybersecurite_23-2149270838.jpg?t=st=1745606126~exp=1745609726~hmac=c03dcd8b9b834d976d2d9226b540ad9de0f0557f07b49542ecd371232bebedfa&w=1380"
+              alt="Students studying"
+              className="h-full w-full object-cover" />
+          </div>
         </div>
-    );
 
-};
-
+      </div>
+    </>
+  );
+}
 export default ResetPassword;

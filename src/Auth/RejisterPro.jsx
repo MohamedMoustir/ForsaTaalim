@@ -66,6 +66,8 @@ const RejisterPro = () => {
         })
             .then((response) => {
                 setCategorieMatiere(response.data.AllCategorieMatiere);
+                console.log(response.data.AllCategorieMatiere);
+
             })
             .catch((error) => {
                 console.error("Error fetching categories", error);
@@ -89,9 +91,9 @@ const RejisterPro = () => {
     return (
         <div className="min-h-screen ">
 
-            {loading && (
+            {/* {loading && (
                 <Spinner />
-            )}
+            )} */}
             <header className="p-6">
                 <div className="text-xl font-bold text-red-400">
                     ForsaTaalim

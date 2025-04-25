@@ -124,19 +124,21 @@ const Dashboard = () => {
 
     }, []);
     useEffect(() => {
+
         let tody = new Date().toISOString().slice(0, 10);
         for (let i = 0; i < annonces.length; i++) {
 
-             if (annonces[i].date === tody) {
-                setMessage(`C’est le moment de commencer la session ${annonces[i].title} pour l'annonce du ${annonces[i].date}`);  
-             }
+            if (annonces[i].date === tody) {
+                setMessage(`C’est le moment de commencer la session ${annonces[i].title} pour l'annonce du ${annonces[i].date}`);
+            }
+
             let addDaytoDateAnnonce = new Date(annonces[i].date)
-            addDaytoDateAnnonce.setDate(addDaytoDateAnnonce.getDate()+1);
+            addDaytoDateAnnonce.setDate(addDaytoDateAnnonce.getDate() + 1);
             let formattedDate = addDaytoDateAnnonce.toISOString().slice(0, 10);
 
             if (tody === formattedDate) {
                 handleDelete(annonces[i].id_annonce);
-                console.log('Date match found:', formattedDate );
+                console.log('Date match found:', formattedDate);
             } else {
                 console.log('No match:', annonces[i].date, '!==', tody);
             }
@@ -178,7 +180,8 @@ const Dashboard = () => {
         setLocation(annoncement[0].location);
         setDate(annoncement[0].date);
     };
-
+  
+    
     return (
         <>
             {showAlert && (
@@ -190,7 +193,7 @@ const Dashboard = () => {
                 />
             )}
             {loading && <Spinner />}
-            <div className="bg-gray-100">
+            <div className="bg-gray-100" style={{ fontFamily: 'Open Sans' }}>
                 <div className="flex h-screen">
                     <div className="hidden lg:flex">
                         <DashboardNav id_={5} />
@@ -300,7 +303,6 @@ const Dashboard = () => {
                                             </div>
                                         </div>
 
-                                        {/* Actions */}
                                         <div className="flex justify-end gap-2 px-4 pb-4">
                                             <button
                                                 onClick={() => handleUpdate(annonce.id_annonce)}

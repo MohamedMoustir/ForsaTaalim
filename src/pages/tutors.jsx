@@ -24,6 +24,10 @@ const Tutors = () => {
     const [type, setType] = useState('');
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
+    const [filterByCategory, setFilterByCategory] = useState('');
+    const [CategorieMatiere, setCategorieMatiere] = useState([]);
+    const [city, setcity] = useState([]);
+
 
     const fetchProfesseurs = async (page) => {
         const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
@@ -34,13 +38,13 @@ const Tutors = () => {
         }
         console.log(res.data.AllProfile.data);
     };
+
     useEffect(() => {
         fetchProfesseurs(currentPage);
     }, [])
+
     const navigate = useNavigate();
     useEffect(() => {
-
-
         if (token) {
             setUserAuth(true);
         }
@@ -50,15 +54,15 @@ const Tutors = () => {
             navigate("/login");
         }
     }, [token, user, navigate, currentPage]);
+
     useEffect(() => {
         fetchProfesseurs(currentPage);
     }, [currentPage]);
+
     function handleClick() {
         setIsMenuHidden(false);
     };
-    const handleClickProfessor = (id) => {
-       
-    };
+
     function handlegetUser(userId) {
 
         fetch(`${API_URL}/favorites`, {
@@ -83,6 +87,36 @@ const Tutors = () => {
 
             });
     }
+    useEffect(() => {
+
+        axios.get(`${API_URL}/categorie_matiere`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                setCategorieMatiere(response.data.AllCategorieMatiere);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories", error);
+            });
+
+        axios.get(`https://mohamedmoustir.github.io/api/`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                setcity(response.data.cities);
+
+
+            })
+            .catch((error) => {
+                console.error("Error fetching city", error);
+            });
+
+    }, []);
 
     const lastItemsIndex = currentPage * itemsPerPage;
     const firstItemsIndex = lastItemsIndex - itemsPerPage
@@ -92,7 +126,8 @@ const Tutors = () => {
         pages.push(i);
     }
 
-    
+
+
     return (
         <>
             {showAlert && (
@@ -111,41 +146,63 @@ const Tutors = () => {
                     <h1 class="text-2xl font-bold mb-8">
                         Trouvez le professeur idéal pour vous accompagner
                     </h1>
-                    <div class="flex items-center text-sm text-gray-500 mb-6 ">
-                        <ul id="" onClick={(e) => setFilterByLocation(e.target.id)}
-                            class="border cursor-pointer   border-black hover:border-red-400 relative  lg:ml-10 mr-10 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
-                            All
-                        </ul>
-                        <ul id="Distance" onClick={(e) => setFilterByLocation(e.target.id)}
-                            class="border cursor-pointer   border-black hover:border-red-400 relative -ml-8 lg:ml-1 lg:mr-1 lg:m-0 text-black px-2 py-2 rounded-lg hover:bg-red-400 hover:text-white transition">
-                            Distance
-                        </ul>
-                        <ul id="Online" onClick={(e) => setFilterByLocation(e.target.id)}
-                            class="border cursor-pointer   border-black hover:border-red-400 relative ml-2 -lg:ml-2 lg:mr-2 lg:m-0 text-black px-2 py-2 rounded-lg w-24 text-center hover:bg-red-400 hover:text-white transition">
-                            Online
-                        </ul>
-                        <div class="flex relative left-[500px]">
-                            <div class="relative flex-grow mr-4">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </span>
-                                {/* <input id="inputSerch" type="hidden" placeholder="ESL tutors nearby"
-                                class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" /> */}
-                                <input value={filterByLocation} onChange={(e) => setFilterByLocation(e.target.value)} id="" type="hidden" placeholder="ESL tutors nearby"
-                                    class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
-                                <input onChange={(e) => setSearch(e.target.value)} id="inputSerch" type="text" placeholder="ESL tutors nearby"
-                                    class="pl-10 w-full py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-red-400" />
-                            </div>
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-6 mb-10">
+                        <div className="flex flex-wrap gap-3">
                             <button
-                                class="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-500 transition">Search</button>
+                                id=""
+                                onClick={() => setFilterByLocation("")}
+                                className={`px-4 py-2 rounded-lg border text-sm font-medium ${filterByLocation === "" ? "bg-red-400 text-white" : "bg-white text-black hover:bg-red-100"
+                                    } border-black hover:border-red-400 transition`}
+                            >
+                                All
+                            </button>
+                            <select
+                                onChange={(e) => setFilterByLocation(e.target.value)}
+                                className="border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
+                            >
+                                <option value="" >All City</option>
+                                {city.map((item) => {
+                                    return (
+                                        <option value={item.city}>{item.city}</option>
+                                    )
+                                })
+                                }
+                            </select>
+                            <select
+                                onChange={(e) => setFilterByCategory(e.target.value)}
+                                className="border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
+                            >
+                                <option value="">All Categories</option>
+
+                                {CategorieMatiere.map((item) => {
+                                    return (
+                                        <option value={item.nom}>{item.nom}</option>
+                                    )
+                                })
+                                }
+                            </select>
                         </div>
 
+                        <div className="flex flex-wrap items-center gap-4">
 
+                            <div className="relative w-full max-w-xs">
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search tutors..."
+                                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-full w-full focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
+                                />
+                            </div>
+
+
+                        </div>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                         {
@@ -154,6 +211,8 @@ const Tutors = () => {
 
                                 if (search) {
                                     return search.toLowerCase() === '' ? item : item.prenom.toLowerCase().includes(search);
+                                } else if (filterByCategory) {
+                                    return filterByCategory === 'All' ? item : item.nom_matiere.includes(filterByLocation);
                                 }
                                 return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
 
@@ -163,10 +222,10 @@ const Tutors = () => {
                                         <div className="relative h-48 bg-gray-200">
                                             <img
                                                 key={prof.profe_id}
-                                                onClick={() =>  navigate(`/detilesTutor/${prof.profe_id}`)}
+                                                onClick={() => navigate(`/detilesTutor/${prof.profe_id}`)}
                                                 src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                                 alt={prof.prenom}
-                                                className="w-full h-full object-cover cursor-pointer"
+                                                className="w-full h-full object-cover cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
                                             />
                                             <button
                                                 onClick={() => handlegetUser(prof.profe_id)}
@@ -182,8 +241,8 @@ const Tutors = () => {
                                                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                                 </svg>
                                             </button>
-
                                         </div>
+
                                         <div className="p-4">
                                             <div className="flex justify-between items-center mb-3">
                                                 <h2 className="text-xl font-semibold text-gray-800">{prof.prenom}</h2>

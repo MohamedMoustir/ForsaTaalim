@@ -106,8 +106,8 @@ const Students = () => {
                 {loading && (
                     <Spinner />
                 )}
-                <div className="w-full md:w-64 bg-white shadow-md">
-                    <AdminNav />
+                <div className="w-full md:w-64 shadow-md">
+                    <AdminNav id_={2} />
                 </div>
                 <div className="container mx-auto p-4 max-w-7xl">
                     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -167,7 +167,7 @@ const Students = () => {
                                         <th className="p-4 text-left text-sm font-medium text-gray-600">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
                                     {student.filter((item) => {
                                         if (search) {
                                             return search.toLowerCase() === 'all' ? item : item.prenom.toLowerCase().includes(search);
@@ -177,7 +177,7 @@ const Students = () => {
                                     }).map((user, index) => (
                                         <tr
                                             key={index}
-                                            className="border-l-4 border-indigo-500 bg-white hover:bg-indigo-50 transition-colors duration-300"
+                                            className="border  m-[100px]  bg-white hover:bg-indigo-50 transition-colors duration-300 "
                                         >
                                             <td className="p-4 text-gray-600 font-medium">{user.id}</td>
 

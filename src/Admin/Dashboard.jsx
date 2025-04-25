@@ -96,7 +96,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen" style={{ fontFamily: 'Open Sans' }}>
       <div className="w-full md:w-64 bg-white shadow-md">
-        <AdminNav />
+        <AdminNav id_={1}  />
       </div>
 
       <div className="flex-1 p-4 sm:p-6 bg-gray-50">

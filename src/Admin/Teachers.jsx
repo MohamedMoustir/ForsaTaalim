@@ -96,7 +96,7 @@ const TeacherList = () => {
             alert('Failed to update reservation status');
         }
     };
-    
+
     return (
         <div className=" flex bg-gray-50 min-h-screen" style={{ fontFamily: 'Open Sans' }}>
 
@@ -104,7 +104,7 @@ const TeacherList = () => {
                 <Spinner />
             )}
             <div className="w-full md:w-64 bg-white shadow-md">
-                <AdminNav />
+                <AdminNav id_={3}  />
             </div>
 
 

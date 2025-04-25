@@ -24,7 +24,7 @@ const Rejister = () => {
   const [loading, setLoading] = useState(false);
   const token = getToken();
   const user = getUser();
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);  
 
   let data;
   const handleRejister = async (e) => {
