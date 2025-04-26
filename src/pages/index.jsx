@@ -181,58 +181,53 @@ const index = ({ profiles, loading, comment }) => {
                             </h1>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {profiles.map((prof, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white rounded-2xl shadow-md overflow-hidden transform hover:scale-12 hover:shadow-2xl transition-all duration-300 ease-in-out animate-fade-up"
+                                    >
+                                        <div className="relative h-48 bg-gray-200 overflow-hidden">
+                                            <img
+                                                onClick={() => handleClickProfessor(prof.id)}
+                                                src={`http://127.0.0.1:8000/storage/${prof.photo}`}
+                                                alt={prof.prenom}
+                                                className="w-full h-full object-cover cursor-pointer transition-transform duration-500 hover:scale-110"
+                                            />
+                                        </div>
 
-                                {
-
-                                    profiles.map((prof, index) => {
-                                        return (
-                                            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                                                <div className="relative h-48 bg-gray-200">
-                                                    <img
-                                                        key={prof.profe_id}
-                                                        onClick={() => handleClickProfessor(prof.id)}
-                                                        src={`http://127.0.0.1:8000/storage/${prof.photo}`}
-                                                        alt={prof.prenom}
-                                                        className="w-full h-full object-cover cursor-pointer"
-                                                    />
-
-                                                </div>
-                                                <div className="p-4">
-                                                    <div className="flex justify-between items-center mb-3">
-                                                        <h2 className="text-xl font-semibold text-gray-800">{prof.prenom}</h2>
-                                                        <p className="text-sm text-gray-600">{prof.location}</p>
-                                                    </div>
-
-                                                    <p className="text-sm text-gray-600 mb-3">
-                                                        Matière: <span className="font-semibold">{prof.nom_matiere}</span>
-                                                    </p>
-
-                                                    <div className="flex items-center mb-3">
-                                                        <div className="flex items-center">
-                                                            <span className="text-yellow-400">★</span>
-                                                            <span className="ml-1">{Number(prof.average_rating).toFixed(0)}</span>
-                                                            <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
-                                                        </div>
-                                                        <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
-                                                    </div>
-
-                                                    <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
-
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="text-gray-900">
-                                                            <span className="font-semibold">${prof.tarifHoraire}</span>
-                                                            <span className="text-sm">/h</span>
-                                                        </div>
-                                                        <span className="text-red-500 text-sm font-medium">1st lesson free</span>
-                                                    </div>
-                                                </div>
+                                        <div className="p-5">
+                                            <div className="flex justify-between items-center mb-3">
+                                                <h2 className="text-xl font-bold text-gray-800">{prof.prenom}</h2>
+                                                <p className="text-sm text-gray-500">{prof.location}</p>
                                             </div>
 
-                                        )
-                                    })
-                                }
+                                            <p className="text-sm text-gray-600 mb-3">
+                                                Matière: <span className="font-semibold text-indigo-600">{prof.nom_matiere}</span>
+                                            </p>
 
+                                            <div className="flex items-center mb-3">
+                                                <div className="flex items-center text-yellow-400">
+                                                    <span>★</span>
+                                                    <span className="ml-1 text-gray-800">{Number(prof.average_rating).toFixed(0)}</span>
+                                                    <span className="text-gray-500 text-xs ml-1">({prof.total_ratings} avis)</span>
+                                                </div>
+                                                <span className="ml-4 text-blue-500 text-xs font-semibold">Ambassador</span>
+                                            </div>
+
+                                            <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
+
+                                            <div className="flex items-center justify-between">
+                                                <div className="text-gray-900">
+                                                    <span className="font-bold">${prof.tarifHoraire}</span>
+                                                    <span className="text-sm text-gray-600">/h</span>
+                                                </div>
+                                                <span className="text-green-500 text-xs font-medium">1er cours offert</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
+
                         </div>
                         <div onClick={handleMoreTuter} className="flex items-center justify-around">
                             <span
@@ -245,10 +240,10 @@ const index = ({ profiles, loading, comment }) => {
                             <h1 className="text-xl font-bold mb-8">
                                 Learn with a math tutor that tailors classNamees to your unique needs
                             </h1>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10  ">
                                 {comment.map((comm, index) => {
                                     return (
-                                        <div key={index} className="flex bg-white border p-2 rounded-md  items-start gap-4">
+                                        <div key={index} className="flex  hover:scale-12 hover:shadow-24 transition-all bg-white border p-2 rounded-md  items-start gap-4">
                                             <div className="flex-shrink-0">
                                                 <img src={`http://127.0.0.1:8000/storage/${comm.photo}`} alt={comm.prenom}
                                                     className="w-10 h-10 rounded-full object-cover cursor-pointer " />
@@ -324,30 +319,83 @@ const index = ({ profiles, loading, comment }) => {
                     <div className="max-w-6xl mx-auto px-6 py-16">
                         <h2 className="text-2xl font-bold mb-8">FAQ</h2>
 
-                        <div className="space-y-4">
-                            <div className="border border-gray-200 rounded-lg">
-                                <div className="faq-item w-full flex items-center justify-between p-4 hover:bg-red-50">
-                                    <span className="font-medium">What is the average price of Mathematics lessons?</span>
-                                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
-                                <p className="faq-content hidden bg-blue-50 p-5">Lorem ipsum dolor sit amet...</p>
+                        <div className="space-y-6">
+
+                            <div className="border rounded-xl overflow-hidden shadow-md bg-green-50 hover:bg-green-100 transition-all duration-300">
+                                <button className="w-full flex flex-col items-start p-5 text-left group">
+                                    <div className="flex items-center justify-between w-full">
+                                        <span className="text-lg font-semibold text-green-800 group-hover:text-green-900 transition-colors duration-300">
+                                            How do I find the best tutor for my needs?
+                                        </span>
+                                        <svg className="w-6 h-6 text-green-700 group-hover:text-green-900 transition-transform duration-300 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                    <div className="px-5 py-4 hidden group-hover:block transition-all duration-300">
+                                        <p className="text-green-700 text-sm">
+                                            You can browse tutors based on their ratings, reviews, and subject expertise to find the perfect match!
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
 
-                            <div className="border border-gray-200 rounded-lg">
-                                <div className="faq-item w-full flex items-center justify-between p-4 hover:bg-gray-50">
-                                    <span className="font-medium">How long does it take to master Mathematics?</span>
-                                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
-                                <p className="faq-content hidden bg-blue-50 p-5">Lorem ipsum dolor sit amet...</p>
+                            <div className="border rounded-xl overflow-hidden shadow-md bg-indigo-50 hover:bg-indigo-100 transition-all duration-300">
+                                <button className="w-full flex flex-col items-start p-5 text-left group">
+                                    <div className="flex items-center justify-between w-full">
+                                        <span className="text-lg font-semibold text-indigo-800 group-hover:text-indigo-900 transition-colors duration-300">
+                                            Are online lessons as effective as in-person ones?
+                                        </span>
+                                        <svg className="w-6 h-6 text-indigo-700 group-hover:text-indigo-900 transition-transform duration-300 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                    <div className="px-5 py-4 hidden group-hover:block transition-all duration-300">
+                                        <p className="text-indigo-700 text-sm">
+                                            Yes! With the right tutor, online lessons can be just as interactive and effective as face-to-face teaching.
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
+
+                            <div className="border rounded-xl overflow-hidden shadow-md bg-yellow-50 hover:bg-yellow-100 transition-all duration-300">
+                                <button className="w-full flex flex-col items-start p-5 text-left group">
+                                    <div className="flex items-center justify-between w-full">
+                                        <span className="text-lg font-semibold text-yellow-800 group-hover:text-yellow-900 transition-colors duration-300">
+                                            How do I pay for lessons?
+                                        </span>
+                                        <svg className="w-6 h-6 text-yellow-700 group-hover:text-yellow-900 transition-transform duration-300 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                    <div className="px-5 py-4 hidden group-hover:block transition-all duration-300">
+                                        <p className="text-yellow-700 text-sm">
+                                            Payments are made securely through our platform via credit card, PayPal, or other accepted methods.
+                                        </p>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <div className="border rounded-xl overflow-hidden shadow-md bg-pink-50 hover:bg-pink-100 transition-all duration-300">
+                                <button className="w-full flex flex-col items-start p-5 text-left group">
+                                    <div className="flex items-center justify-between w-full">
+                                        <span className="text-lg font-semibold text-pink-800 group-hover:text-pink-900 transition-colors duration-300">
+                                            Can I change tutors if I'm not satisfied?
+                                        </span>
+                                        <svg className="w-6 h-6 text-pink-700 group-hover:text-pink-900 transition-transform duration-300 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                    <div className="px-5 py-4 hidden group-hover:block transition-all duration-300">
+                                        <p className="text-pink-700 text-sm">
+                                            Absolutely! If you feel the tutor isn't a good fit, you can easily switch to another one that better suits your needs.
+                                        </p>
+                                    </div>
+                                </button>
+                            </div>
+
                         </div>
+
                     </div>
-
-
                     <section className="bg-gray-50">
                         <div className="max-w-6xl mx-auto px-6 py-12">
                             <div className="mt-12 bg-blue-50 rounded-xl p-8 text-center">

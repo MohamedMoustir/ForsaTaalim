@@ -131,203 +131,164 @@ const Tutors = () => {
     return (
         <>
             {showAlert && (
-                <Alert
-                    type={type}
-                    title={title}
-                    message={message}
-                    onClose={() => setShowAlert(false)}
-                />
+                <Alert type={type} title={title} message={message} onClose={() => setShowAlert(false)} />
             )}
-            {loading && (
-                <Spinner />
-            )}
-            <MainLayout >
-                <div class="max-w-6xl mx-auto p-6">
-                    <h1 class="text-2xl font-bold mb-8">
-                        Trouvez le professeur idéal pour vous accompagner
+            {loading && <Spinner />}
+
+            <MainLayout>
+                <div className="max-w-7xl mx-auto px-6 py-10">
+                    <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+                        Find the Perfect Tutor to Guide You
                     </h1>
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-6 mb-10">
-                        <div className="flex flex-wrap gap-3">
+
+
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-12">
+                        <div className="flex flex-wrap gap-4">
                             <button
-                                id=""
                                 onClick={() => setFilterByLocation("")}
-                                className={`px-4 py-2 rounded-lg border text-sm font-medium ${filterByLocation === "" ? "bg-red-400 text-white" : "bg-white text-black hover:bg-red-100"
-                                    } border-black hover:border-red-400 transition`}
+                                className={`px-5 py-2 rounded-full border text-sm font-medium transition duration-300 ${filterByLocation === ""
+                                    ? "bg-red-500 text-white"
+                                    : "bg-white text-gray-800 hover:bg-red-100 border-gray-300"
+                                    }`}
                             >
-                                All
+                                Tous
                             </button>
+
                             <select
                                 onChange={(e) => setFilterByLocation(e.target.value)}
-                                className="border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
+                                className="border border-gray-300 rounded-full py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
-                                <option value="" >All City</option>
-                                {city.map((item) => {
-                                    return (
-                                        <option value={item.city}>{item.city}</option>
-                                    )
-                                })
-                                }
+                                <option value="">Toutes les villes</option>
+                                {city.map((item) => (
+                                    <option key={item.city} value={item.city}>{item.city}</option>
+                                ))}
                             </select>
+
                             <select
                                 onChange={(e) => setFilterByCategory(e.target.value)}
-                                className="border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
+                                className="border border-gray-300 rounded-full py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
-                                <option value="">All Categories</option>
-
-                                {CategorieMatiere.map((item) => {
-                                    return (
-                                        <option value={item.nom}>{item.nom}</option>
-                                    )
-                                })
-                                }
+                                <option value="">Toutes les matières</option>
+                                {CategorieMatiere.map((item) => (
+                                    <option key={item.nom} value={item.nom}>{item.nom}</option>
+                                ))}
                             </select>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-4">
-
-                            <div className="relative w-full max-w-xs">
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </span>
-                                <input
-                                    type="text"
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Search tutors..."
-                                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-full w-full focus:outline-none focus:ring-1 focus:ring-red-400 text-sm"
-                                />
-                            </div>
-
-
+                        <div className="relative w-full max-w-xs">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </span>
+                            <input
+                                type="text"
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Rechercher un professeur..."
+                                className="pl-10 pr-4 py-2 border border-gray-300 rounded-full w-full focus:outline-none focus:ring-2 focus:ring-red-400 shadow-sm text-sm"
+                            />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {profiles.filter((item) => {
+                            if (search) {
+                                return item.prenom.toLowerCase().includes(search.toLowerCase());
+                            } else if (filterByCategory) {
+                                return filterByCategory === 'All' ? item : item.nom_matiere.includes(filterByLocation);
+                            }
+                            return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
+                        }).map((prof, index) => (
+                            <div key={index} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-transform transform hover:scale-105 overflow-hidden">
+                                <div className="relative h-48 bg-gray-200">
+                                    <img
+                                        src={`http://127.0.0.1:8000/storage/${prof.photo}`}
+                                        alt={prof.prenom}
+                                        onClick={() => navigate(`/detilesTutor/${prof.profe_id}`)}
+                                        className="w-full h-full object-cover cursor-pointer"
+                                    />
+                                    <button
+                                        onClick={() => handlegetUser(prof.profe_id)}
+                                        className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-white rounded-full shadow"
+                                    >
+                                        <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
 
-                        {
-
-                            profiles.filter((item) => {
-
-                                if (search) {
-                                    return search.toLowerCase() === '' ? item : item.prenom.toLowerCase().includes(search);
-                                } else if (filterByCategory) {
-                                    return filterByCategory === 'All' ? item : item.nom_matiere.includes(filterByLocation);
-                                }
-                                return filterByLocation === 'All' ? item : item.location.includes(filterByLocation);
-
-                            }).map((prof, index) => {
-                                return (
-                                    <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                                        <div className="relative h-48 bg-gray-200">
-                                            <img
-                                                key={prof.profe_id}
-                                                onClick={() => navigate(`/detilesTutor/${prof.profe_id}`)}
-                                                src={`http://127.0.0.1:8000/storage/${prof.photo}`}
-                                                alt={prof.prenom}
-                                                className="w-full h-full object-cover cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
-                                            />
-                                            <button
-                                                onClick={() => handlegetUser(prof.profe_id)}
-                                                className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-all"
-                                            >
-                                                <svg
-                                                    className="w-5 h-5 text-gray-600 hover:text-red-500"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                >
-                                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-
-                                        <div className="p-4">
-                                            <div className="flex justify-between items-center mb-3">
-                                                <h2 className="text-xl font-semibold text-gray-800">{prof.prenom}</h2>
-                                                <p className="text-sm text-gray-600">{prof.location}</p>
-                                            </div>
-
-                                            <p className="text-sm text-gray-600 mb-3">
-                                                Matière: <span className="font-semibold">{prof.nom_matiere}</span>
-                                            </p>
-
-                                            <div className="flex items-center mb-3">
-                                                <div className="flex items-center">
-                                                    <span className="text-yellow-400">★</span>
-                                                    <span className="ml-1">{Number(prof.average_rating).toFixed(0)}</span>
-                                                    <span className="text-gray-500 text-sm ml-1">({prof.total_ratings} reviews)</span>
-                                                </div>
-                                                <span className="ml-4 text-blue-600 text-sm font-medium">Ambassador</span>
-                                            </div>
-
-                                            <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
-
-                                            <div className="flex items-center justify-between">
-                                                <div className="text-gray-900">
-                                                    <span className="font-semibold">${prof.tarifHoraire}</span>
-                                                    <span className="text-sm">/h</span>
-                                                </div>
-                                                <span className="text-red-500 text-sm font-medium">1st lesson free</span>
-                                            </div>
-                                        </div>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h2 className="text-lg font-bold text-gray-900">{prof.prenom}</h2>
+                                        <span className="text-sm text-gray-500">{prof.location}</span>
                                     </div>
 
-                                )
-                            })
-                        }
+                                    <p className="text-gray-700 text-sm mb-3">
+                                        Matière: <span className="font-semibold">{prof.nom_matiere}</span>
+                                    </p>
 
+                                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                                        <span className="text-yellow-400">★</span>
+                                        <span className="ml-1">{Number(prof.average_rating).toFixed(1)}</span>
+                                        <span className="ml-2">({prof.total_ratings} avis)</span>
+                                        <span className="ml-4 text-blue-600 font-medium">Ambassadeur</span>
+                                    </div>
+
+                                    <p className="text-gray-600 text-sm mb-4">{prof.biographie}</p>
+
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-semibold text-gray-900">${prof.tarifHoraire}/h</span>
+                                        <span className="text-red-500 text-xs font-semibold">1er cours gratuit</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                </div>
-            </MainLayout >
-            {
-                <nav aria-label="Page navigation example">
-                    <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
-                        <li>
-                            <button
-                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                            >
-                                <span className="sr-only">Previous</span>
-                                <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
-                                </svg>
-                            </button>
-                        </li>
 
-                        {pages.map((pageIndex) => (
-
-                            <li key={pageIndex}>
+                    <nav aria-label="Pagination" className="mt-12 flex justify-center">
+                        <ul className="inline-flex items-center -space-x-px">
+                            <li>
                                 <button
-                                    onClick={() => setCurrentPage(pageIndex + 1)}
-                                    className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 ${currentPage === pageIndex + 1
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'
-                                        }`}
+                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                    className="flex items-center justify-center w-10 h-10 text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100"
                                 >
-                                    {pageIndex + 1}
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 6 10">
+                                        <path d="M5 1 1 5l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
                                 </button>
                             </li>
-                        ))}
 
-                        <li>
-                            <button
-                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
-                                className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                            >
-                                <span className="sr-only">Next</span>
-                                <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
-                                </svg>
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
+                            {pages.map((pageIndex) => (
+                                <li key={pageIndex}>
+                                    <button
+                                        onClick={() => setCurrentPage(pageIndex + 1)}
+                                        className={`flex items-center justify-center w-10 h-10 border ${currentPage === pageIndex + 1
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-white text-gray-500 hover:bg-gray-100"
+                                            }`}
+                                    >
+                                        {pageIndex + 1}
+                                    </button>
+                                </li>
+                            ))}
 
-            }
+                            <li>
+                                <button
+                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
+                                    className="flex items-center justify-center w-10 h-10 text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100"
+                                >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 6 10">
+                                        <path d="M1 9l4-4L1 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </MainLayout>
         </>
     );
+
 
 };
 
