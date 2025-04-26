@@ -32,6 +32,7 @@ import Students from "./Admin/Students.jsx";
 import Teachers from "./Admin/Teachers.jsx"
 import Categories from "./Admin/Categories.jsx";
 import ResetPassword from "./Auth/ResetPassword.jsx";
+import VideoCall from "./components/VideoCall.jsx";
 function App() {
 
   const [profiles, setprofiles] = useState([]);
@@ -116,6 +117,8 @@ function App() {
         <Route path="/admin/students" element={<Students />} />
         <Route path="/admin/teachers" element={<Teachers />} />
         <Route path="/admin/categories" element={<Categories />} />
+        <Route path="/VideoCall/:session" element={<VideoCall />} />
+
 
 
       </Routes>
