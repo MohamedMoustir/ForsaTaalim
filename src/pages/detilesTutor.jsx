@@ -5,12 +5,7 @@ import Login from "../Auth/Login";
 import MainLayout from "../components/MainLayout.jsX";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faGlobe,
-    faEuroSign,
     faMapMarkerAlt,
-    faPen,
-    faTrash,
-    faSearch,
     faCalendarAlt,
     faBookOpen,
     faUsers,
@@ -21,6 +16,7 @@ import Spinner from '../components/Spinner';
 
 
 import { API_URL, getToken, getUser } from '../utils/config';
+import Alert from "../components/Alert";
 const token = getToken();
 const user = getUser();
 const detiles = () => {
@@ -38,7 +34,10 @@ const detiles = () => {
     const [annonces, setAnnonces] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams()
-
+    const [type, setType] = useState('');
+    const [titles, setTitles] = useState('');
+    const [message, setMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const fetchProfesseursById = async () => {
         const response = await axios.get(`${API_URL}/Professeur/${id}`, {
@@ -55,8 +54,6 @@ const detiles = () => {
         await fetchAnnonces(profile.profe_id);
         setLoading(false)
     };
-
-
     const fetchComment = async (id_) => {
         const response = await axios.get(`${API_URL}/avis/${id_}`, {
             headers: {
@@ -66,7 +63,6 @@ const detiles = () => {
         })
         const comments = response.data.comments;
         console.log(comments);
-
         setComment(comments);
 
     };
@@ -120,10 +116,16 @@ const detiles = () => {
                     setPopUp(false);
                     const setNewcomment = { content: content, rating: rating, tuteur_id: detile.profe_id }
                     setComment([...comment, setNewcomment])
-                    alert('Commentaire ajouté avec succès');
                     await fetchComment(detile.profe_id);
+                    setShowAlert(true);
+                    setTitles('Commentaire ajouté avec succès!');
+                    setType('success');
+                    setMessage('Your Commentaire  has been ajouté successfully.');
                 } else {
-                    alert('Erreur lors de l\'ajout');
+                    setShowAlert(true);
+                    setTitles('Erreur lors de l\'ajout!');
+                    setType('error');
+                    setMessage('Erreur lors de l\'ajout ou modification du commentaire');
                 }
             }
         } catch (error) {
@@ -146,10 +148,16 @@ const detiles = () => {
                 }
             });
             if (response.status === 200) {
-                alert('Annonce supprimée avec succès');
+                setShowAlert(true);
+                setTitles('Commentaire supprimée avec succès!');
+                setType('error');
+                setMessage('Your Commentaire  supprimée avec successfully.');
                 setComment((prev) => prev.filter((a) => a.id !== comment_id));
             } else {
-                alert('Une erreur est survenue');
+                setShowAlert(true);
+                setTitles('Erreur lors de la suppression!');
+                setType('error');
+                setMessage('Erreur Commentaire  supprimée .');
             }
         } catch (error) {
             console.error("Erreur lors de la suppression:", error);
@@ -196,7 +204,14 @@ const detiles = () => {
         <> {loading && (
             <Spinner />
         )}
-
+            {showAlert && (
+                <Alert
+                    type={type}
+                    title={titles}
+                    message={message}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
             <MainLayout >
                 <div className="container px-4 py-8 max-w-7xl mx-auto  ">
                     <button
