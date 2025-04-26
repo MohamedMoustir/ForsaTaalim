@@ -39,16 +39,27 @@ function MyFullCalendar({ amount }) {
   const [title, setTitle] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [isClikConfme, setIsClikConfme] = useState(false);
+  const [selectedTimes, setSelectedTime] = useState([]);
+  const [IsOpenTime, setIsOpenTime] = useState(false);
+  const [availableTime, setAvailable_times] = useState([]);
 
+
+  console.log(events);
 
 
   const availableTimes = [
     { time: '08:00 AM' },
+    { time: '09:00 AM' },
     { time: '10:00 AM' },
     { time: '11:00 AM' },
+    { time: '12:00 PM' },
     { time: '01:00 PM' },
+    { time: '02:00 PM' },
     { time: '03:00 PM' },
+    { time: '04:00 PM' },
+    { time: '05:00 PM' },
   ];
+
 
   const handleGetdata = async (e) => {
     try {
@@ -61,31 +72,39 @@ function MyFullCalendar({ amount }) {
         .then((response) => {
 
           let data = response.data;
+          console.log(data);
+
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
             color: evant.colorEvant,
-            id: evant.id
+            id: evant.id,
+            available_times: evant.available_times
           }));
           setLoading(false)
           setEvents(newEvents);
+
+
         })
     } catch (error) {
       console.error(error);
     }
   }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let formData = new FormData();
     formData.append('date', evantDate);
     formData.append('colorEvant', eventColor);
     formData.append('titleEvant', titleEvante);
-
+    formData.append('available_times', JSON.stringify(selectedTimes));
 
     try {
       axios.post(`${API_URL}/disponibilite`, formData, {
         headers: {
-          authorization: `bearer ${token}`
+          authorization: `bearer ${token}`,
+          'Content-Type': 'aplication/json'
         },
         body: formData
       })
@@ -130,8 +149,6 @@ function MyFullCalendar({ amount }) {
         if (formatDate(item.id) === formatDate(arg.dateStr)) {
           alert();
         }
-
-
       }
       );
       console.log('kkkkkkkkkkkkkk', filtered);
@@ -243,6 +260,16 @@ function MyFullCalendar({ amount }) {
   };
 
 
+  const handleSelectTime = (time) => {
+    setSelectedTime((prev) =>
+      prev.includes(time)
+        ? prev.filter((t) => t !== time)
+        : [...prev, time]
+    );
+  };
+  console.log(availableTime);
+
+
   return (
     <>
       {loading && <Spinner />}
@@ -259,86 +286,128 @@ function MyFullCalendar({ amount }) {
           </div>
         </div>
       )}
+
       {isOpen && user.role === 'tuteur' && (
         <>
 
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
-
-            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h1 className="text-2xl font-bold">Ajouter un événement</h1>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="flex flex-col">
-                    <label className="mb-1 text-sm text-gray-600">Titre</label>
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Titre de l'événement"
-                      value={titleEvante}
-                      onChange={(e) => setTitleEvante(e.target.value)}
-                      required
-                      className="p-2 border rounded"
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="mb-1 text-sm text-gray-600">Date</label>
-                    <input
-                      type="date"
-                      name="date"
-                      value={evantDate}
-                      onChange={(e) => setEvanteDte(e.target.value)}
-                      required
-                      className="p-2 border border-red-400 rounded focus:ring focus:ring-red-200 focus:border-red-500 text-red-500"
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="mb-1 text-sm text-gray-600">Couleur</label>
-                    <select
-                      name="color"
-                      value={eventColor}
-                      onChange={(e) => setColer(e.target.value)}
-                      required
-                      className="p-2 border rounded"
-                    >
-                      <option value="">Choisir une couleur</option>
-                      <option value="red" className="text-red-500">Rouge</option>
-                      <option value="blue" className="text-blue-500">Bleu</option>
-                      <option value="green" className="text-green-500">Vert</option>
-                    </select>
-                  </div>
-
-                  <div className="col-span-1 md:col-span-3 flex justify-end space-x-2 mt-4">
+          {isOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+              <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-2xl font-bold">Ajouter un événement</h1>
                     <button
-                      type="button"
                       onClick={() => setIsOpen(false)}
-                      className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition"
+                      className="text-gray-500 hover:text-gray-700"
                     >
-                      Annuler
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition"
-                    >
-                      Ajouter l'événement
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
                     </button>
                   </div>
-                </form>
+
+                  <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="flex flex-col">
+                      <label className="mb-1 text-sm text-gray-600">Titre</label>
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Titre de l'événement"
+                        value={titleEvante}
+                        onChange={(e) => setTitleEvante(e.target.value)}
+                        required
+                        className="p-2 border rounded"
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label className="mb-1 text-sm text-gray-600">Date</label>
+                      <input
+                        type="date"
+                        name="date"
+                        value={evantDate}
+                        onChange={(e) => setEvanteDte(e.target.value)}
+                        required
+                        className="p-2 border border-red-400 rounded focus:ring focus:ring-red-200 focus:border-red-500 text-red-500"
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label className="mb-1 text-sm text-gray-600">Couleur</label>
+                      <select
+                        name="color"
+                        value={eventColor}
+                        onChange={(e) => setColer(e.target.value)}
+                        required
+                        className="p-2 border rounded"
+                      >
+                        <option value="">Choisir une couleur</option>
+                        <option value="red" className="text-red-500">Rouge</option>
+                        <option value="blue" className="text-blue-500">Bleu</option>
+                        <option value="green" className="text-green-500">Vert</option>
+                      </select>
+                    </div>
+
+                    <div className="col-span-1 md:col-span-3 mt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsOpenTime(true)}
+                        className="bg-red-400 text-white px-4 py-2 rounded-md shadow hover:bg-red-500 transition"
+                      >
+                        Choose Session Times
+                      </button>
+                    </div>
+
+                    {IsOpenTime && (
+                      <div className="col-span-1 md:col-span-3 mt-4 bg-gray-100 p-4 rounded border">
+                        <h2 className="text-lg font-semibold mb-2">Sélectionnez les horaires</h2>
+                        <ul className="space-y-2 max-h-48 overflow-y-auto">
+                          {availableTimes.map((item, index) => {
+                            const isSelected = selectedTimes.includes(item.time);
+                            return (
+                              <li
+                                key={index}
+                                className={`cursor-pointer p-2 rounded-md ${isSelected
+                                  ? "bg-blue-100 text-blue-700 font-semibold"
+                                  : "hover:bg-gray-200"
+                                  }`}
+                                onClick={() => handleSelectTime(item.time)}
+                              >
+                                {item.time}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                        <button
+                          onClick={() => setIsOpenTime(false)}
+                          className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md w-full"
+                        >
+                          Fermer les horaires
+                        </button>
+                      </div>
+                    )}
+
+                    <div className="col-span-1 md:col-span-3 flex justify-end space-x-2 mt-4">
+                      <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition"
+                      >
+                        Ajouter l'événement
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
         </>
       )}
 
@@ -397,7 +466,6 @@ function MyFullCalendar({ amount }) {
             onClose={() => setShowAlert(false)}
           />
         )}
-
         <div className="w-full m-8 h-[10%]  cursor-pointer">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
@@ -417,17 +485,27 @@ function MyFullCalendar({ amount }) {
         <>
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">
-            {availableTimes.map((time, index) => (
-              <button
-                key={index}
-                id={time.time}
-                onClick={(e) => setTimeReservation(e.target.id)}
-                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time.time ? 'bg-red-400 text-white shadow-md' : 'bg-white'
-                  }`}
-              >
-                {time.time}
-              </button>
-            ))}
+            {events.map((event, index) => {
+              let availableTim = [];
+              try {
+                  availableTim = JSON.parse(event?.available_times);
+              } catch (error) {
+                console.error("Error parsing available_times:", error);
+              }
+
+              return availableTim?.map((time) => (
+              
+                <button
+                  key={`${index}`}
+                  id={time}
+                  onClick={(e) => setTimeReservation(e.target.id)}
+                  className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time ? 'bg-red-400 text-white shadow-md' : 'bg-white'}`}
+                >
+                  {time}
+                </button>
+              ));
+            })}
+
 
           </div>
           <h3 className="font-medium text-gray-800 mt-8 mb-4">Choisissez une durée de réservation</h3>
@@ -446,12 +524,12 @@ function MyFullCalendar({ amount }) {
             ))}
 
           </div>
-          <div  className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
+          <div className="flex justify-between items-center pt-4 border-t mb-12 border-gray-200">
             <div>
               <p className="font-medium">Selected session:</p>
               <p className="text-gray-600">{getDateReserve} at {timeReservation}({times} hour)</p>
             </div>
-            <button onClick={()=>setIsClikConfme(true)} className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
+            <button onClick={() => setIsClikConfme(true)} className="bg-red-500 hover:bg-red-600 text-white px-6 py-2  rounded-md font-medium transition-colors">
               Confirm
             </button>
           </div>
@@ -463,16 +541,16 @@ function MyFullCalendar({ amount }) {
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
             <h2 className="text-xl font-semibold text-yellow-600 mb-4">Payment Required</h2>
             <p className="text-gray-700 mb-6">
-            To complete your reservation, you need to proceed with the payment.
+              To complete your reservation, you need to proceed with the payment.
             </p>
             <div className="flex justify-center gap-4">
-              <div onClick={()=>setIsClikConfme(false)}
-                
+              <div onClick={() => setIsClikConfme(false)}
+
                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-xl"
-              > 
+              >
                 Annuler
               </div>
-              <button 
+              <button
                 className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl"
               >
                 Continuer
