@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../assets/style/style.css";
 
-const Alert = ({ type = 'success', title, message, onClose }) => {
+const Alert = ({ type = 'success', title, message, onClose, autoHideDuration = 5000 }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (autoHideDuration > 0) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+        setTimeout(() => {
+          if (onClose) onClose();
+        }, 300);
+      }, autoHideDuration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [autoHideDuration, onClose]);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      if (onClose) onClose();
+    }, 300);
+  };
+
   const icons = {
     success: "fa-solid fa-circle-check",
     error: "fa-solid fa-circle-xmark",
@@ -41,36 +63,32 @@ const Alert = ({ type = 'success', title, message, onClose }) => {
 
   return (
     <div
-      className={`flex absolute items-center gap-4 px-5 py-4 rounded-lg shadow-lg min-w-[320px] max-w-md mx-auto my-4 mr-8 right-0 top-6 border-l-4 ${colorSet.border} ${colorSet.bg} ${colorSet.shadow}`}
-      style={{ zIndex: 10, fontFamily: 'Open Sans', animation: 'slideIn 0.3s ease-out forwards' }}
+      className={`alert-container fixed top-6 right-6 z-50`}
     >
-      <i className={`text-xl ${colorSet.icon} ${icon}`}></i>
+      <div
+        className={`flex items-center gap-4 px-5 py-4 rounded-lg shadow-lg min-w-[320px] max-w-md border-l-4 
+        ${colorSet.border} ${colorSet.bg} ${colorSet.shadow} ${isVisible ? 'alert-enter' : 'alert-exit'}`}
+        style={{ fontFamily: 'Open Sans' }}
+      >
+        <div className={`text-xl ${colorSet.icon}`}>
+          <i className={icon}></i>
+        </div>
 
-      <div className="flex-1">
-        <div className="font-semibold text-gray-800">{title}</div>
-        <span className="text-sm text-gray-600">{message}</span>
+        <div className="flex-1">
+          <div className="font-semibold text-gray-800">{title}</div>
+          <span className="text-sm text-gray-600">{message}</span>
+        </div>
+
+        <button
+          onClick={handleClose}
+          className="ml-4 h-6 w-6 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors duration-200"
+          aria-label="Close"
+        >
+          <i className="fa-solid fa-xmark text-gray-500"></i>
+        </button>
       </div>
 
-      <button 
-        onClick={onClose}
-        className="ml-4 h-6 w-6 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors duration-200"
-        aria-label="Close"
-      >
-        <i className="fa-solid fa-xmark text-gray-500"></i>
-      </button>
-
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-      `}</style>
+    
     </div>
   );
 };
