@@ -103,7 +103,7 @@ export  const Nav = ({id_}) => {
         navigate('/')
     }
     useEffect(() => {
-        handleAfficheNotifications();
+        // handleAfficheNotifications();
         if (user) {
           if (user.role == 'tuteur') {
            navigate('/login'); 
