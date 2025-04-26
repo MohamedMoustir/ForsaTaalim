@@ -49,6 +49,8 @@ function App() {
 
       .then((response) => {
         setMessages(response.data.messages);
+        console.log('ddddddddddddddddddddddddddddddddddddddddd',response.data.messages);
+        
       })
 
     Pusher.logToConsole = true;
@@ -70,6 +72,8 @@ function App() {
     e.preventDefault();
 
     try {
+      console.log(receive_id);
+      
       const response = await fetch(`${API_URL}/messages/${receive_id}`, {
         method: 'POST',
         headers: {
@@ -87,7 +91,7 @@ function App() {
         throw new Error(errorData.message || 'Something went wrong');
       }
       const data = await response.json();
-      setMessage();
+      setMessage('');
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error);
     }
@@ -264,9 +268,10 @@ function App() {
 
             <div className="flex-grow p-4 overflow-y-auto">
               {messages.map((msg, index) => {
-                const sender = msg.sender || '';
-
-                if (sender === 'tuteur') {
+                // console.log('ddd',msg);
+                
+                const sender = msg.sender_id || '';
+                if (sender == user.id && msg.message != null) {
                   return (
                     <div key={index} className={`mb-4 w-28 ml-auto`}>
                       <div className={`p-3 w-20 rounded-lg bg-indigo-600 text-left text-white`}>
@@ -275,11 +280,11 @@ function App() {
                         </p>
                       </div>
                       <p className={`text-xs text-gray-400 text-left`}>
-                        {msg.timestamp || '12:45 PM'}
+                        {msg.timestamp || '1'}
                       </p>
                     </div>
                   );
-                } else if (sender === 'etudiant') {
+                } else if(msg.message != null){
                   return (
                     <div key={index} className={`mb-4 w-28 mr-auto`}>
                       <div className={`p-3 rounded-lg bg-gray-100`}>
@@ -297,7 +302,6 @@ function App() {
             </div>
 
 
-            {/* Input Area */}
             <form onSubmit={submit} className="p-4 border-t border-gray-200">
               <div className="flex">
                 <input
