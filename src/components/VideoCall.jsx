@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 
-const VideoCall = ({ roomName, displayName }) => {
+const VideoCall =  ({ roomName = `meeting-ezdabzaùCBO!oùb`, displayName }) => {
   const jitsiContainer = useRef(null);
 
   return (
@@ -17,7 +17,10 @@ const VideoCall = ({ roomName, displayName }) => {
             startWithVideoMuted: false,
           }}
           interfaceConfigOverwrite={{
-            SHOW_JITSI_WATERMARK: false,
+            SHOW_JITSI_WATERMARK: false,     
+            SHOW_WATERMARK_FOR_GUESTS: false,
+            SHOW_BRAND_WATERMARK: false,     
+            SHOW_POWERED_BY: false,     
             DEFAULT_BACKGROUND: "#f4f4f4",
           }}
           userInfo={{
