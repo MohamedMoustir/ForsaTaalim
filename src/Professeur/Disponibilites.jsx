@@ -90,7 +90,28 @@ function MyFullCalendar({ amount }) {
       console.error(error);
     }
   }
+  const handleGetProfeTime = async (e) => {
+    try {
+      axios.get(`${API_URL}/disponibilite/available_times/${id}`, {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+        .then((response) => {
 
+          let data = response.data;
+          setLoading(false)
+          setAvailable_times(data);
+          console.log('haaaa', data);
+
+
+        })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const availableTimesArray = availableTime.available_times ? JSON.parse(availableTime.available_times) : [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,6 +192,7 @@ function MyFullCalendar({ amount }) {
   };
   useEffect(() => {
     handleGetdata()
+    handleGetProfeTime()
   }, [])
   const handleEventClick = (info) => {
     setEventClicks(true);
@@ -267,7 +289,40 @@ function MyFullCalendar({ amount }) {
         : [...prev, time]
     );
   };
-  console.log(availableTime);
+  const HandleCreateavailable_time = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('prof_id', user.id);
+    formData.append('available_times', JSON.stringify(selectedTimes));
+
+    try {
+      axios.post(`${API_URL}/disponibilite/available_time`, formData, {
+        headers: {
+          authorization: `bearer ${token}`,
+          'Content-Type': 'aplication/json'
+        },
+        body: formData
+      })
+        .then((response) => {
+          setIsOpenTime(false)
+          console.log(response.data);
+          setAvailable_times([
+            ...events,
+            { title: titleEvante, date: evantDate, color: eventColor },
+          ]);
+          setTitle(' disponibilite ajoute  successyful')
+          setType('success')
+          setMessage('Votre disponibilité a été ajoutée avec succès.')
+          setShowAlert(true)
+        })
+    } catch (error) {
+      setShowAlert(true)
+      setTitle('Error ajoute disponibilite');
+      setType('error')
+      setMessage('Erreur lors de l\'ajout de la disponibilité')
+    }
+
+  }
 
 
   return (
@@ -286,9 +341,51 @@ function MyFullCalendar({ amount }) {
           </div>
         </div>
       )}
+      {user.role == 'tuteur' && (
+        <div className="col-span-1 md:col-span-3 mt-2 absolute right-[13%] top-[3.5%]">
+          <button
+            type="button"
+            onClick={() => setIsOpenTime(true)}
+            className="bg-red-400 text-white px-4 py-2 rounded-md shadow hover:bg-red-500 transition"
+          >
+            Choose Session Times
+          </button>
+        </div>
+      )}
+      {IsOpenTime && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-lg w-full">
+            <h2 className="text-lg font-semibold mb-4">Sélectionnez les horaires</h2>
+            <ul className="space-y-2 max-h-48 overflow-y-auto">
+              {availableTimes.map((item, index) => {
+                const isSelected = selectedTimes.includes(item.time);
+                return (
+                  <li
+                    key={index}
+                    className={`cursor-pointer p-2 rounded-md ${isSelected
+                      ? 'bg-blue-100 text-blue-700 font-semibold'
+                      : 'hover:bg-gray-200'}`}
+                    onClick={() => handleSelectTime(item.time)}
+                  >
+                    {item.time}
+                  </li>
+                );
+              })}
+            </ul>
+            <button
+              onClick={HandleCreateavailable_time}
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md w-full"
+            >
+              Fermer les horaires
+            </button>
+          </div>
+        </div>
+      )}
+
 
       {isOpen && user.role === 'tuteur' && (
         <>
+
 
           {isOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
@@ -347,45 +444,6 @@ function MyFullCalendar({ amount }) {
                         <option value="green" className="text-green-500">Vert</option>
                       </select>
                     </div>
-
-                    <div className="col-span-1 md:col-span-3 mt-2">
-                      <button
-                        type="button"
-                        onClick={() => setIsOpenTime(true)}
-                        className="bg-red-400 text-white px-4 py-2 rounded-md shadow hover:bg-red-500 transition"
-                      >
-                        Choose Session Times
-                      </button>
-                    </div>
-
-                    {IsOpenTime && (
-                      <div className="col-span-1 md:col-span-3 mt-4 bg-gray-100 p-4 rounded border">
-                        <h2 className="text-lg font-semibold mb-2">Sélectionnez les horaires</h2>
-                        <ul className="space-y-2 max-h-48 overflow-y-auto">
-                          {availableTimes.map((item, index) => {
-                            const isSelected = selectedTimes.includes(item.time);
-                            return (
-                              <li
-                                key={index}
-                                className={`cursor-pointer p-2 rounded-md ${isSelected
-                                  ? "bg-blue-100 text-blue-700 font-semibold"
-                                  : "hover:bg-gray-200"
-                                  }`}
-                                onClick={() => handleSelectTime(item.time)}
-                              >
-                                {item.time}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                        <button
-                          onClick={() => setIsOpenTime(false)}
-                          className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md w-full"
-                        >
-                          Fermer les horaires
-                        </button>
-                      </div>
-                    )}
 
                     <div className="col-span-1 md:col-span-3 flex justify-end space-x-2 mt-4">
                       <button
@@ -485,27 +543,20 @@ function MyFullCalendar({ amount }) {
         <>
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">
-            {events.map((event, index) => {
-              let availableTim = [];
-              try {
-                  availableTim = JSON.parse(event?.available_times);
-              } catch (error) {
-                console.error("Error parsing available_times:", error);
-              }
-
-              return availableTim?.map((time) => (
-              
+            {Array.isArray(availableTimesArray) && availableTimesArray.length > 0 ? (
+              availableTimesArray.map((time, index) => (
                 <button
-                  key={`${index}`}
+                  key={index}
                   id={time}
                   onClick={(e) => setTimeReservation(e.target.id)}
-                  className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center ${timeReservation === time ? 'bg-red-400 text-white shadow-md' : 'bg-white'}`}
+                  className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center w-full ${timeReservation === time ? 'bg-red-400 text-white shadow-md' : 'bg-white'}`}
                 >
                   {time}
                 </button>
-              ));
-            })}
-
+              ))
+            ) : (
+              <p>No available times</p>
+            )}
 
           </div>
           <h3 className="font-medium text-gray-800 mt-8 mb-4">Choisissez une durée de réservation</h3>

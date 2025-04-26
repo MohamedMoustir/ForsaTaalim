@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import {
-  faChartPie,
+  faVideo ,
   faBullhorn,
   faComments,
   faDollarSign,
@@ -71,7 +71,7 @@ const ReservationPage = () => {
       });
       console.log(status, email);
 
-  
+
       HandleSendNotification(user_id, status);
 
       if (response.data) {
@@ -103,7 +103,7 @@ const ReservationPage = () => {
     setTotalAmount(total);
   }, [reservations]);
 
-  const handleSendEmail =  (status, email, id__) => {
+  const handleSendEmail = (status, email, id__) => {
     try {
       const EmailData = new FormData();
       EmailData.append('email', email);
@@ -111,7 +111,7 @@ const ReservationPage = () => {
       EmailData.append('id', id__);
 
       setTimeout(() => {
-        const sendEmail =  axios.post(`${API_URL}/sendEmail`, EmailData, {
+        const sendEmail = axios.post(`${API_URL}/sendEmail`, EmailData, {
           headers: {
             Authorization: `bearer ${token}`
           }
@@ -313,16 +313,28 @@ const ReservationPage = () => {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.email, res.user_id)}
-                              disabled={res.status === 'approved'}
-                              className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${res.status === 'approved'
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-green-600 text-white hover:bg-green-700'
-                                }`}
-                            >
-                              <FontAwesomeIcon icon={faCheck} className="mr-1" /> Approuver
-                            </button>
+                            {res.status === 'approved' ? (
+                              <a
+                                href={`http://localhost:3000/VideoCall/${res.session_link}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-green-100 text-green-700 hover:bg-green-200 transition-colors"
+                              >
+                                <FontAwesomeIcon icon={faVideo} className="mr-1" /> Session
+                              </a>
+                            ) : (
+                              <button
+                                onClick={() => handleStatusUpdate(res.reservation_id, 'approved', res.email, res.user_id)}
+                                disabled={res.status === 'approved'}
+                                className={`inline-flex items-center px-3 py-1.5 rounded text-xs font-medium transition-colors ${res.status === 'approved'
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : 'bg-green-600 text-white hover:bg-green-700'
+                                  }`}
+                              >
+                                <FontAwesomeIcon icon={faCheck} className="mr-1" /> Approuver
+                              </button>
+                            )}
+
                             <button
                               onClick={() => handleStatusUpdate(res.reservation_id, 'refuser', res.email, res.user_id)}
                               disabled={res.status === 'refuser'}
@@ -333,14 +345,16 @@ const ReservationPage = () => {
                             >
                               <FontAwesomeIcon icon={faTimes} className="mr-1" /> Refuser
                             </button>
+
                             <button
                               onClick={() => handleChat(res.user_id, res.chat_user_id)}
-                              className='inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors'
+                              className="inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
                             >
                               <FontAwesomeIcon icon={faComments} className="mr-1" /> Chat
                             </button>
                           </div>
                         </td>
+
                       </tr>
                     ))
                   )}
