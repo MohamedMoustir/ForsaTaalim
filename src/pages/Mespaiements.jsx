@@ -201,14 +201,14 @@ const Mespaiements = () => {
                                                     <button onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
                                                         <FontAwesomeIcon icon={faReceipt} />
                                                     </button>
-                                                    <button onClick={() => handleDelete(prof.reservation_id)} className="text-gray-600 hover:text-gray-900">
+                                                    <button onClick={() => handleDelete(prof.reservation_id)} className="text-gray-600 hover:text-gray-900 mr-3">
                                                         <FontAwesomeIcon icon={faTimes} className='text-red-400' />
                                                     </button>
                                                     <button
                                                         onClick={() => handleChat(prof.user_id, prof.chat_user_id)}
-                                                        className='inline-flex items-center px-3 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors'
+                                                        className='inline-flex items-center px-4 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200  transition-colors'
                                                     >
-                                                        <FontAwesomeIcon icon={faComments} className="mr-1" /> Chat
+                                                        <FontAwesomeIcon icon={faComments} className="mr-3" /> Chat
                                                     </button>
                                                 </td>
 
