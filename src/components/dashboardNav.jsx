@@ -3,17 +3,8 @@ import '../assets/js/main';
 import '../assets/style/style.css';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-faChartPie,
-faBullhorn,
-faComments,
-faDollarSign,
-faSignOutAlt,
-faCalendarCheck,
-faBars,
-faTimes,
-faClipboardList
-} from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faChartPie, faCalendarCheck, faClipboardList, faComments, faBullhorn, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
+
 import ReservationTutors from "../pages/reservation";
 import { API_URL, getToken, getUser } from '../utils/config';
 
@@ -22,22 +13,29 @@ const DashboardNav = ({id_}) => {
   const token = getToken();
   const user = getUser();
   const navigate = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(true); 
+  
 useEffect(()=>{
   if (user) {
     if (user.role == 'etudiant') {
      navigate('/login'); 
   }  
   }
-  
 },[])
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen); 
+  };
+
   return (
     <>
-      <div className="w-64 bg-slate-900 text-white flex flex-col" style={{ fontFamily: 'Open Sans' }}>
+      <div
+    className={`w-64 bg-slate-900 text-white flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-[80%]'} transition-transform duration-300`}
+      style={{ fontFamily: 'Open Sans' }}>
 
         <div className="p-4 border-b border-gray-700 flex items-center justify-between">
           <h1 className="font-bold text-lg">ForsaTaalim</h1>
-          <button className="text-gray-400 hover:text-white">
+          <button onClick={toggleSidebar} className="text-gray-400 hover:text-white">
             <FontAwesomeIcon icon={faTimes} className="h-5 w-5" />
           </button>
         </div>
@@ -64,7 +62,7 @@ useEffect(()=>{
               <FontAwesomeIcon icon={faBullhorn} className={`h-5 w-5 mr-3 ${id_ == 5 ? 'text-red-400':''}`} />
               Annoncement
             </a>
-            <a id="" onClick={(e) => { navigate('/logout'); setid(e.target.id) }} className={`cursor-pointer ${id_ == 5 ? '':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
+            <a id="" onClick={(e) =>  navigate('/logout') } className={`cursor-pointer ${id_ == 5 ? '':''}  flex items-center px-4 py-3 text-sm rounded-md hover:bg-slate-800`}>
               <FontAwesomeIcon icon={faSignOutAlt} className={`h-5 w-5 mr-3 ${id_ == 7 ? 'text-red-400':''}`} />
               log Out
             </a>
