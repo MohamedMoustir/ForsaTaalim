@@ -34,7 +34,7 @@ const profilesilePage = () => {
                 }
             })
                 .then((response) => {
-                    setLoading(false )
+                    setLoading(false)
                     console.log(response.data.Profile);
                     setprofilesiles(response.data.Profile);
 
@@ -43,35 +43,35 @@ const profilesilePage = () => {
         fetchprofilesesseurs();
     }, [user.id])
 
-    const handleSubmit =  (e) => {
+    const handleSubmit = (e) => {
         if (editId) {
             e.preventDefault();
-                const data = new FormData();
-                data.append('location', location);
-                data.append('tarifHoraire', tarifHoraire);
-                data.append('biographie', biographie);
-                data.append('diplomes', diplomes);
-                data.append('experiences', experiences);
-                data.append('_method', 'patch');
+            const data = new FormData();
+            data.append('location', location);
+            data.append('tarifHoraire', tarifHoraire);
+            data.append('biographie', biographie);
+            data.append('diplomes', diplomes);
+            data.append('experiences', experiences);
+            data.append('_method', 'patch');
 
-                fetch(`${API_URL}/Professeur/${editId}`, {
-                    method: 'POST',
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                                        },
-                    body: data,
+            fetch(`${API_URL}/Professeur/${editId}`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: data,
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    setIsopen(false)
+                    console.log('Success:', result);
                 })
-                    .then((response) => response.json())
-                    .then((result) => {
-                        setIsopen(false)
-                        console.log('Success:', result);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
+
+    }
 
 
     const handleUpdate = (id) => {
@@ -93,11 +93,13 @@ const profilesilePage = () => {
 
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col lg:flex-row" style={{ fontFamily: 'Open Sans' }}>
-          {loading && <Spinner />}
+            {loading && <Spinner />}
 
-            <div className="hidden lg:flex">
-                <DashboardNav />
-            </div>
+
+            <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
+            >
+                <DashboardNav id_={1} />
+            </di>
             <div className="p-4 lg:ml-4 flex-1">
                 <div className="bg-white rounded-lg shadow-sm mb-8 p-6 flex flex-col md:flex-row items-start md:items-center justify-between">
                     <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Mon profil professeur</h1>

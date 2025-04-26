@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import {
-  faVideo ,
+  faVideo,
   faBullhorn,
   faComments,
   faDollarSign,
@@ -186,9 +186,10 @@ const ReservationPage = () => {
   return (
     <div className="flex" style={{ fontFamily: 'Open Sans' }}>
       {loading && <Spinner />}
-      <div className="hidden lg:flex">
-        <DashboardNav id_={3} />
-      </div>
+      <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
+      >
+        <DashboardNav id_={1} />
+      </di>
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">

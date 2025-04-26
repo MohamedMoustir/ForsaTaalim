@@ -180,8 +180,8 @@ const Dashboard = () => {
         setLocation(annoncement[0].location);
         setDate(annoncement[0].date);
     };
-  
-    
+ 
+
     return (
         <>
             {showAlert && (
@@ -194,10 +194,11 @@ const Dashboard = () => {
             )}
             {loading && <Spinner />}
             <div className="bg-gray-100" style={{ fontFamily: 'Open Sans' }}>
-                <div className="flex h-screen">
-                    <div className="hidden lg:flex">
-                        <DashboardNav id_={5} />
-                    </div>
+                <div className="lg:flex block lg:h-screen">
+                    <di className={`absolute lg:relative block  lg:flex `}style={{ zIndex: 1 }}
+                    >
+                        <DashboardNav id_={1} />
+                    </di>
                     <div className="flex h-screen w-[100%]">
                         <div className="flex-1 overflow-y-auto">
                             <div className="p-6 max-w-5xl mx-auto">

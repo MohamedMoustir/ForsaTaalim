@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [statistic, setStatistic] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleStatistic = async () => {
@@ -63,27 +64,31 @@ const Dashboard = () => {
     { date: "Payment Approved", total: statistic['PaymentApproved'] },
     { date: "Payment Refuser", total: statistic['PaymentRefuser'] },
   ];
+
+  const toggleSidebar = () => {
+    setIsOpen(true);
+  };
   return (
     <div className="bg-gray-100" style={{ fontFamily: 'Open Sans' }}>
-       {loading && <Spinner />}
-      <div className="flex h-screen">
-      <div className="hidden lg:flex">
-                <DashboardNav id_={1} />
-            </div>
+      {loading && <Spinner />}
+      <div className="lg:flex block lg:h-screen">
+        <div className={`absolute lg:relative block lg:flex h-screen `}>
+          <DashboardNav id_={1} />
+        </div>
 
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             <div className="flex justify-between items-center mb-8">
               <div>
                 <h1 className="text-2xl font-semibold">Welcome back!</h1>
                 <p className="text-gray-600">Here's what's happening today.</p>
               </div>
               <div className="flex space-x-3">
-                <button className="px-4 py-2 border border-gray-300 rounded-md flex items-center space-x-2">
+                <button className="px-4 py-2 border border-gray-300 rounded-md flex items-center space-x-2 hidden lg:block">
                   <FontAwesomeIcon icon={faDownload} />
                   <span>Export</span>
                 </button>
-                <button className="px-4 py-2 bg-indigo-600 text-white rounded-md flex items-center space-x-2">
+                <button className="px-4 py-2 bg-indigo-600 text-white rounded-md flex items-center space-x-2 hidden lg:block">
                   <FontAwesomeIcon icon={faPlus} />
                   <span>New Report</span>
                 </button>
@@ -165,6 +170,7 @@ const Dashboard = () => {
       </div>
     </div>
   );
+
 };
 
 export default Dashboard;

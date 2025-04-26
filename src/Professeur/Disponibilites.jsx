@@ -328,6 +328,7 @@ function MyFullCalendar({ amount }) {
   return (
     <>
       {loading && <Spinner />}
+
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ fontFamily: 'Open Sans' }}>
           <div className="bg-white p-6 rounded-lg shadow-md w-96 text-center">
@@ -385,8 +386,6 @@ function MyFullCalendar({ amount }) {
 
       {isOpen && user.role === 'tuteur' && (
         <>
-
-
           {isOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
               <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 z-50">
@@ -509,12 +508,14 @@ function MyFullCalendar({ amount }) {
         </div>
 
       )}
-      <div className='flex'>
+     
+     <div className="lg:flex block lg:h-screen">
         {user.role == 'tuteur' && (
 
-          <div className="hidden lg:flex">
-            <DashboardNav id_={2} />
-          </div>
+          <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 7 }}
+          >
+            <DashboardNav id_={1} />
+          </di>
         )}
         {showAlert && (
           <Alert
