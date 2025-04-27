@@ -10,7 +10,7 @@ const AdminPayments = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get('');
+        const response = await axios.get('/api/admin/payments');
         // setPayments(response.data.data);
       } catch (err) {
         setError('Échec du chargement des paiements');
@@ -22,19 +22,60 @@ const AdminPayments = () => {
     fetchPayments();
   }, []);
   
+  const payments = [
+    {
+      id: 1,
+      user: { name: 'Ahmed El Amine' },
+      amount: 200,
+      method: 'Carte bancaire',
+      status: 'success',
+      created_at: '2025-04-25T14:32:00',
+    },
+    {
+      id: 2,
+      user: { name: 'Samira Bouzidi' },
+      amount: 150,
+      method: 'PayPal',
+      status: 'pending',
+      created_at: '2025-04-24T09:15:00',
+    },
+    {
+      id: 3,
+      user: { name: 'Yassine Kabbaj' },
+      amount: 350,
+      method: 'Virement bancaire',
+      status: 'success',
+      created_at: '2025-04-22T12:50:00',
+    },
+    {
+      id: 4,
+      user: { name: 'Leila Ouarzazi' },
+      amount: 120,
+      method: 'Carte bancaire',
+      status: 'failed',
+      created_at: '2025-04-21T16:30:00',
+    },
+    {
+      id: 5,
+      user: { name: 'Mouhamed Fares' },
+      amount: 500,
+      method: 'PayPal',
+      status: 'success',
+      created_at: '2025-04-20T11:20:00',
+    },
+    {
+      id: 6,
+      user: { name: 'Meryem Zaidi' },
+      amount: 90,
+      method: 'Virement bancaire',
+      status: 'pending',
+      created_at: '2025-04-19T08:10:00',
+    },
+    
+  ];
 
-  
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
-  };
-  
+  const formatDate = (date) => new Date(date).toISOString().slice(0, 10);
+
   const filteredPayments = activeTab === 'all' 
     ? payments 
     : payments.filter(payment => payment.status === activeTab);
@@ -57,7 +98,6 @@ const AdminPayments = () => {
       </div>
     );
   }
-
 
 };
 
