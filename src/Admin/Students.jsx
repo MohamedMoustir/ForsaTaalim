@@ -6,6 +6,7 @@ import AdminNav from "../components/AdimNav";
 import axios from "axios";
 import { API_URL, getToken } from "../utils/config";
 import Spinner from "../components/Spinner";
+import Alert from "../components/Alert";
 
 const Students = () => {
 
@@ -18,7 +19,10 @@ const Students = () => {
     const [profileslength, setprofileslength] = useState(6);
     const [showMenu, setShowMenu] = useState();
     const [role, setRole] = useState();
-
+    const [showAlert, setShowAlert] = useState(false);
+    const [type, setType] = useState('');
+    const [titles, setTitles] = useState('');
+    const [message, setMessage] = useState('');
 
 
     const fetchStudents = async (page) => {
@@ -40,7 +44,6 @@ const Students = () => {
         fetchStudents(currentPage);
     }, [currentPage])
 
-
     const handleStatusUpdate = async (e) => {
 
         e.preventDefault();
@@ -59,11 +62,21 @@ const Students = () => {
                 setStudent(student.map(res =>
                     res.id === showMenu ? { ...res, role: role } : res
                 ));
+
+                setShowAlert(true);
+                setTitles('user update avec succès!');
+                setType('success');
+                setMessage('user update avec succès.');
+
             }
 
         } catch (err) {
+            setShowAlert(true);
+            setTitles('Error updating reservation status');
+            setType('error');
+            setMessage('Failed to update reservation status');
             console.error('Error updating reservation status:', err);
-            alert('Failed to update reservation status');
+
         }
     };
     const handleSuspend = async () => {
@@ -79,16 +92,21 @@ const Students = () => {
 
             if (response.data) {
                 console.log(response.data);
-
                 setShowMenu(0)
+                setShowAlert(true);
+                setTitles('user Suspend avec succès!');
+                setType('success');
+                setMessage('user Suspend avec succès.');
             }
 
         } catch (err) {
+            setShowAlert(true);
+            setTitles('Error updating reservation status!');
+            setType('error');
+            setMessage('Failed to update reservation status');
             console.error('Error updating reservation status:', err);
-            alert('Failed to update reservation status');
         }
     };
-
 
     const lastItemsIndex = currentPage * itemsPerPage;
     const firstItemsIndex = lastItemsIndex - itemsPerPage
@@ -101,7 +119,14 @@ const Students = () => {
     return (
         <div className="flex flex-col md:flex-row bg-gray-50 min-h-screen" style={{ fontFamily: 'Open Sans' }}>
             {loading && <Spinner />}
-
+            {showAlert && (
+                <Alert
+                    type={type}
+                    title={titles}
+                    message={message}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
             <aside className="w-full md:w-64 shadow-lg bg-white">
                 <AdminNav id_={2} />
             </aside>
