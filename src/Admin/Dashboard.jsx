@@ -94,131 +94,139 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen" style={{ fontFamily: 'Open Sans' }}>
-      <div className="w-full md:w-64 bg-white shadow-md">
-        <AdminNav id_={1}  />
-      </div>
+    <div className="flex flex-col md:flex-row min-h-screen font-sans bg-gray-100">
+      <aside className="w-full md:w-64 bg-white shadow-lg z-10">
+        <AdminNav id_={1} />
+      </aside>
 
-      <div className="flex-1 p-4 sm:p-6 bg-gray-50">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <main className="flex-1 p-4 sm:p-6 overflow-auto">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-6">
+          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
           <div className="relative w-full sm:w-auto">
-            <i className="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <i className="fas fa-search absolute left-4 top-3 text-gray-400"></i>
             <input
               type="text"
               placeholder="Search here..."
-              className="search-input pl-10 pr-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm w-full sm:w-64 focus:outline-none"
+              className="pl-12 pr-4 py-2 w-full sm:w-64 rounded-full border border-gray-300 bg-white focus:border-blue-400 focus:ring focus:ring-blue-100 shadow-md transition-all duration-300"
             />
           </div>
-        </div>
+        </header>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="stat-card flex items-center space-x-4">
-              <div className="stat-icon students-icon">
-                <i className="fas fa-users"></i>
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                <i className="fas fa-users text-xl"></i>
               </div>
               <div>
-                <h3 className="text-sm text-gray-500 font-medium">Students</h3>
-                <p className="text-2xl font-bold text-gray-800">{datalist['totaletudiant']}</p>
-              </div>
-            </div>
-
-            <div className="stat-card flex items-center space-x-4">
-              <div className="stat-icon teachers-icon">
-                <i className="fas fa-chalkboard-teacher"></i>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-500 font-medium">Teachers</h3>
-                <p className="text-2xl font-bold text-gray-800">{datalist['totaltuteur']}</p>
-              </div>
-            </div>
-
-            <div className="stat-card flex items-center space-x-4">
-              <div className="stat-icon events-icon">
-                <i className="fas fa-calendar-alt"></i>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-500 font-medium">Reservations</h3>
-                <p className="text-2xl font-bold text-gray-800">{datalist['totalBookings']}</p>
-              </div>
-            </div>
-
-            <div className="stat-card flex items-center space-x-4">
-              <div className="stat-icon finance-icon">
-                <i className="fas fa-money-bill-wave"></i>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-500 font-medium">Reviews</h3>
-                <p className="text-2xl font-bold text-gray-800">{datalist['totalReviews']}</p>
+                <h3 className="text-sm text-gray-500">Students</h3>
+                <p className="text-2xl font-bold">{datalist['totaletudiant']}</p>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-            <h2 className="text-lg font-semibold text-gray-800">School Performance</h2>
-            <div className="flex space-x-6 items-center">
+          <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 rounded-full bg-green-100 text-green-600">
+                <i className="fas fa-chalkboard-teacher text-xl"></i>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-500">Teachers</h3>
+                <p className="text-2xl font-bold">{datalist['totaltuteur']}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <i className="fas fa-calendar-alt text-xl"></i>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-500">Reservations</h3>
+                <p className="text-2xl font-bold">{datalist['totalBookings']}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
+            <div className="flex items-center space-x-4">
+              <div className="p-3 rounded-full bg-purple-100 text-purple-600">
+                <i className="fas fa-money-bill-wave text-xl"></i>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-500">Reviews</h3>
+                <p className="text-2xl font-bold">{datalist['totalReviews']}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white rounded-2xl shadow p-6 mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-6">
+            <h2 className="text-xl font-semibold text-gray-700">School Performance</h2>
+            <div className="flex flex-wrap gap-6">
               <div className="flex items-center">
                 <span className="h-3 w-3 rounded-full bg-yellow-400 mr-2"></span>
                 <span className="text-sm text-gray-600">This Week</span>
-                <span className="ml-2 text-sm font-semibold">1.245</span>
+                <span className="ml-2 text-sm font-semibold">1,245</span>
               </div>
               <div className="flex items-center">
                 <span className="h-3 w-3 rounded-full bg-red-400 mr-2"></span>
                 <span className="text-sm text-gray-600">Last Week</span>
-                <span className="ml-2 text-sm font-semibold">1.356</span>
+                <span className="ml-2 text-sm font-semibold">1,356</span>
               </div>
             </div>
           </div>
 
-          <div className="relative w-full h-64 mt-14 -ml-4">
+          <div className="relative w-full h-72 mb-10">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={datalis}>
                 <XAxis dataKey="name" />
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
-                <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+                <Area type="monotone" dataKey="value" stroke="#6366F1" fill="#C7D2FE" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-col md:flex-row gap-6 justify-around items-center w-full mt-14">
-            <div className="w-full md:w-1/2 flex justify-center h-72">
+
+          <div className="flex flex-col lg:flex-row gap-10">
+            <div className="flex justify-center w-full lg:w-1/2">
               <PieChart width={300} height={300}>
                 <Pie
                   data={datas}
                   cx="50%"
                   cy="50%"
                   outerRadius={100}
-                  fill="#8884d8"
+                  fill="#6366F1"
                   dataKey="value"
                   label
                 />
                 <Tooltip />
               </PieChart>
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={perfData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis unit=" ms" />
-                <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
 
+            <div className="flex-grow">
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart
+                  data={perfData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis unit=" ms" />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#6366F1" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
-
   );
+
 
 }
 export default AdminDashboard;
