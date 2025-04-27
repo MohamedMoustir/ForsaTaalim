@@ -188,7 +188,7 @@ const ReservationPage = () => {
       {loading && <Spinner />}
       <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
       >
-        <DashboardNav id_={1} />
+        <DashboardNav id_={3} />
       </di>
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

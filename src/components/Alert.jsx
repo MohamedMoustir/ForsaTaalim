@@ -34,13 +34,13 @@ const Alert = ({ type = 'success', title, message, onClose, autoHideDuration = 5
   const colors = {
     success: {
       border: "border-green-500",
-      bg: "bg-green-50",
+      bg: "bg-green-200",
       icon: "text-green-500",
       shadow: "shadow-green-100"
     },
     error: {
       border: "border-red-500",
-      bg: "bg-red-50",
+      bg: "bg-red-100",
       icon: "text-red-500",
       shadow: "shadow-red-100"
     },

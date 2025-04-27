@@ -98,7 +98,7 @@ const profilesilePage = () => {
 
             <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
             >
-                <DashboardNav id_={1} />
+                <DashboardNav id_={6} />
             </di>
             <div className="p-4 lg:ml-4 flex-1">
                 <div className="bg-white rounded-lg shadow-sm mb-8 p-6 flex flex-col md:flex-row items-start md:items-center justify-between">
@@ -128,7 +128,7 @@ const profilesilePage = () => {
                             </div>
                             <div className="ml-4">
                                 <p className="text-gray-500 text-sm">Notation</p>
-                                <p className="text-2xl font-bold">{profiles.average_rating?.split(0, 3)}/5</p>
+                                <p className="text-2xl font-bold">{Number(profiles.average_rating).toFixed(0)}/5</p>
                             </div>
                         </div>
                     </div>

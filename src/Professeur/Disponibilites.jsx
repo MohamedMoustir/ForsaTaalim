@@ -342,8 +342,9 @@ function MyFullCalendar({ amount }) {
           </div>
         </div>
       )}
+
       {user.role == 'tuteur' && (
-        <div className="col-span-1 md:col-span-3 mt-2 absolute right-[13%] top-[3.5%]">
+        <div className="col-span-1 md:col-span-3 mt-2 absolute right-[13%] top-[5.3%]">
           <button
             type="button"
             onClick={() => setIsOpenTime(true)}
@@ -353,6 +354,7 @@ function MyFullCalendar({ amount }) {
           </button>
         </div>
       )}
+      
       {IsOpenTime && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full">
@@ -508,14 +510,14 @@ function MyFullCalendar({ amount }) {
         </div>
 
       )}
-     
-     <div className="lg:flex block lg:h-screen">
+
+      <div className="lg:flex block ">
         {user.role == 'tuteur' && (
 
-          <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 7 }}
+          <div className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 7 }}
           >
-            <DashboardNav id_={1} />
-          </di>
+            <DashboardNav id_={2} />
+          </div>
         )}
         {showAlert && (
           <Alert
@@ -525,7 +527,7 @@ function MyFullCalendar({ amount }) {
             onClose={() => setShowAlert(false)}
           />
         )}
-        <div className="w-full m-8 h-[10%]  cursor-pointer">
+        <div className="w-full m-8 p-4 bg-white rounded-2xl shadow-lg cursor-pointer h-full">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
@@ -536,9 +538,9 @@ function MyFullCalendar({ amount }) {
               info.el.style.backgroundColor = info.backgroundColor;
             }}
             displayEventTime={true}
-
           />
         </div>
+
       </div>
       {user.role === 'etudiant' && (
         <>
