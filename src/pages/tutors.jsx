@@ -28,7 +28,6 @@ const Tutors = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
     const [city, setcity] = useState([]);
 
-
     const fetchProfesseurs = async (page) => {
         const res = await axios.get(`${API_URL}/Professeur?page=${page}`);
         setprofileslength(res.data.AllProfile.total);
@@ -44,16 +43,16 @@ const Tutors = () => {
     }, [])
 
     const navigate = useNavigate();
-    useEffect(() => {
-        if (token) {
-            setUserAuth(true);
-        }
-        if (!user.role) {
-            // navigate("/login");
-        } else if (user && user.role === "tuteur") {
-            navigate("/login");
-        }
-    }, [token, user, navigate, currentPage]);
+    // useEffect(() => {
+    //     if (token) {
+    //         setUserAuth(true);
+    //     }
+    //     if (!user) {
+    //         navigate("/login");
+    //     } else if (user && user.role === "tuteur") {
+    //         navigate("/login");
+    //     }
+    // }, [token,user, navigate, currentPage]);
 
     useEffect(() => {
         fetchProfesseurs(currentPage);

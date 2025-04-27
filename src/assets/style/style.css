@@ -382,3 +382,101 @@ body {
 }
 
 
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+  40% { transform: translateX(-10px); }
+  60% { transform: translateX(-5px); }
+}
+
+.alert-enter {
+  animation: slideIn 0.3s ease-out forwards, fadeIn 0.3s ease-out forwards, bounce 0.8s ease 0.3s;
+}
+
+.alert-exit {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+.alert-container {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+
+
+  .loading-pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  
+  .typing-animation {
+    overflow: hidden;
+    border-right: 2px solid #f87171;
+    white-space: nowrap;
+    animation: typing 3s steps(30) infinite, blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    0%, 100% { width: 0 }
+    50%, 90% { width: 100% }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #f87171 }
+  }
+  
+  .fade-in-animation {
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.8; }
+  }
+  
+  .loading-progress-bar {
+    width: 0%;
+    animation: progress 3s ease-in-out infinite;
+  }
+  
+  @keyframes progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    70% { width: 76%; }
+    80% { width: 82%; }
+    90% { width: 90%; }
+    95% { width: 96%; }
+    100% { width: 100%; }
+  }

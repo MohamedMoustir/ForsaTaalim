@@ -221,7 +221,7 @@ const index = ({ profiles, loading, comment }) => {
                                                     <span className="font-bold">${prof.tarifHoraire}</span>
                                                     <span className="text-sm text-gray-600">/h</span>
                                                 </div>
-                                                <span className="text-green-500 text-xs font-medium">1er cours offert</span>
+                                                <span className="text-red-500 text-xs font-medium">1er cours offert</span>
                                             </div>
                                         </div>
                                     </div>

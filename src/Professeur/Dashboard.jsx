@@ -65,14 +65,12 @@ const Dashboard = () => {
     { date: "Payment Refuser", total: statistic['PaymentRefuser'] },
   ];
 
-  const toggleSidebar = () => {
-    setIsOpen(true);
-  };
+ 
   return (
     <div className="bg-gray-100" style={{ fontFamily: 'Open Sans' }}>
       {loading && <Spinner />}
       <div className="lg:flex block lg:h-screen">
-        <div className={`absolute lg:relative block lg:flex h-screen `}>
+        <div className={`absolute lg:relative block lg:flex lg:h-screen  hidden`}>
           <DashboardNav id_={1} />
         </div>
 
@@ -92,6 +90,7 @@ const Dashboard = () => {
                   <FontAwesomeIcon icon={faPlus} />
                   <span>New Report</span>
                 </button>
+
               </div>
             </div>
 
@@ -154,7 +153,7 @@ const Dashboard = () => {
                   <button className="text-sm text-gray-600 hover:text-indigo-600">Yearly</button>
                 </div>
               </div>
-              <div className="h-64 flex items-center justify-center py-10">
+              <div className="h-64 flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={userStats}>
                     <XAxis dataKey="date" />
@@ -165,6 +164,7 @@ const Dashboard = () => {
                 </ResponsiveContainer>
               </div>
             </div>
+
           </div>
         </div>
       </div>

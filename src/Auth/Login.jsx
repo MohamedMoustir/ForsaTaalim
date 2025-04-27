@@ -11,6 +11,10 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
+  const [isForgotpassword, setIsForgotpassword] = useState(false);
+  const [type, setType] = useState('');
+  const [titles, setTitles] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,28 +32,58 @@ const Login = () => {
       setPassword('');
 
       if (user) {
-        if (user.role === 'etudiant') {
+        if (user.role === 'etudiant' && user.isActive == true) {
           navigate('/');
-        } else if (user.role === 'tuteur') {
+        } else if (user.role === 'tuteur' && user.isActive == true) {
           navigate('/dashboard-tuteur');
-        } else if (user.role === 'admin') {
+        } else if (user.role === 'admin' && user.isActive == true) {
           navigate('/admindashboard');
         } else {
           navigate('/login');
+          setShowAlert(true);
+          setTitles('Erreur lors de la login!');
+          setType('error');
+          setMessage('Une erreur lors email or password, veuillez réessayer.');
+          setError('erorr login');
         }
         sessionStorage.setItem('alertShown', 'true');
       }
 
     } catch (err) {
-      setShowAlert(true)
+      setShowAlert(true);
+      setTitles('Erreur lors de la login!');
+      setType('error');
+      setMessage('Une erreur lors email or password, veuillez réessayer.');
       setError('erorr login');
       console.error(err);
     }
 
   };
+
+
   const google = (e) => {
     window.location.href = "http://127.0.0.1:8000/login/google";
   };
+
+  const handleForgetPassword = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+      if (response) {
+        setShowAlert(true);
+        setTitles('email réinitialisation avec succès!');
+        setType('success');
+        setMessage('Un email de réinitialisation de mot de passe a été envoyé.');
+        setIsForgotpassword(false)
+      }
+    } catch (error) {
+      console.error(error);
+      setShowAlert(true);
+      setTitles('Erreur lors de la survenue!');
+      setType('error');
+      setMessage('Une erreur est survenue, veuillez réessayer.');
+    }
+  };
+
   useEffect(() => {
     const alertState = sessionStorage.getItem('alertShown');
     if (alertState) {
@@ -95,9 +129,9 @@ const Login = () => {
     <>
       {showAlert && (
         <Alert
-          type="error"
-          title="Login Failed"
-          message="Email or password is incorrect."
+          type={type}
+          title={titles}
+          message={message}
           onClose={() => setShowAlert(false)}
         />
       )}
@@ -113,6 +147,37 @@ const Login = () => {
             <MainLayout id_={1} >
             </MainLayout >
             <div className="flex-grow flex items-center justify-center">
+              {isForgotpassword && (
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                  <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+                    <h2 className="text-2xl font-semibold mb-6 text-center">Réinitialiser le mot de passe</h2>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-3">Entrez votre email :</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 mb-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                    <div className="flex justify-between gap-4">
+                      <button
+                        onClick={handleForgetPassword}
+                        className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300 w-full"
+                      >
+                        Envoyer
+                      </button>
+                      <button
+                        onClick={() => setIsForgotpassword(false)}
+                        className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition duration-300 w-full"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="w-full max-w-md">
                 <h1 className="text-2xl font-bold mb-8 text-center lg:text-left">Sign in to your account</h1>
 
@@ -128,11 +193,11 @@ const Login = () => {
                   </div>
                   <div className='mb-8'>
                     <a
-                    onClick={() => navigate('/reset-password')}
-                    className="text-sm  text-red-500 hover:underline font-medium cursor-pointer transition duration-150  "
-                  >
-                    Forgot password?
-                  </a>
+                      onClick={() => setIsForgotpassword(true)}
+                      className="text-sm  text-red-500 hover:underline font-medium cursor-pointer transition duration-150  "
+                    >
+                      Forgot password?
+                    </a>
                   </div>
                   <button type="submit" className="flex items-center justify-center gap-2 bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-md transition">
                     Sign In

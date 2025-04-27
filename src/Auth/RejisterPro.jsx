@@ -5,7 +5,6 @@ import '../assets/js/index';
 import '../assets/js/main';
 import { useNavigate } from 'react-router-dom';
 import { API_URL, getToken, getUser } from '../utils/config';
-import "../assets/js/main"
 import Spinner from "../components/Spinner";
 const RejisterPro = () => {
     const [CategorieMatiere, setCategorieMatiere] = useState([]);
@@ -106,7 +105,7 @@ const RejisterPro = () => {
                     {/* <div data-step="7" className="step hidden w-[100%] h-0.5 bg-red-400 mt-1"></div> */}
                 </div>
             </header>
-            <form onSubmit={handleRejisterProfesseur} encType="multipart/form-data">
+            <form encType="multipart/form-data">
                 <div data-step="1"
                     className="step-content  flex-grow flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 py-12 gap-12 ">
                     <div className="w-full md:w-80 bg-red-50 rounded-3xl p-6">
@@ -400,8 +399,8 @@ const RejisterPro = () => {
                         <div className=" prev-btn flex items-center justify-between mt-12">
                             <div className="px-6 py-3 bg-gray-100 rounded-full hover:bg-gray-200 transition">Go
                                 back</div>
-                            <button type="submit"
-                                className="px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Next</button>
+                            <button type="submit" onClick={handleRejisterProfesseur}
+                                className="px-12 py-3 bg-red-400 text-white rounded-full hover:bg-red-500 transition">Rejister</button>
 
                         </div>
                     </div>

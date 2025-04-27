@@ -6,6 +6,7 @@ import MainLayout from '../components/MainLayout.jsX';
 import { API_URL, getToken, getUser } from '../utils/config';
 import { Sessions } from 'openai/resources/beta/realtime/sessions.mjs';
 import Alert from '../components/Alert';
+import Spinner from '../components/Spinner';
 
 const Rejister = () => {
   const [email, setEmail] = useState('');
@@ -32,6 +33,7 @@ const Rejister = () => {
     setLoading(true);
 
     try {
+      setLoading(true)
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
@@ -86,11 +88,7 @@ const Rejister = () => {
 
 
   if (loading && !data) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-400"></div>
-      </div>
-    );
+  <Spinner/>
   }
   return (
 
@@ -256,7 +254,7 @@ const Rejister = () => {
                       />
                     </div>
                     <div className="w-1/2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Photo</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">ecole</label>
                       <input value={ecole}
                         onChange={(e) => setEcole(e.target.value)}
                         type="text"

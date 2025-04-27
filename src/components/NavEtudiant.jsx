@@ -5,16 +5,6 @@ import { useNavigate } from "react-router-dom";
 const NavEtudiant = ({ id_ }) => {
     const navigate = useNavigate()
 
-
-    function PgeHome() {
-    }
-    function Mespaiements() {
-
-    }
-    function profile() {
-
-    }
-
     return (
         <>
             <nav className="bg-black py-3 shadow-md" style={{ fontFamily: 'Open Sans' }}>

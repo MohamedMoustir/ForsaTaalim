@@ -8,10 +8,12 @@ import { API_URL, getToken, getUser } from '../utils/config';
 import {
     faComments ,
     faReceipt,
-    faTimes
+    faTimes,
+    faChevronDown ,
+    faSearch ,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import DonePayment from "./DonePayment"
 const Mespaiements = () => {
     const token = getToken();
     const user = getUser();
@@ -44,18 +46,7 @@ const Mespaiements = () => {
     };
 
     const navigate = useNavigate();
-    useEffect(() => {
-
-        if (token) {
-            setUserAuth(true);
-        }
-        if (!user.role) {
-            // navigate("/login");
-        } else if (user && user.role === "tuteur") {
-            navigate("/login");
-        }
-
-    }, [token, user, navigate, currentPage]);
+  
 
     useEffect(() => {
         fetchPayments(currentPage);
@@ -96,182 +87,193 @@ const Mespaiements = () => {
     }
     return (
         <>
-            {loading && (
-                <Spinner />
-            )}
-            <NavEtudiant id_={4} ></NavEtudiant>
-            <div className='m-24 mb-0'>
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-                    <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            {loading && <Spinner />}
+            
+            <NavEtudiant id_={4} />
+            
+            <div className="px-4 md:px-8 lg:px-16 xl:px-24 py-6 md:py-8 max-w-full">
+                <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 md:p-6 mb-6">
+                    <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 md:items-center md:justify-between">
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <div className="relative">
-                                <select className="appearance-none bg-gray-50 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
+                            <div className="relative w-full sm:w-auto">
+                                <select className="appearance-none w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 md:py-3 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
                                     <option>Tous les paiements</option>
                                     <option>Paiements reçus</option>
                                     <option>Paiements envoyés</option>
                                 </select>
                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i className="fas fa-chevron-down text-xs"></i>
+                                    <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                                 </div>
                             </div>
-                            <div className="relative">
-                                <select className="appearance-none bg-gray-50 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
+                            
+                            <div className="relative w-full sm:w-auto">
+                                <select className="appearance-none w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 md:py-3 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
                                     <option>Tous les statuts</option>
                                     <option>Complété</option>
                                     <option>En attente</option>
                                     <option>Annulé</option>
                                 </select>
                                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i className="fas fa-chevron-down text-xs"></i>
+                                    <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                                 </div>
                             </div>
                         </div>
-                        <div className="relative w-full md:w-auto">
+                        
+                        <div className="relative w-full md:w-64">
                             <input
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 type="text"
                                 placeholder="Rechercher..."
-                                className="w-full md:w-64 bg-gray-50 border border-gray-300 text-gray-700 py-2 px-4 pl-10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+                                className="w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 md:py-3 px-4 pl-10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
                             />
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i className="fas fa-search text-gray-400"></i>
+                                <FontAwesomeIcon icon={faSearch} className="text-gray-400" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+                
+                <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden mb-6">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                    <th className="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            {
-                                Mespaiements.filter((item) => {
-                                    console.log(item);
-
-                                    return search.toLowerCase() === ''
-                                        ? item
-                                        : item.professeur.toLowerCase().includes(search.toLowerCase());
-
-                                })
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {Mespaiements
+                                    .filter(item => {
+                                        return search.toLowerCase() === '' ||
+                                            item.professeur.toLowerCase().includes(search.toLowerCase());
+                                    })
                                     .map((prof, index) => (
-
-                                        <tbody className="bg-white divide-y divide-gray-200">
-                                            <tr>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{prof.updated_at}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center">
-                                                        <img className="h-10 w-10 rounded-full" src={`http://127.0.0.1:8000/storage/${prof?.photo}`} alt="Student" />
-                                                        <div className="ml-4">
-                                                            <div className="text-sm font-medium text-gray-900">Cours de {prof.nom}</div>
-                                                            <div className="text-sm text-gray-500">avec {prof.professeur} </div>
-                                                        </div>
+                                        <tr key={index}>
+                                            <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {prof.updated_at}
+                                            </td>
+                                            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center">
+                                                    <div className="h-10 w-10 md:h-12 md:w-12 flex-shrink-0">
+                                                        <img 
+                                                            className="h-full w-full rounded-full object-cover" 
+                                                            src={`http://127.0.0.1:8000/storage/${prof?.photo}`} 
+                                                            alt="Instructor" 
+                                                        />
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-green-600">{prof.tarifHoraire}€</div>
-                                                    <div className="text-xs text-gray-500">1 heure</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    {prof.status === 'approved' && (
-                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                            Complété
-                                                        </span>
-                                                    )}
-                                                    {prof.status === 'pending' && (
-                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                            En attente
-                                                        </span>
-                                                    )}
-                                                    {prof.status === 'refuser' && (
-                                                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                            Refusé
-                                                        </span>
-                                                    )}
-                                                </td>
-
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <button onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)} className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                                    <div className="ml-4">
+                                                        <div className="text-sm font-medium text-gray-900">Cours de {prof.nom}</div>
+                                                        <div className="text-sm text-gray-500">avec {prof.professeur}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm font-medium text-green-600">{prof.tarifHoraire}€</div>
+                                                <div className="text-xs text-gray-500">1 heure</div>
+                                            </td>
+                                            <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                                                {prof.status === 'approved' && (
+                                                    <span className="px-2 md:px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                        Complété
+                                                    </span>
+                                                )}
+                                                {prof.status === 'pending' && (
+                                                    <span className="px-2 md:px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                        En attente
+                                                    </span>
+                                                )}
+                                                {prof.status === 'refuser' && (
+                                                    <span className="px-2 md:px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                                        Refusé
+                                                    </span>
+                                                )}
+                                            </td>
+                                            <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <button 
+                                                        onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)} 
+                                                        className="text-indigo-600 hover:text-indigo-900"
+                                                        aria-label="View receipt"
+                                                    >
                                                         <FontAwesomeIcon icon={faReceipt} />
                                                     </button>
-                                                    <button onClick={() => handleDelete(prof.reservation_id)} className="text-gray-600 hover:text-gray-900 mr-3">
-                                                        <FontAwesomeIcon icon={faTimes} className='text-red-400' />
+                                                    <button 
+                                                        onClick={() => handleDelete(prof.reservation_id)} 
+                                                        className="text-red-400 hover:text-red-600"
+                                                        aria-label="Delete"
+                                                    >
+                                                        <FontAwesomeIcon icon={faTimes} />
                                                     </button>
                                                     <button
                                                         onClick={() => handleChat(prof.user_id, prof.chat_user_id)}
-                                                        className='inline-flex items-center px-4 py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200  transition-colors'
+                                                        className="inline-flex items-center px-2 md:px-4 py-1 md:py-1.5 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
                                                     >
-                                                        <FontAwesomeIcon icon={faComments} className="mr-3" /> Chat
+                                                        <FontAwesomeIcon icon={faComments} className="mr-1 md:mr-2" /> 
+                                                        <span className="hidden sm:inline">Chat</span>
                                                     </button>
-                                                </td>
-
-                                            </tr>
-                                        </tbody>
-
-
+                                                </div>
+                                            </td>
+                                        </tr>
                                     ))
-                            }
+                                }
+                            </tbody>
                         </table>
-
                     </div>
-
                 </div>
-                {
-                    <nav aria-label="Page navigation example">
-                        <ul className="flex items-center -space-x-px h-10 text-base justify-center mt-12">
-                            <li>
+                
+                <nav aria-label="Pagination" className="mt-6 md:mt-12">
+                    <ul className="flex items-center justify-center flex-wrap gap-1">
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700"
+                                disabled={currentPage === 1}
+                            >
+                                <span className="sr-only">Previous</span>
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
+                                </svg>
+                            </button>
+                        </li>
+
+                        {pages.map((pageIndex) => (
+                            <li key={pageIndex}>
                                 <button
-                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                    className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                                >
-                                    <span className="sr-only">Previous</span>
-                                    <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
-                                    </svg>
-                                </button>
-                            </li>
-
-                            {pages.map((pageIndex) => (
-
-                                <li key={pageIndex}>
-                                    <button
-                                        onClick={() => setCurrentPage(pageIndex + 1)}
-                                        className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 ${currentPage === pageIndex + 1
+                                    onClick={() => setCurrentPage(pageIndex + 1)}
+                                    className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 leading-tight border border-gray-300 ${
+                                        currentPage === pageIndex + 1
                                             ? 'bg-blue-600 text-white'
                                             : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'
-                                            }`}
-                                    >
-                                        {pageIndex + 1}
-                                    </button>
-                                </li>
-                            ))}
-
-                            <li>
-                                <button
-                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
-                                    className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                                    }`}
                                 >
-                                    <span className="sr-only">Next</span>
-                                    <svg className="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
-                                    </svg>
+                                    {pageIndex + 1}
                                 </button>
                             </li>
-                        </ul>
-                    </nav>
+                        ))}
 
-                }
+                        <li>
+                            <button
+                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pages.length))}
+                                className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700"
+                                disabled={currentPage === pages.length}
+                            >
+                                <span className="sr-only">Next</span>
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 9l4-4L1 1" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-
         </>
     );
+    
 
 };
 

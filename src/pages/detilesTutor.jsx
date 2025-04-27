@@ -50,8 +50,8 @@ const detiles = () => {
         const profile = response.data.Profile;
         console.log('hada', profile);
         setDetilesprofiles(profile);
-        await fetchComment(profile.profe_id);
-        await fetchAnnonces(profile.profe_id);
+         fetchComment(profile.profe_id);
+         fetchAnnonces(profile.profe_id);
         setLoading(false)
     };
     const fetchComment = async (id_) => {
@@ -150,7 +150,7 @@ const detiles = () => {
             if (response.status === 200) {
                 setShowAlert(true);
                 setTitles('Commentaire supprimée avec succès!');
-                setType('error');
+                setType('success    ');
                 setMessage('Your Commentaire  supprimée avec successfully.');
                 setComment((prev) => prev.filter((a) => a.id !== comment_id));
             } else {
@@ -184,15 +184,8 @@ const detiles = () => {
     }
     useEffect(() => {
         fetchProfesseursById();
-        if (token) {
-            setUserAuth(true);
-        }
-        if (!token) {
-            navigate("/login");
-        } else if (user && user.role === "tuteur") {
-            navigate("/login");
-        }
-    }, [id]);
+    }, []);
+
     const handleRegister = ($id_annonce) => {
         if ($id_annonce) {
             navigate(`/detileAnnonce/${$id_annonce}`);

@@ -9,7 +9,7 @@ import { API_URL, getToken, getUser } from '../utils/config';
 import DashboardNav from "../components/dashboardNav";
 import NavEtudiant from "../components/NavEtudiant";
 
-function App() {
+function Chat() {
   const { id } = useParams()
   const { chat_user_id } = useParams()
   const [username, setUsername] = useState('mohamed');
@@ -35,8 +35,6 @@ function App() {
         setContacts(response.data.contacts);
       })
   }
-
-
 
   useEffect(() => {
     handleContacts();
@@ -111,13 +109,15 @@ function App() {
         <NavEtudiant id_={3} />
       )}
       <div className="bg-gray-100 h-screen flex">
+      {user.role == 'tuteur' && (
         
-        {user.role == 'tuteur' && (
-          <DashboardNav id_={4} />
-        )}
+      <div className={`absolute lg:relative block lg:flex lg:h-screen  hidden`}>
+          <DashboardNav id_={1} />
+        </div>
+      )}
 
-        <div className="flex  mt-8 mb-8 w-full m-8 bg-white border border-gray-200 shadow-lg">
-          <div className="w-80 border-r  border-gray-200 flex flex-col">
+        <div className=" lg:flex  mt-8 mb-8 w-full m-8 lg:bg-white border border-gray-200 shadow-lg">
+          <div className="w-80 border-r border-gray-200 flex flex-col">
             <div className="p-4 border-b border-gray-200">
               <h1 className="text-lg font-bold text-blue-900">Messages</h1>
               <div className="mt-4 relative">
@@ -217,7 +217,7 @@ function App() {
               </button>
             </div>
           </div>
-          <div className="flex-grow flex flex-col">
+          <div className="flex-grow h-screen bg-white flex flex-col">
             <div className="px-4 py-3 flex items-center border-b border-gray-200">
               <img src={`http://127.0.0.1:8000/storage/${image}`} className="w-10 h-10 rounded-full bg-purple-300 flex-shrink-0"></img>
               <div className="ml-3">
@@ -326,4 +326,4 @@ function App() {
     </>
   );
 }
-export default App;
+export default Chat;

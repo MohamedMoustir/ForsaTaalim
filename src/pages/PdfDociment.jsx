@@ -17,6 +17,7 @@ function PdfDociment() {
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    
     useEffect(() => {
         const fetchPayments = async (id) => {
             const response = await axios.get(`${API_URL}/Reservation/${id}`, {

@@ -132,6 +132,7 @@ function MyFullCalendar({ amount }) {
         .then((response) => {
           setIsOpen(false)
           console.log(response.data);
+          // sprit operoter
           setEvents([
             ...events,
             { title: titleEvante, date: evantDate, color: eventColor },

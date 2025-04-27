@@ -51,7 +51,9 @@ const  user = getUser();
         <span>Logout</span>
         </a>
       </div>
+      
     </div>
+    
   );
 
 }

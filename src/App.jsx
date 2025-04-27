@@ -33,6 +33,8 @@ import Teachers from "./Admin/Teachers.jsx"
 import Categories from "./Admin/Categories.jsx";
 import ResetPassword from "./Auth/ResetPassword.jsx";
 import VideoCall from "./components/VideoCall.jsx";
+import Error from "./components/404.jsx"
+import AdminPayments from "./Admin/payments.jsx";
 function App() {
 
   const [profiles, setprofiles] = useState([]);
@@ -53,6 +55,7 @@ function App() {
           'Content-Type': 'application/json',
         }
       });
+      
       if (response.data) {
         setLoading(false)
       }
@@ -118,6 +121,10 @@ function App() {
         <Route path="/admin/teachers" element={<Teachers />} />
         <Route path="/admin/categories" element={<Categories />} />
         <Route path="/VideoCall/:session" element={<VideoCall />} />
+        <Route path="*" element={<Error />} />
+        <Route path="/admin/Payments" element={<AdminPayments />} />
+
+
 
 
 

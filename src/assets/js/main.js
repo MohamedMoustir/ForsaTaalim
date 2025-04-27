@@ -43,12 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.next-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (currentStep < totalSteps) {
-                if (currentStep == 7) {
-                    updateStep(currentStep + 1);
-                }
-                if (currentStep == 6) {
-                    updateStep(currentStep + 1);
-                }
                 updateStep(currentStep + 1);
             }
         });

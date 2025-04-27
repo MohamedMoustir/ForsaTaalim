@@ -8,12 +8,16 @@ import { Nav } from '../components/Nav';
 
 
 
+
 const BookingSuccess = () => {
+  
     const navigate = useNavigate();
     const ViewBookings = () => {
         navigate('/Mespaiements');
     }
-
+    const Download = () => {
+      navigate('/Mespaiements');
+  }
     return (
         <>
           <Nav />
@@ -32,7 +36,7 @@ const BookingSuccess = () => {
                   Your session with Davayne has been scheduled.
                 </p>
     
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div   onClick={() => navigate(`/pdfDociment/${prof.reservation_id}`)}  className="flex flex-col sm:flex-row justify-center gap-4">
                   <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
                     Download PDF
                   </button>

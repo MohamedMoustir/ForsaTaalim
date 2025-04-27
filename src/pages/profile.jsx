@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import NavEtudiant from "../components/NavEtudiant";
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
-
 function Content() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [userData, setUserData] = useState([]);
@@ -200,7 +199,7 @@ function Content() {
                                     className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
                                 />
                             </div>
-                            <div>
+                            1er cours offert     <div>
                                 <label className="block text-sm text-gray-600 mb-1">Prénom</label>
                                 <input
                                     type="text"
@@ -424,57 +423,62 @@ function Content() {
                             </div>
                         </div>
                     )}
-                    <div className="space-y-6">
-                        <div className="bg-white rounded-lg shadow-sm p-6">
-                            <div className="pb-3 border-b mb-4">
-                                <h3 className="text-base font-medium flex items-center">
-                                    <div className="w-4 h-4 mr-2" />
-                                    Pièce d'identité
-                                </h3>
-                            </div>
-                            <div className="bg-gray-50 h-32 rounded-lg flex items-center justify-center mb-4 border-2 border-dashed border-gray-200">
-                                <div className="text-gray-400 text-center">
-                                    <div className="w-12 h-12 mx-auto mb-2" />
-                                    <span className="text-sm">Déposer votre document ici</span>
-                                </div>
-                            </div>
-                            <button className="w-full bg-red-400 hover:bg-red-500 text-white py-2 rounded-md transition-colors mb-4">
-                                Télécharger
-                            </button>
-                            <div className="space-y-4 mt-4">
-                                <div>
-                                    <label className="block text-sm text-gray-600 mb-1">Skype</label>
-                                    <input
-                                        type="text"
-                                        name="skype"
-                                        value={userData.skype || ""}
-                                        onChange={handleInputChange}
-                                        placeholder="Skype ID"
-                                        className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm text-gray-600 mb-1">Google Hangout</label>
-                                    <input
-                                        type="text"
-                                        name="google_hangout"
-                                        value={userData.google_hangout || ""}
-                                        onChange={handleInputChange}
-                                        placeholder="Google Hangout ID"
-                                        className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
-                                    />
-                                </div>
-                                <button
-                                    onClick={handleSubmit}
+                 <div className="space-y-6">
+  <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="pb-3 border-b mb-4">
+      <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+        <div className="w-4 h-4 mr-2" />
+        Pièce d'identité
+      </h3>
+    </div>
+    
+    <div className="bg-gray-50 h-32 rounded-lg flex items-center justify-center mb-4 border-2 border-dashed border-gray-300">
+      <div className="text-gray-500 text-center">
+        <div className="w-12 h-12 mx-auto mb-2">
+        </div>
+        <span className="text-sm">Déposer votre document ici</span>
+      </div>
+    </div>
 
-                                    className={`w-full py-2 rounded-md transition-colors ${loading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-redhandleSubmit-400 hover:bg-red-500 text-white"
-                                        }`}
-                                >
-                                    {loading ? "Chargement..." : "Mettre à jour mon profil"}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors mb-4">
+      Télécharger
+    </button>
+
+    <div className="space-y-4 mt-4">
+      <div>
+        <label className="block text-sm text-gray-600 mb-1">Skype</label>
+        <input
+          type="text"
+          name="skype"
+          value={userData.skype || ""}
+          onChange={handleInputChange}
+          placeholder="Skype ID"
+          className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        />
+      </div>
+      
+      <div>
+        <label className="block text-sm text-gray-600 mb-1">Google Hangout</label>
+        <input
+          type="text"
+          name="google_hangout"
+          value={userData.google_hangout || ""}
+          onChange={handleInputChange}
+          placeholder="Google Hangout ID"
+          className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+        />
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        className={`w-full py-2 rounded-md transition-colors ${loading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-red-500 hover:bg-red-600 text-white"}`}
+      >
+        {loading ? "Chargement..." : "Mettre à jour mon profil"}
+      </button>
+    </div>
+  </div>
+</div>
+
                 </div>
             </div>
         </div>
