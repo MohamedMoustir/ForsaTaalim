@@ -23,6 +23,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 const ReservationPage = () => {
   const [reservations, setReservations] = useState([]);
@@ -34,7 +35,10 @@ const ReservationPage = () => {
   const user = getUser();
   const [showModal, setShowModal] = useState(false);
   const [user__id, setUserId] = useState(null);
-
+  const [showAlert, setShowAlert] = useState(false);
+  const [type, setType] = useState('');
+  const [titles, setTitles] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -69,9 +73,6 @@ const ReservationPage = () => {
           Authorization: `bearer ${token}`
         }
       });
-      console.log(status, email);
-
-
       HandleSendNotification(user_id, status);
 
       if (response.data) {
@@ -82,6 +83,17 @@ const ReservationPage = () => {
           setUserId(id);
           setShowModal(true)
           handleSendEmail(status, email, id);
+          setShowAlert(true);
+          setTitles('reservation update avec successfully');
+          setType('success');
+          setMessage('reservation update to approved  avec successfully !');
+          setError('erorr Session');
+        } else {
+          setShowAlert(true);
+          setTitles('reservation update avec successfully');
+          setType('success');
+          setMessage('reservation update to refuser  avec successfully !');
+          setError('erorr Session');
         }
 
       }
@@ -116,13 +128,24 @@ const ReservationPage = () => {
             Authorization: `bearer ${token}`
           }
         });
+
       }, 2000);
 
+      setShowAlert(true);
+      setTitles('email  sent successfully!');
+      setType('success');
+      setMessage('Une  email sent  Session');
+      setError('erorr Session');
 
     } catch (err) {
-      setError('Failed to send email');
       setLoading(false);
       console.error('Error fetching reservations:', err);
+      setShowAlert(true);
+      setTitles('Failed to send email!');
+      setType('error');
+      setMessage('Error fetching reservations');
+      setError('erorr Session');
+
     }
 
   }
@@ -168,28 +191,38 @@ const ReservationPage = () => {
       });
       if (response.data) {
         setShowModal(false)
-        alert('Session created and email sent successfully!');
+        setShowAlert(true);
+        setTitles('Session created  sent successfully!');
+        setType('success');
+        setMessage('Une  created  Session, veuillez réessayer.');
+        setError('erorr Session');
+      } else {
+        setShowAlert(true);
+        setTitles('Session not created  sent successfully!');
+        setType('error');
+        setMessage('Une Error in created  Session, veuillez réessayer.');
+        setError('erorr Session');
       }
     }
   }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="flex" style={{ fontFamily: 'Open Sans' }}>
       {loading && <Spinner />}
-      <di className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
+      <div className={`absolute lg:relative block  lg:flex `} style={{ zIndex: 1 }}
       >
         <DashboardNav id_={3} />
-      </di>
+      </div>
+      {showAlert && (
+        <Alert
+          type={type}
+          title={titles}
+          message={message}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">

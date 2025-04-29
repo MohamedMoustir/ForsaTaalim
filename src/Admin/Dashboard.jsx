@@ -29,6 +29,7 @@ const AdminDashboard = () => {
   const [datalist, setdatalist] = useState("");
   const [activite, setActivite] = useState("");
   const [perfData, setPerfData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 
   const reportsForsataalim = async () => {
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
       console.log(data);
 
       setdatalist(data);
-
+     setLoading(false)
     } catch (error) {
       console.error(error);
     }
@@ -59,6 +60,7 @@ const AdminDashboard = () => {
       const data = response.data;
       console.log(data);
       setActivite(data);
+      setLoading(false)
 
     } catch (error) {
       console.error(error);
@@ -70,7 +72,7 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/performance`)
+    fetch(`${API_URL}/performance`)
       .then((res) => res.json())
       .then((data) => {
         setPerfData([

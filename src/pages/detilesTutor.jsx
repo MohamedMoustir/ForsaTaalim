@@ -51,7 +51,7 @@ const detiles = () => {
         console.log('hada', profile);
         setDetilesprofiles(profile);
          fetchComment(profile.profe_id);
-         fetchAnnonces(profile.profe_id);
+         await fetchAnnonces(profile.profe_id);
         setLoading(false)
     };
     const fetchComment = async (id_) => {
@@ -103,6 +103,8 @@ const detiles = () => {
                 });
                 if (response) {
                     setPopUp(false);
+                    setContent('')
+                    setRating('')
                 }
             } else {
 
@@ -121,6 +123,8 @@ const detiles = () => {
                     setTitles('Commentaire ajouté avec succès!');
                     setType('success');
                     setMessage('Your Commentaire  has been ajouté successfully.');
+                    setContent('')
+                    setRating('')
                 } else {
                     setShowAlert(true);
                     setTitles('Erreur lors de l\'ajout!');
@@ -150,7 +154,7 @@ const detiles = () => {
             if (response.status === 200) {
                 setShowAlert(true);
                 setTitles('Commentaire supprimée avec succès!');
-                setType('success    ');
+                setType('success');
                 setMessage('Your Commentaire  supprimée avec successfully.');
                 setComment((prev) => prev.filter((a) => a.id !== comment_id));
             } else {

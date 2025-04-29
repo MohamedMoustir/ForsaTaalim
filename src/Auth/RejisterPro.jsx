@@ -84,7 +84,7 @@ const RejisterPro = () => {
                 console.error("Error fetching city", error);
             });
 
-    }, [token, navigate]);
+    }, []);
 
 
     return (

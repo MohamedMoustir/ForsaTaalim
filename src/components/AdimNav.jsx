@@ -38,9 +38,9 @@ const  user = getUser();
           <i className="fas fa-chalkboard-teacher mr-3"></i>
           <span>Teachers</span>
         </a>
-        <a href="#" className={`cursor-pointer nav-link flex items-center px-4 py-3 text-white mb-2 ${id_ == 4 ? 'active-link':''}`}>
+        <a onClick={() => navigate('/admin/Payments')} className={`cursor-pointer nav-link flex items-center px-4 py-3 text-white mb-2 ${id_ == 4 ? 'active-link':''}`}>
           <i className="fas fa-calendar-alt mr-3"></i>
-          <span>Event</span>
+          <span>Payments</span>
         </a>
         <a onClick={() => navigate('/admin/categories')} className={`cursor-pointer nav-link flex items-center px-4 py-3 text-white mb-2 ${id_ == 5 ? 'active-link':''}`}>
         <i className="fas fa-tags mr-3"></i>

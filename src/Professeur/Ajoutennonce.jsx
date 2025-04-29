@@ -81,6 +81,9 @@ const Dashboard = () => {
                     setMessage('Votre Annonce a mise à jour avec succès.')
                     setSelectedAnnonce(null);
                     setOpenPopUp(false);
+                    setTitle('');
+                    setDescription('')
+                    setSubjects('')
                 } else {
 
                     const response = await axios.post(`${API_URL}/announcment`, formData, {
@@ -95,6 +98,9 @@ const Dashboard = () => {
                     setTitle('Annonce ajoute avec succès !')
                     setType('success')
                     setMessage('Votre Annonce a ajoute avec succès.')
+                    setTitle('');
+                    setDescription('')
+                    setSubjects('')
                 }
 
             } catch (error) {

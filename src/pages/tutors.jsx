@@ -43,16 +43,13 @@ const Tutors = () => {
     }, [])
 
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     if (token) {
-    //         setUserAuth(true);
-    //     }
-    //     if (!user) {
-    //         navigate("/login");
-    //     } else if (user && user.role === "tuteur") {
-    //         navigate("/login");
-    //     }
-    // }, [token,user, navigate, currentPage]);
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+        } else if (user && user.role === "tuteur") {
+            navigate("/login");
+        }
+    }, []);
 
     useEffect(() => {
         fetchProfesseurs(currentPage);
@@ -233,7 +230,7 @@ const Tutors = () => {
                                         <span className="ml-4 text-blue-600 font-medium">Ambassadeur</span>
                                     </div>
 
-                                    <p className="text-gray-600 text-sm mb-4">{prof.biographie}</p>
+                                    <p className="text-gray-600 text-sm mb-4">{prof.biographie.slice(0,70)} ...</p>
 
                                     <div className="flex justify-between items-center">
                                         <span className="font-semibold text-gray-900">${prof.tarifHoraire}/h</span>

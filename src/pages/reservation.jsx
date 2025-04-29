@@ -5,6 +5,7 @@ import Disponibilites from "../Professeur/Disponibilites"
 import axios from 'axios';
 import { API_URL, getToken, getUser } from '../utils/config';
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 function ReservationTutors() {
 
@@ -15,7 +16,11 @@ function ReservationTutors() {
     const { id } = useParams()
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-
+    const [showAlert, setShowAlert] = useState(false);
+    const [type, setType] = useState('');
+    const [titles, setTitles] = useState('');
+    const [message, setMessage] = useState('');
+    
     const fetchProfesseurs = async (tutor_id) => {
         axios.get(`${API_URL}/Professeur/${tutor_id}`, {
             headers: {
@@ -25,7 +30,7 @@ function ReservationTutors() {
         })
             .then((response) => {
                 setDetilesprofiles(response.data.Profile);
-                console.log('ddd',response.data);
+                console.log('ddd', response.data);
                 setLoading(false)
             })
     };
@@ -36,7 +41,14 @@ function ReservationTutors() {
     return (
         <>
             {loading && <Spinner />}
-
+            {showAlert && (
+                <Alert
+                    type={type}
+                    title={titles}
+                    message={message}
+                    onClose={() => setShowAlert(false)}
+                />
+            )}
             <MainLayout>
                 <div className="min-h-screen bg-gray-50 py-12">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

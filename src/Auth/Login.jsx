@@ -23,13 +23,18 @@ const Login = () => {
         email: email,
         password: password
       });
-      const token = response.data.token;
-      const user = response.data.user;
-      sessionStorage.setItem('token', token);
-      sessionStorage.setItem('user', JSON.stringify(user));
 
-      setEmail('');
-      setPassword('');
+      
+        const token = response.data.token;
+        const user = response.data.user;
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('user', JSON.stringify(user));
+        setEmail('');
+        setPassword('');
+      
+
+
+  
 
       if (user) {
         if (user.role === 'etudiant' && user.isActive == true) {
@@ -45,6 +50,7 @@ const Login = () => {
           setType('error');
           setMessage('Une erreur lors email or password, veuillez réessayer.');
           setError('erorr login');
+
         }
         sessionStorage.setItem('alertShown', 'true');
       }

@@ -214,7 +214,7 @@ const index = ({ profiles, loading, comment }) => {
                                                 <span className="ml-4 text-blue-500 text-xs font-semibold">Ambassador</span>
                                             </div>
 
-                                            <p className="text-gray-700 text-sm mb-4">{prof.biographie}</p>
+                                            <p className="text-gray-700 text-sm mb-4">{prof.biographie.slice(0,70)} ...</p>
 
                                             <div className="flex items-center justify-between">
                                                 <div className="text-gray-900">

@@ -62,7 +62,7 @@ const Students = () => {
                 setStudent(student.map(res =>
                     res.id === showMenu ? { ...res, role: role } : res
                 ));
-
+                setLoading(false);
                 setShowAlert(true);
                 setTitles('user update avec succès!');
                 setType('success');

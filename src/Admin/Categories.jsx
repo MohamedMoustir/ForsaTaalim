@@ -4,6 +4,7 @@ import axios from "axios";
 import { API_URL, getToken } from "../utils/config";
 import { useState } from "react";
 import Alert from "../components/Alert";
+import Spinner from "../components/Spinner";
 
 const Categories = () => {
     const token = getToken();
@@ -150,7 +151,7 @@ const Categories = () => {
             <aside className="w-full md:w-64 bg-white shadow-md">
                 <AdminNav id_={5} />
             </aside>
-
+            {loading && <Spinner />}
             <main className="flex-1 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h1 className="text-2xl font-bold text-gray-800">Gestion des Catégories</h1>

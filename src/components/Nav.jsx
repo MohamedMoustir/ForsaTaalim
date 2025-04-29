@@ -135,7 +135,11 @@ export const Nav = ({ id_ }) => {
       channel.unsubscribe();
     };
   }, [notificationCount])
-
+  const isUserActive = !isUserAuth ||  user?.isActive == false;
+  const isUserVerified = isUserAuth || user?.isActive === true;
+  console.log(isUserVerified ,isUserActive);
+  
+  
   return (
     <nav className="navbar  text-white " style={{ fontFamily: 'Open Sans' }}>
       {showAlert && (
@@ -146,7 +150,8 @@ export const Nav = ({ id_ }) => {
           onClose={() => setShowAlert(false)}
         />
       )}
-      {!isUserAuth && (
+
+      { isUserActive &&(
         <div className="px-6 py-4 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto space-y-4 md:space-y-0">
           <div className="text-red-400 text-3xl font-bold tracking-tight drop-shadow-sm">
             ForsaTaalim
@@ -177,7 +182,7 @@ export const Nav = ({ id_ }) => {
 
       )}
 
-      {isUserAuth && (
+      {isUserVerified && (
         <div className="px-6 py-4 flex justify-between items-center max-w-7xl mx-auto relative">
           <div className="text-3xl font-bold tracking-tight text-red-400 drop-shadow-sm">
             ForsaTaalim

@@ -42,10 +42,7 @@ function MyFullCalendar({ amount }) {
   const [selectedTimes, setSelectedTime] = useState([]);
   const [IsOpenTime, setIsOpenTime] = useState(false);
   const [availableTime, setAvailable_times] = useState([]);
-
-
-  console.log(events);
-
+  const [isEvantRed, setIsEvantRed] = useState(false);
 
   const availableTimes = [
     { time: '08:00 AM' },
@@ -59,8 +56,6 @@ function MyFullCalendar({ amount }) {
     { time: '04:00 PM' },
     { time: '05:00 PM' },
   ];
-
-
   const handleGetdata = async (e) => {
     try {
       axios.get(`${API_URL}/disponibilite/${id}`, {
@@ -150,47 +145,80 @@ function MyFullCalendar({ amount }) {
     }
 
   }
-  const handleDateClick = (arg) => {
-    if (user.role === 'tuteur') {
-      let filteredEvents = [];
-      const currentDate = new Date();
-      const formattedDate = currentDate.toISOString().slice(0, 10);
+  // const handleDateClick = (arg) => {
+  //   if (user.role === 'tuteur') {
+  //     let filteredEvents = [];
+  //     const currentDate = new Date();
+  //     const formattedDate = currentDate.toISOString().slice(0, 10);
+  //     if (formattedDate > arg.dateStr) {
+  //       setShowModal(true);
+  //     } else {
+  //       setIsOpen(true)
+  //       setEvanteDte(arg.dateStr);
+  //     }
 
+  //   } else {
+
+  //     events.filter((item) => {
+  //       const dateTime = item.date;
+  //       const dateOnly = dateTime.split(' ')[0];
+  //       if (item.color === 'red' && arg.dateStr === dateOnly) {
+  //         setIsOpenPoupupDate(false);
+  //         setIsEvantRed(true);
+  //       }
+
+  //       let filteredEvents = [];
+  //       const currentDate = new Date();
+  //       const formattedDate = currentDate.toISOString().slice(0, 10);
+
+  //       if (formattedDate > arg.dateStr) {
+  //         setShowModal(true);
+  //       } else {
+  //         setGetDateReserve(arg.dateStr);
+  //         if (item.color === 'red' && arg.dateStr === dateOnly) {
+  //           setIsOpenPoupupDate(false)
+  //         } else {
+  //           setIsOpenPoupupDate(true)
+  //         }
+  //       }
+  //     }
+  //     );
+  //   }
+
+  // };
+
+  const handleDateClick = (arg) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().slice(0, 10);
+
+    if (user.role === 'tuteur') {
       if (formattedDate > arg.dateStr) {
         setShowModal(true);
       } else {
-
-        setIsOpen(true)
+        setIsOpen(true);
         setEvanteDte(arg.dateStr);
       }
-
     } else {
-      const formatDate = (date) => new Date(date).toISOString().slice(0, 10);
-      let filtered = events.filter((item) => {
-        formatDate(item.date) === formatDate(arg.dateStr);
-        if (formatDate(item.id) === formatDate(arg.dateStr)) {
-          alert();
+      const clickedDate = arg.dateStr;
+      const eventOnClickedDate = events.find((item) => {
+        const dateOnly = item.date.split(' ')[0];
+        return dateOnly === clickedDate && item.color === 'red';
+      });
+
+      if (eventOnClickedDate) {
+        setIsEvantRed(true);
+        setIsOpenPoupupDate(false);
+      } else {
+        if (formattedDate > clickedDate) {
+          setShowModal(true);
+        } else {
+          setGetDateReserve(clickedDate);
+          setIsOpenPoupupDate(true);
         }
       }
-      );
-      console.log('kkkkkkkkkkkkkk', filtered);
-
-
-      let filteredEvents = [];
-      const currentDate = new Date();
-      const formattedDate = currentDate.toISOString().slice(0, 10);
-      // console.log(formattedDate);
-
-      if (formattedDate > arg.dateStr) {
-        setShowModal(true);
-      } else {
-        setGetDateReserve(arg.dateStr);
-        setIsOpenPoupupDate(true)
-
-      }
     }
-
   };
+
   useEffect(() => {
     handleGetdata()
     handleGetProfeTime()
@@ -281,8 +309,6 @@ function MyFullCalendar({ amount }) {
 
 
   };
-
-
   const handleSelectTime = (time) => {
     setSelectedTime((prev) =>
       prev.includes(time)
@@ -325,7 +351,6 @@ function MyFullCalendar({ amount }) {
 
   }
 
-
   return (
     <>
       {loading && <Spinner />}
@@ -355,7 +380,7 @@ function MyFullCalendar({ amount }) {
           </button>
         </div>
       )}
-      
+
       {IsOpenTime && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg w-full">
@@ -545,6 +570,20 @@ function MyFullCalendar({ amount }) {
       </div>
       {user.role === 'etudiant' && (
         <>
+          {isEvantRed && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded shadow-lg text-center">
+                <h2 className="text-lg font-semibold mb-4">Alerte</h2>
+                <p>Professeur introuvable !</p>
+                <button
+                  onClick={() => setIsEvantRed(false)}
+                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  Fermer
+                </button>
+              </div>
+            </div>
+          )}
           <h3 className="font-medium text-gray-800 mb-3">Available times</h3>
           <div className="grid grid-cols-3 gap-2">
             {Array.isArray(availableTimesArray) && availableTimesArray.length > 0 ? (
@@ -553,7 +592,7 @@ function MyFullCalendar({ amount }) {
                   key={index}
                   id={time}
                   onClick={(e) => setTimeReservation(e.target.id)}
-                  className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center w-full ${timeReservation === time ? 'bg-red-400 text-white shadow-md' : 'bg-white'}`}
+                  className={`border border-red-300  font-medium rounded py-2 text-center w-full ${timeReservation === time ? 'bg-red-400 text-white shadow-md' : 'bg-white'}`}
                 >
                   {time}
                 </button>
@@ -571,7 +610,7 @@ function MyFullCalendar({ amount }) {
                 key={index}
                 id={time.time}
                 onClick={(e) => setTime(e.target.id)}
-                className={`border border-red-300 text-red-600 font-medium rounded py-2 text-center transition duration-200 
+                className={`border border-red-300  font-medium rounded py-2 text-center transition duration-200 
             ${times === time.time.toString() ? 'bg-red-400 text-white shadow-md' : 'bg-white hover:bg-red-50'}`}
               >
                 {time.time} hour
