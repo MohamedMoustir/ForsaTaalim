@@ -27,6 +27,7 @@ class DisponibilitesRequest extends FormRequest
             'date' => 'required|date',
             'titleEvant' => 'required|string',
             'colorEvant' => 'required|string',
+
         ];
     }
 
