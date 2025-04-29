@@ -21,8 +21,6 @@ class AuthController extends Controller
     {
          $this->authServices = $authServices;
     }
-
-
     use HasApiTokens;
     public function register(authRejecterRequist $request)
     {
@@ -74,11 +72,7 @@ class AuthController extends Controller
       
         return  $this->authServices->refresh();
     }
-    // public function forgotPassword(request $request)
-    // {
-    //     return  $this->authServices->forgotPassword($request->email);
-
-    // }
+  
     public function resetpassword(request $request)
     {
         return redirect()->away("http://localhost:3000/reset-password");

@@ -27,20 +27,14 @@ class ChatService
     }
     public function create(array $data, $sender_id, $id)
     {
-        $authUserId = Auth::id(); 
+        $authUserId = Auth::id();
         $receiverId = $id;
 
-        //  chak is user inscre in cours
-        $chatUser = DB::table('chat_users')
-            ->where(function($query) use ($authUserId, $receiverId) {
-                $query->where('user_id1', '=', $authUserId)
-                      ->where('user_id2', '=', $receiverId);
-            })
-            ->orWhere(function($query) use ($authUserId, $receiverId) {
-                $query->where('user_id1', '=', $receiverId)
-                      ->where('user_id2', '=', $authUserId);
-            })
-            ->first();
+        $chatUser = Reservation::where('etudiant_id','=',$authUserId)
+        ->where('professeur_id','=',$receiverId)
+        ->orwhere('professeur_id','=',$authUserId)
+        ->orwhere('etudiant_id','=',$receiverId)
+            ->count();
 
         if ($chatUser) {
             $chat_user = Chat_user::where(function ($query) use ($sender_id, $id) {

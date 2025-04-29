@@ -47,5 +47,19 @@ class DisponibiliteController extends Controller
         return response()->json($disponibilites);
 
     }
+
+    public function Createavailable_time(request $request ){
+        $data = $request->validate([
+            'available_times' => 'required',
+            'prof_id' => 'required'
+
+        ]);
+        $this->disponibiliteServices->Createavailable_time($data);
+    }
+
+    public function getByIdProfeTime($id){
+        $available_times= $this->disponibiliteServices->getByIdProfeTime($id);
+        return response()->json($available_times);
+    }
     
 }

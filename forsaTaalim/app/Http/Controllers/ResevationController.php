@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use NotificationSent;
+use Str;
 
 class ResevationController
 {
@@ -20,10 +21,10 @@ class ResevationController
     }
     public function createReservations(ReservationRequests $request, $id)
     {
-        
+
         $valdate = $request->validated();
         $reservation = $this->resevationServices->createReservations($valdate, $id);
-      
+
 
         return response()->json(['message' => 'Reservation ajoute successfully!', 'reservation' => $reservation]);
     }
@@ -31,7 +32,7 @@ class ResevationController
     {
         $validatedData = $request->all();
         $payment = $this->resevationServices->success($validatedData);
-        return  redirect()->away('http://localhost:3000/donePayment/' . $payment);
+        return redirect()->away('http://localhost:3000/donePayment/' . $payment);
     }
     public function getAllReservations()
     {
@@ -40,19 +41,16 @@ class ResevationController
     }
     public function getByIdReservations($id)
     {
-      
+
         $reservation = $this->resevationServices->getByIdReservations($id);
         return response()->json(['message' => 'reservation get successfully!', 'reservation' => $reservation]);
     }
-
     public function getByIdEtudiant()
     {
-      
         $id = Auth::id();
         $reservation = $this->resevationServices->getByIdEtudiant($id);
         return response()->json(['message' => 'reservation get successfully!', 'reservation' => $reservation]);
     }
-
     public function updateStatusReservationsToApproved($id)
     {
         $StatusReservation = $this->resevationServices->updateStatusReservationsToApproved($id);
@@ -74,8 +72,14 @@ class ResevationController
     {
         $reservation = $this->resevationServices->reserverProfesseur(Auth::id());
         return response()->json(['message' => 'reservation ajoute successfully!', 'reservation' => $reservation], 200);
-       
+
     }
-  
-    
+    public function SendLinkReservations($id)
+    {
+        $session_link = 'meeting-forsataalim' . Str::random(16) .'.com';
+        $StatusReservation = $this->resevationServices->SendLinkReservations($id, $session_link );
+        return response()->json(['message' => 'Status Update successfully!', 'reservation' => $StatusReservation]);
+
+    }
+
 }
