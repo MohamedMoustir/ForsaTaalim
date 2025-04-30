@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->date('date_reservation');
             $table->time('time_reservation');
             $table->time('dura');
+            $table->string('session_link')->nullable();
             $table->enum('status',['pending','approved','refuser'])->default('pending');
             $table->foreign('etudiant_id')->on('users')->references('id')->onDelete('cascade');
             $table->foreign('professeur_id')->on('users')->references('id')->onDelete('cascade');
@@ -27,6 +28,7 @@ return new class extends Migration {
     /**
      * Reverse the migrations.
      */
+    
     public function down(): void
     {
         //

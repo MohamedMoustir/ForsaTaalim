@@ -44,8 +44,6 @@ class ProfesseurRepositories
         $showProfile = DB::table('professeurs as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
             ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
-            ->leftJoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
-            ->leftJoin('competences as com', 'cp.competence_id', '=', 'com.id')
             ->leftJoin('comments as comme1', 'u.id', '=', 'comme1.tuteur_id')
             ->select(
                 'p.id',
@@ -65,7 +63,6 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom as nom_matiere',
-                'com.name as competencesName',
                 'u.id as profe_id',
                 DB::raw('COUNT(comme1.rating) as total_ratings'),
                 DB::raw('AVG(comme1.rating) as average_rating')
@@ -87,7 +84,6 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom',
-                'com.name',
                 'profe_id'
 
             )
@@ -97,15 +93,12 @@ class ProfesseurRepositories
 
         return $showProfile;
     }
-    // you want test
     public function getAll()
     {
 
         $Tuteur = DB::table('professeurs as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
             ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
-            ->leftJoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
-            ->leftJoin('competences as com', 'cp.competence_id', '=', 'com.id')
             ->leftJoin('comments as comme1', 'u.id', '=', 'comme1.tuteur_id')
             ->select(
                 'p.id',
@@ -125,11 +118,12 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom as nom_matiere',
-                'com.name as competencesName',
                 'u.id as profe_id',
                 DB::raw('COUNT(comme1.rating) as total_ratings'),
-                DB::raw('AVG(comme1.rating) as average_rating')
+                DB::raw('AVG(comme1.rating) as average_rating'),
+
             )
+            ->orderBy('comme1.rating' ,'asc')
             ->groupBy(
                 'p.id',
                 'p.diplomes',
@@ -148,23 +142,17 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom',
-                'com.name',
                 'profe_id'
             )
+            ->orderBy('total_ratings' ,'desc')
+
             ->get();
-
-
-
-
-
     }
     public function getAllwithout()
     {
         return DB::table('professeurs as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
             ->join('categorie_matieres as c', 'p.categorieMatiere_id', '=', 'c.id')
-            ->leftJoin('competence_professeurs as cp', 'u.id', '=', 'cp.professeur_id')
-            ->leftJoin('competences as com', 'cp.competence_id', '=', 'com.id')
             ->leftJoin('comments as comme1', 'u.id', '=', 'comme1.tuteur_id')
             ->select(
                 'p.id',
@@ -184,7 +172,6 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom as nom_matiere',
-                'com.name as competencesName',
                 'u.id as profe_id',
                 DB::raw('COUNT(comme1.rating) as total_ratings'),
                 DB::raw('AVG(comme1.rating) as average_rating')
@@ -207,9 +194,9 @@ class ProfesseurRepositories
                 'u.password',
                 'u.remember_token',
                 'c.nom',
-                'com.name',
                 'profe_id',
             )
+            ->orderBy('total_ratings' ,'desc')
             ->paginate(6);
     }
     public function generateActivityReport()

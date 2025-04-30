@@ -21,7 +21,6 @@ class professeurService implements CrudInterface
     }
     public function create(array $data)
     {
-        // $lastInsertUser = User::latest()->first();
         $data['user_id'] = Auth::id();
     
         if (isset($data['video'])) {
@@ -33,7 +32,6 @@ class professeurService implements CrudInterface
     
         return $this->professeurRepositories->create($data);
     }
-    
     public function getAllAndSerch($data)
     {
         if ($data) {
@@ -47,12 +45,6 @@ class professeurService implements CrudInterface
     }
     public function update($id, array $data)
     {
-        // if (!$data['video'] == null) {
-        //     $video = $data['video'];
-        //     $videoPath = time() . '_' . $video->getClientOriginalName();
-        //     $video->move(public_path('videos'), $videoPath);
-        //     $profile->update(['video' => $videoPath]);
-        // }
         return $this->professeurRepositories->update($id, $data);
 
     }
@@ -64,12 +56,10 @@ class professeurService implements CrudInterface
     {
         return $this->professeurRepositories->filter($résulter);
     }
-
     public function getAll()
     {
         return $this->professeurRepositories->getAllwithout();
     }
-
     public function generateActivityReport(){
         return $this->professeurRepositories->generateActivityReport();
     }

@@ -17,8 +17,10 @@ return new class extends Migration
             $table->timestamp('date');
             $table->string('titleEvant');
             $table->enum('colorEvant',['red','blue','green'])->default('red');
+            $table->json('available_times')->nullable();
             $table->boolean('is_walkin')->default(true);
             $table->foreign('tuteur_id')->references('id')->on('users');
+
             $table->timestamps();
         });
     }

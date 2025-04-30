@@ -54,14 +54,16 @@ class ResevationServices implements ResevationInterface
     {
         return $this->resevationRepositories->deleteReservations($id);
     }
-  
-  
     public function reserverProfesseur($id)
     {
         return $this->resevationRepositories->reserverProfesseur($id);
     }
  
-  
+    public function SendLinkReservations($id,$link)
+    {
+        return  $this->resevationRepositories->SendLinkReservations($id,$link);
+
+    }
 
 
 }

@@ -72,18 +72,12 @@ class AuthService
                 'token' => $newToken
             ]);
 
-           
-
         } catch (\Exception $e) {
             return null;
         }
     }
 
-    // public function forgotPassword($email)
-    // {
-    //     $status = Password::sendResetLink(['email' => $email]);
-    //     return $status;
-    // }
+
 
 
     public function resetpassword($token, $password)

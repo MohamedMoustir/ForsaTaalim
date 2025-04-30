@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('etudiants', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->string('objectifs');
             $table->string('ecole');
             $table->enum('niveau', ['primaire', 'college', 'lycee', 'universite']);

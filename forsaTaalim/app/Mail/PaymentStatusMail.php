@@ -11,15 +11,18 @@ class PaymentStatusMail extends Mailable
     use Queueable, SerializesModels;
 
     public $texte;
+    public $session;
+
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $status)
+    public function __construct(string $status, string $session)
     {
         $this->texte = $status === 'approved'
             ? 'Your payment was accepted successfully.'
             : 'Your payment was refused. Please try again.';
+        $this->session = $session;
     }
 
     /**
@@ -27,10 +30,12 @@ class PaymentStatusMail extends Mailable
      */
     public function build()
     {
+   
         return $this->subject('Payment Status')
-                    ->view('emails.payment-status')
-                    ->with([
-                        'texte' => $this->texte,
-                    ]);
+            ->view('emails.payment-status')
+            ->with([
+                'texte' => $this->texte,
+                'session' => $this->session,
+            ]);
     }
 }

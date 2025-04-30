@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Available_time;
 use App\Models\CategorieMatiere;
 use App\Models\Competence;
 use App\Models\Professeur;
@@ -13,7 +14,7 @@ use App\Repositories\ProfesseurRepositories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class DisponibiliteServices 
+class DisponibiliteServices
 {
     protected $disponibiliteRepositories;
 
@@ -21,7 +22,8 @@ class DisponibiliteServices
     {
         $this->disponibiliteRepositories = $disponibiliteRepositories;
     }
-    public function store($data){
+    public function store($data)
+    {
         $data['tuteur_id'] = Auth::id();
         return $this->disponibiliteRepositories->store($data);
     }
@@ -41,5 +43,13 @@ class DisponibiliteServices
     public function getById($id)
     {
         return $this->disponibiliteRepositories->getById($id);
+    }
+    public function Createavailable_time($data)
+    {
+        return $this->disponibiliteRepositories->Createavailable_time($data);
+    }
+    public function getByIdProfeTime($id)
+    {
+        return Available_time::where('prof_id', $id)->latest()->first();
     }
 }

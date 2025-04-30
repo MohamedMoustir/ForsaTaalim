@@ -99,7 +99,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 
 
-Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
+Route::group(['middleware' => ['auth:api', 'role:tuteur,admin']], function () {
     Route::post('messages/{id}', [ChatController::class, 'message']);
     Route::get('messages/{id}/room/{chat_user_id}', [ChatController::class, 'getMessage']);
     Route::post('/Professeur', [ProfesseurController::class, 'create']);
@@ -134,18 +134,21 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur']], function () {
     Route::post('/disponibilite', [DisponibiliteController::class, 'store']);
     Route::put('disponibilite/{id}', [DisponibiliteController::class, 'update']);
     Route::delete('disponibilite/{id}', [DisponibiliteController::class, 'delete']);
+    Route::post('disponibilite/available_time', [DisponibiliteController::class, 'Createavailable_time']);
 
     Route::get('/professeur/chart', [ResevationController::class, 'chartjsReservation']);
     Route::get('/professeur/Reservation', [ResevationController::class, 'reserverProfesseur']);
 });
 
-Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function () {
+Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant,admin']], function () {
     Route::post('messages/{id}', [ChatController::class, 'message']);
     Route::get('messages/{id}/room/{chat_user_id}', [ChatController::class, 'getMessage']);
     Route::get('messages/Contacts', [ChatController::class, 'getContacts']);
 
     Route::put('/Reservation/refuser/{id}', [ResevationController::class, 'updateStatusReservationsTorefuser']);
     Route::delete('/Reservation/{id}', [ResevationController::class, 'deleteReservations']);
+    Route::put('/Reservation/session/{id}', [ResevationController::class, 'SendLinkReservations']);
+
     Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
     Route::post('/notification', [NotificationController::class, 'create']);
     Route::get('/notification', [NotificationController::class, 'show']);
@@ -155,12 +158,13 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant']], function ()
     Route::get('/announcment/{id}', [AnnouncementController::class, 'getById']);
     Route::get('/detile/announcment/{id}', [AnnouncementController::class, 'getByIdAnnonce']);
     Route::post('/sendEmail', [PaymentMail::class, 'SendEmail']);
+    Route::get('/disponibilite/available_times/{id}', [DisponibiliteController::class, 'getByIdProfeTime']);
 
 });
 Route::get('payment/success', [ResevationController::class, 'success']);
 
 
-Route::group(['middleware' => ['auth:api', 'role:etudiant']], function () {
+Route::group(['middleware' => ['auth:api', 'role:etudiant,admin']], function () {
     Route::post('/Etudiant', [EtudiantController::class, 'create']);
     Route::patch('/Etudiant/{id}', [EtudiantController::class, 'update']);
     Route::get('/Etudiant/profile', [EtudiantController::class, 'getById']);
@@ -191,14 +195,13 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
     Route::get('admin/Tuteur', [AdminController::class, 'getTuteur']);
 
 
-
     Route::post('/tag', [TagController::class, 'store']);
     Route::get('/tag', [TagController::class, 'show']);
     Route::put('/tag/{id}', [TagController::class, 'update']);
     Route::delete('/tag/{id}', [TagController::class, 'destroy']);
 });
 
-Route::get('/api/performance', function () {
+Route::get('/performance', function () {
     return response()->json([
         'load_time' => session('load_time', 0)
     ]);

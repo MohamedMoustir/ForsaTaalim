@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\Available_time;
 use Disponibilite;
 
 class DisponibiliteRepositories
@@ -32,5 +33,10 @@ class DisponibiliteRepositories
     public function getById($id)
     {
         return $this->model->where('tuteur_id', '=', $id)->get();
+    }
+
+    public function Createavailable_time($data)
+    {
+        return Available_time::create($data);
     }
 }
