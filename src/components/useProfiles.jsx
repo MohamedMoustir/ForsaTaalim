@@ -11,25 +11,25 @@ const fetchProfiles = ({id_}) => {
   const {id}= useParams();
   console.log('ccc',id_);
   
-  const fetchProfesseursById = async (id_) => {
-    axios.get(`${API_URL}/Professeur/${id_}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((response) => {
-        setDetilesprofiles(response.data.Profile);
-        console.log('ddd', response.data);
-        setLoading(false)
-      })
-  };
-    useEffect(() => {
-      fetchProfesseursById(id_);
-    }, [id_])
-  return (
-    <ReservationTutors detiles={detile} loading={loading} />
-  )
+//   const fetchProfesseursById = async (id_) => {
+//     axios.get(`${API_URL}/Professeur/${id_}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         'Content-Type': 'application/json',
+//       }
+//     })
+//       .then((response) => {
+//         setDetilesprofiles(response.data.Profile);
+//         console.log('ddd', response.data);
+//         setLoading(false)
+//       })
+//   };
+//     useEffect(() => {
+//       fetchProfesseursById(id_);
+//     }, [id_])
+//   return (
+//     <ReservationTutors detiles={detile} loading={loading} />
+//   )
 }
 
 export default fetchProfiles;

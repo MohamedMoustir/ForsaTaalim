@@ -17,7 +17,6 @@ dayjs.locale("En");
 import Pusher from "pusher-js";
 import "@fontsource/open-sans/500.css";
 import Alert from "./Alert";
-// import "@fontsource/open-sans/700.css";
 
 
 export const Nav = ({ id_ }) => {

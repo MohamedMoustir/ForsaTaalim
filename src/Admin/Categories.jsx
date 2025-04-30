@@ -208,7 +208,7 @@ const Categories = () => {
                                     onClick={() => HandlDelete(item.id)}
                                     className="p-2 bg-indigo-600 hover:bg-indigo-700 rounded-full"
                                 >
-                                    <i className="fas fa-eye text-white text-xs"></i>
+                                  <i class="fa fa-trash  text-white text-xs"></i> 
                                 </button>
                                 <button
                                     onClick={() => HandlEdite(item.id)}

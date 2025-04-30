@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../assets/style/style.css";
 
-const Alert = ({ type = 'success', title, message, onClose, autoHideDuration = 5000 }) => {
+const Alert = ({ type = 'success', title, message, onClose, autoHideDuration = 3000 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {

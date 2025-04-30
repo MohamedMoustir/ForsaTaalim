@@ -3,16 +3,21 @@ import { Nav } from "./Nav";
 import Footer from "./Footer";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getUser, getToken } from "../utils/config";
+
 const MainLayout = ({ children, showNavFooter = true, length }) => {
   const location = useLocation();
-  const isDetailPage = location.pathname.includes('/detilesTutor');
-  const iscontactTutorsPage = location.pathname.includes('/contactTutors');
-  const login = location.pathname.includes('/login');
-  const rejister = location.pathname.includes('/Rejister');
-  const favorites = location.pathname.includes('/favorites');
-  const Tutors = location.pathname.includes('/Tutors');
-  const Resiravtioon = location.pathname.includes('/reservation');
-  const ResetPassword = location.pathname.includes('/ResetPassword');
+  const hideFooterPages = [
+    '/detilesTutor',
+    '/contactTutors',
+    '/Rejister',
+    '/login',
+    '/favorites',
+    '/Tutors',
+    '/reservation',
+    '/ResetPassword'
+  ];
+  
+  const shouldShowFooter = !hideFooterPages.some(path => location.pathname.includes(path));
   const token = getToken();
   const user = getUser();
   const navigate = useNavigate();
@@ -23,7 +28,7 @@ const MainLayout = ({ children, showNavFooter = true, length }) => {
       <div className="content" style={{ fontFamily: 'Open Sans' }}>
         {children}
       </div>
-      {!isDetailPage && !iscontactTutorsPage && !rejister && !login && !favorites && !Tutors && !Resiravtioon && ResetPassword && <Footer />}
+      {shouldShowFooter && <Footer />}
     </div>
   );
 };

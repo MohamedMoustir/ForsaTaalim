@@ -77,9 +77,6 @@ const Tutors = () => {
                 setTitle('card Ajoute avec succès !')
                 setType('success')
                 setMessage('Votre card a ajouter avec succès.');
-                setInterval(() => {
-                    navigate('/favorites');
-                }, 2000)
 
             });
     }
@@ -118,11 +115,10 @@ const Tutors = () => {
     const firstItemsIndex = lastItemsIndex - itemsPerPage
     const thisPageItems = profiles.slice(firstItemsIndex, lastItemsIndex)
     const pages = [];
+
     for (let i = 0; i < profileslength / itemsPerPage; i++) {
         pages.push(i);
     }
-
-
 
     return (
         <>
@@ -155,8 +151,8 @@ const Tutors = () => {
                                 className="border border-gray-300 rounded-full py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
                                 <option value="">Toutes les villes</option>
-                                {city.map((item) => (
-                                    <option key={item.city} value={item.city}>{item.city}</option>
+                                {city.map((item ,index) => (
+                                    <option key={index} value={item.city}>{item.city}</option>
                                 ))}
                             </select>
 

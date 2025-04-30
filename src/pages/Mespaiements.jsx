@@ -47,7 +47,6 @@ const Mespaiements = () => {
 
     const navigate = useNavigate();
   
-
     useEffect(() => {
         fetchPayments(currentPage);
     }, [currentPage]);
@@ -82,9 +81,11 @@ const Mespaiements = () => {
         pages.push(i);
     }
 
+
     const handleChat = (id_user, chat_user_id) => {
         navigate(`/chat/${id_user}/room/${chat_user_id}`);
     }
+    
     return (
         <>
             {loading && <Spinner />}

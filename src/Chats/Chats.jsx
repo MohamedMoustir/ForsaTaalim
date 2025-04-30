@@ -100,9 +100,9 @@ function Chat() {
     setChat_user(chat_user_id);
     setImage(image);
     setUsername(name);
-
     navigate(`/chat/${receive_id}/room/${chat_user}`)
   }
+
   return (
     <>
       {user.role == 'etudiant' && (
