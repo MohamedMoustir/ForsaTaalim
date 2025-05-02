@@ -57,19 +57,10 @@ Route::prefix('auth')->group(function () {
 
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.reset');
-
-
 });
 
 Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
 Route::get('/avies/index', [AvisController::class, 'getTopAvies']);
-
-
-
-// Route::get('login/google', [SocialiteController::class, 'redirectToGoogle']);
-// Route::get('login/google/callback', [SocialiteController::class, 'googleAuthentication']);
-
-
 Route::post('/categorie_matiere', [CategorieMatiereController::class, 'store']);
 
 Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
@@ -91,51 +82,28 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return response()->json($request->user());
 });
-/*
-|--------------------------------------------------------------------------
-| API Professeur
-|-----
----------------------------------------------------------------------
-*/
-
-
 Route::group(['middleware' => ['auth:api', 'role:tuteur,admin']], function () {
     Route::post('messages/{id}', [ChatController::class, 'message']);
     Route::get('messages/{id}/room/{chat_user_id}', [ChatController::class, 'getMessage']);
     Route::post('/Professeur', [ProfesseurController::class, 'create']);
     Route::patch('/Professeur/{id}', [ProfesseurController::class, 'update']);
     Route::post('/Professeur/competence', [ProfesseurController::class, 'AddCompetence']);
-    // Route::get('/Professeur', [ProfesseurController::class, 'getAll']);
-    // Route::post('/Professeur/{filter}', [ProfesseurController::class, 'filter']);
     Route::get('reports/tuteur', [ProfesseurController::class, 'generateActivityReport']);
-
-    /*
-    |--------------------------------------------------------------------------
-    | API Competence
-    |--------------------------------------------------------------------------
-    */
     Route::post('/Competence', [CompetenceController::class, 'create']);
     Route::put('/Competence/{id}', [CompetenceController::class, 'update']);
     Route::delete('/Competence/{id}', [CompetenceController::class, 'delete']);
     Route::get('/Competence', [CompetenceController::class, 'show']);
     Route::get('/Competence/{id}', [CompetenceController::class, 'getById']);
-    /*
-    |--------------------------------------------------------------------------
-    | API Announcment
-    |--------------------------------------------------------------------------
-    */
     Route::post('/announcment', [AnnouncementController::class, 'create']);
     Route::put('/announcment/{id}', [AnnouncementController::class, 'update']);
     Route::delete('/announcment/{id}', [AnnouncementController::class, 'delete']);
     Route::get('/announcment/Show', [AnnouncementController::class, 'Show']);
-
     Route::put('/Reservation/approved/{id}', [ResevationController::class, 'updateStatusReservationsToApproved']);
     Route::get('/disponibilite', [DisponibiliteController::class, 'index']);
     Route::post('/disponibilite', [DisponibiliteController::class, 'store']);
     Route::put('disponibilite/{id}', [DisponibiliteController::class, 'update']);
     Route::delete('disponibilite/{id}', [DisponibiliteController::class, 'delete']);
     Route::post('disponibilite/available_time', [DisponibiliteController::class, 'Createavailable_time']);
-
     Route::get('/professeur/chart', [ResevationController::class, 'chartjsReservation']);
     Route::get('/professeur/Reservation', [ResevationController::class, 'reserverProfesseur']);
 });
@@ -144,11 +112,9 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant,admin']], funct
     Route::post('messages/{id}', [ChatController::class, 'message']);
     Route::get('messages/{id}/room/{chat_user_id}', [ChatController::class, 'getMessage']);
     Route::get('messages/Contacts', [ChatController::class, 'getContacts']);
-
     Route::put('/Reservation/refuser/{id}', [ResevationController::class, 'updateStatusReservationsTorefuser']);
     Route::delete('/Reservation/{id}', [ResevationController::class, 'deleteReservations']);
     Route::put('/Reservation/session/{id}', [ResevationController::class, 'SendLinkReservations']);
-
     Route::get('/Professeur/{id}', [ProfesseurController::class, 'getById']);
     Route::post('/notification', [NotificationController::class, 'create']);
     Route::get('/notification', [NotificationController::class, 'show']);
@@ -162,8 +128,6 @@ Route::group(['middleware' => ['auth:api', 'role:tuteur,etudiant,admin']], funct
 
 });
 Route::get('payment/success', [ResevationController::class, 'success']);
-
-
 Route::group(['middleware' => ['auth:api', 'role:etudiant,admin']], function () {
     Route::post('/Etudiant', [EtudiantController::class, 'create']);
     Route::patch('/Etudiant/{id}', [EtudiantController::class, 'update']);
@@ -177,28 +141,18 @@ Route::group(['middleware' => ['auth:api', 'role:etudiant,admin']], function () 
     Route::put('/avis/{id}', [AvisController::class, 'edit']);
     Route::delete('/avis/{id}', [AvisController::class, 'delete']);
     Route::get('/avis/{id}', [AvisController::class, 'getById']);
-
     Route::get('/favorites', [FavoritesController::class, 'index']);
     Route::post('/favorites', [FavoritesController::class, 'store']);
     Route::delete('/favorites/{id}', [FavoritesController::class, 'destroy']);
     Route::get('/Reservation/{id}', [ResevationController::class, 'getByIdReservations']);
-
-
 });
 
 
 Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
     Route::get('/Reservation', [ResevationController::class, 'getAllReservations']);
-    // Route::get('/Reservation/{id}', [ResevationController::class, 'getByIdReservations']);
     Route::get('reports/performance', [AdminController::class, 'Activitehebdomadaire']);
     Route::get('admin/Student', [AdminController::class, 'getstudent']);
     Route::get('admin/Tuteur', [AdminController::class, 'getTuteur']);
-
-
-    Route::post('/tag', [TagController::class, 'store']);
-    Route::get('/tag', [TagController::class, 'show']);
-    Route::put('/tag/{id}', [TagController::class, 'update']);
-    Route::delete('/tag/{id}', [TagController::class, 'destroy']);
 });
 
 Route::get('/performance', function () {
@@ -213,11 +167,3 @@ Route::group(['middleware' => ['auth:api', 'role:admin,etudiant']], function () 
 });
 
 Route::get('/categorie_matiere', [CategorieMatiereController::class, 'show']);
-
-
-
-
-// Route::resource('categories', CategoryControlle::class);
-// Route::resource('tags', TagController::class);
-
-// Route::get('statistics', [StatisticsController::class, 'show']);

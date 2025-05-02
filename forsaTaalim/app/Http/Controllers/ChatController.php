@@ -6,6 +6,7 @@ use App\Events\Message;
 use App\Http\Requests\ChatRequests;
 use App\Models\Chat_user;
 use App\Services\ChatService;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use App\Models\Chat;
@@ -42,10 +43,9 @@ class ChatController extends Controller
                 'message' => $chat->message,
                 'sender' => $chat->sender,
                 'sender_id'=> $chat->sender_id,
-                'timestamp' => now()->format('h:i A')
+                'timestamp' =>  Carbon::parse($chat->created_at)->format('h:i A')
             ];
         });
-
         return response()->json([
             'messages' => $conversation,
         ]);
