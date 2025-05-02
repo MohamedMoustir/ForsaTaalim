@@ -4,8 +4,10 @@ import '../assets/style/style.css'
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { getUser } from "../utils/config";
+
 const AdminNav = ({id_}) => {
 const  user = getUser();
+
   useEffect(()=>{
     if (user) {
       if (user.role == 'etudiant' ||user.role == 'tuteur' ) {

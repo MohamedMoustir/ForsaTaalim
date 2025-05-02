@@ -188,6 +188,9 @@ const detiles = () => {
     }
     useEffect(() => {
         fetchProfesseursById();
+            if (!user) {
+                navigate('/login')
+            }
     }, []);
 
     const handleRegister = ($id_annonce) => {

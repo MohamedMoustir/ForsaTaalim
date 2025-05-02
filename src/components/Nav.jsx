@@ -36,8 +36,6 @@ export const Nav = ({ id_ }) => {
   function BecomeTutor() {
     navigate('/Rejister')
   }
-
-
   const handleDeleteNotifications = async (id) => {
 
     try {
@@ -134,9 +132,9 @@ export const Nav = ({ id_ }) => {
       channel.unsubscribe();
     };
   }, [notificationCount])
+
   const isUserActive = !isUserAuth ||  user?.isActive == false;
   const isUserVerified = isUserAuth || user?.isActive === true;
-  console.log(isUserVerified ,isUserActive);
   
   
   return (

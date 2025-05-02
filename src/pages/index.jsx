@@ -21,7 +21,7 @@ const index = ({ profiles, loading, comment }) => {
         navigate('/Tutors');
     }
     const handleClickProfessor = (id) => {
-        navigate(`/detilesTutor/${id}`);
+        window.location.href = `/detilesTutor/${id}`
     };
 
     useEffect(() => {

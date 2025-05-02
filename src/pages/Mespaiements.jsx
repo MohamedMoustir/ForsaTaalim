@@ -77,6 +77,7 @@ const Mespaiements = () => {
     const firstItemsIndex = lastItemsIndex - itemsPerPage
     const thisPageItems = Mespaiements.slice(firstItemsIndex, lastItemsIndex)
     const pages = [];
+    
     for (let i = 0; i < paymentlength / itemsPerPage; i++) {
         pages.push(i);
     }

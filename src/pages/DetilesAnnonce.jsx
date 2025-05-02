@@ -54,7 +54,6 @@ const DetilesAnnonce = () => {
         navigate(`/reservation/${id_touter}`);
     }
 
-
     return (
         <>
             {loading && (

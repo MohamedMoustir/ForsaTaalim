@@ -68,7 +68,6 @@ function MyFullCalendar({ amount }) {
 
           let data = response.data;
           console.log(data);
-
           const newEvents = data.map((evant, index) => ({
             title: evant.titleEvant,
             date: evant.date,
@@ -145,48 +144,7 @@ function MyFullCalendar({ amount }) {
     }
 
   }
-  // const handleDateClick = (arg) => {
-  //   if (user.role === 'tuteur') {
-  //     let filteredEvents = [];
-  //     const currentDate = new Date();
-  //     const formattedDate = currentDate.toISOString().slice(0, 10);
-  //     if (formattedDate > arg.dateStr) {
-  //       setShowModal(true);
-  //     } else {
-  //       setIsOpen(true)
-  //       setEvanteDte(arg.dateStr);
-  //     }
-
-  //   } else {
-
-  //     events.filter((item) => {
-  //       const dateTime = item.date;
-  //       const dateOnly = dateTime.split(' ')[0];
-  //       if (item.color === 'red' && arg.dateStr === dateOnly) {
-  //         setIsOpenPoupupDate(false);
-  //         setIsEvantRed(true);
-  //       }
-
-  //       let filteredEvents = [];
-  //       const currentDate = new Date();
-  //       const formattedDate = currentDate.toISOString().slice(0, 10);
-
-  //       if (formattedDate > arg.dateStr) {
-  //         setShowModal(true);
-  //       } else {
-  //         setGetDateReserve(arg.dateStr);
-  //         if (item.color === 'red' && arg.dateStr === dateOnly) {
-  //           setIsOpenPoupupDate(false)
-  //         } else {
-  //           setIsOpenPoupupDate(true)
-  //         }
-  //       }
-  //     }
-  //     );
-  //   }
-
-  // };
-
+ 
   const handleDateClick = (arg) => {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().slice(0, 10);
@@ -223,6 +181,7 @@ function MyFullCalendar({ amount }) {
     handleGetdata()
     handleGetProfeTime()
   }, [])
+
   const handleEventClick = (info) => {
     setEventClicks(true);
     const eventStartDate = info.event._instance.range.start;
@@ -237,9 +196,6 @@ function MyFullCalendar({ amount }) {
     setInfoColor(info.event.backgroundColor);
     setId(info.event._def.publicId);
 
-
-
-    // alert('Event clicked: ' + info.event.title);
   };
   const handleDelete = async (e) => {
     e.preventDefault();

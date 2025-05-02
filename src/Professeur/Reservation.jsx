@@ -149,7 +149,6 @@ const ReservationPage = () => {
     }
 
   }
-
   const HandleSendNotification = async (user_id, status) => {
     try {
       console.log('ee', user_id);
@@ -174,11 +173,9 @@ const ReservationPage = () => {
       alert("Échec de l'envoi de la notification");
     }
   };
-
   const handleChat = (id_user, chat_user_id) => {
     navigate(`/chat/${id_user}/room/${chat_user_id}`);
   }
-
   const handleGenerateSession = async () => {
 
     if (user__id) {

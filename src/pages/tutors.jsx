@@ -110,7 +110,10 @@ const Tutors = () => {
             });
 
     }, []);
-
+    const handlePageDetiles = (profe_id) => {
+        window.location.href = `/detilesTutor/${profe_id}`
+    }
+    
     const lastItemsIndex = currentPage * itemsPerPage;
     const firstItemsIndex = lastItemsIndex - itemsPerPage
     const thisPageItems = profiles.slice(firstItemsIndex, lastItemsIndex)
@@ -151,7 +154,7 @@ const Tutors = () => {
                                 className="border border-gray-300 rounded-full py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
                             >
                                 <option value="">Toutes les villes</option>
-                                {city.map((item ,index) => (
+                                {city.map((item, index) => (
                                     <option key={index} value={item.city}>{item.city}</option>
                                 ))}
                             </select>
@@ -196,7 +199,7 @@ const Tutors = () => {
                                     <img
                                         src={`http://127.0.0.1:8000/storage/${prof.photo}`}
                                         alt={prof.prenom}
-                                        onClick={() => navigate(`/detilesTutor/${prof.profe_id}`)}
+                                        onClick={() => handlePageDetiles(prof.profe_id)}
                                         className="w-full h-full object-cover cursor-pointer"
                                     />
                                     <button
@@ -226,7 +229,7 @@ const Tutors = () => {
                                         <span className="ml-4 text-blue-600 font-medium">Ambassadeur</span>
                                     </div>
 
-                                    <p className="text-gray-600 text-sm mb-4">{prof.biographie.slice(0,70)} ...</p>
+                                    <p className="text-gray-600 text-sm mb-4">{prof.biographie.slice(0, 70)} ...</p>
 
                                     <div className="flex justify-between items-center">
                                         <span className="font-semibold text-gray-900">${prof.tarifHoraire}/h</span>

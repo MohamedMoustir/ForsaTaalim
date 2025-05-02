@@ -115,7 +115,6 @@ function Content() {
     };
     const handlePasswordChange = async (e) => {
         e.preventDefault();
-        setLoading(true)
         const response = await fetch(`${API_URL}/auth/reset-password`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -125,14 +124,11 @@ function Content() {
 
         const data = await response.json();
         if (response.ok) {
-            setLoading(false)
             alert('Mot de passe réinitialisé avec succès !');
         } else {
-            setLoading(false)
 
             alert(data.message || 'Erreur lors de la réinitialisation.');
         }
-        setIsOpen(false);
     };
     const handleDeleteAccount = async () => {
         if (!isChecked) {
@@ -147,13 +143,13 @@ function Content() {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
             if (response.ok) {
-                localStorage.removeItem("user");
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("token");
                 navigate('/rejister')
                 alert("Votre compte a été supprimé avec succès.");
             } else {
