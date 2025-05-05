@@ -1,12 +1,30 @@
-# React + Vite
+# 🎓 ForsaTaalim
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ForsaTaalim** est une plateforme innovante qui connecte les étudiants à des tuteurs qualifiés, ainsi que les parents à des enseignants compétents pour leurs enfants. Elle facilite la communication, l'apprentissage et améliore l'accès à l'éducation.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Fonctionnalités principales
 
-## Expanding the ESLint configuration
+- 👨‍🏫 Inscription et gestion des tuteurs
+- 👨‍🎓 Inscription des étudiants & parents
+- 🔍 Recherche de tuteurs selon matière, ville, niveau
+- 📅 Réservation de séances
+- 📨 Système de messagerie et notifications
+- ⭐ Système d’évaluations et avis
+- 📊 Tableau de bord pour administrateurs
+- 🔐 Authentification sécurisée avec Laravel Sanctum
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Technologies utilisées
+
+| Côté       | Stack                                         |
+|------------|-----------------------------------------------|
+| 🧠 Backend  | PHP 8.2, Laravel 10, Laravel Sanctum          |
+| 🎨 Frontend | React.js, TailwindCSS                         |
+| 🗃️ BDD      | PGSQL                                         |                       |
+| 🐳 Dev Env | Laravel Sail/Docker              
+
+---
+
