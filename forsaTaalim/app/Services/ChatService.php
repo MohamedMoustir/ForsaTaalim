@@ -30,10 +30,10 @@ class ChatService
         $authUserId = Auth::id();
         $receiverId = $id;
 
-        $chatUser = Reservation::where('etudiant_id','=',$authUserId)
-        ->where('professeur_id','=',$receiverId)
-        ->orwhere('professeur_id','=',$authUserId)
-        ->orwhere('etudiant_id','=',$receiverId)
+        $chatUser = Reservation::where('etudiant_id', '=', $authUserId)
+            ->where('professeur_id', '=', $receiverId)
+            ->orwhere('professeur_id', '=', $authUserId)
+            ->orwhere('etudiant_id', '=', $receiverId)
             ->count();
 
         if ($chatUser) {

@@ -50,8 +50,6 @@ class ChatController extends Controller
             'messages' => $conversation,
         ]);
     }
-
-
     public function getContacts()
     {
         $authId = Auth::id();

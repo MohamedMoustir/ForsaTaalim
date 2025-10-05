@@ -55,7 +55,5 @@ class SocialiteController extends Controller
             ]);
         }
     }
-
-
 }
 

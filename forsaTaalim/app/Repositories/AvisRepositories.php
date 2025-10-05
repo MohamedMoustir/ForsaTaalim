@@ -39,7 +39,6 @@ class AvisRepositories
         ->where('c.tuteur_id','=',$id)
         ->get();
     }
-
     public function getTopAvies(){
         return DB::table('professeurs as p')
         ->join('users as u' ,'u.id','=','p.user_id')

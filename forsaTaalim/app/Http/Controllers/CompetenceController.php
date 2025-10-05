@@ -19,7 +19,6 @@ class CompetenceController extends Controller
         $Competence = $this->competenceServises->create($validated);
         return response()->json(['message' => 'Competence created successfully!', 'Competence' => $Competence], 201);
     }
-
     public function update(CompetenceRequests $request,$id){
 
         $validated = $request->validated();
@@ -27,7 +26,6 @@ class CompetenceController extends Controller
         return response()->json(['message' => 'Competence update successfully!', 'Competence' => $Competence], 200);
 
     }
-
     public function show()
     {
        $Competence = $this->competenceServises->getAll();
@@ -38,7 +36,6 @@ class CompetenceController extends Controller
        $Competence = $this->competenceServises->getById($id);
         return response()->json(['message' => ' Competence', 'Competence' => $Competence]);
     }
-
     public function delete($id){
         $Competence = $this->competenceServises->delete($id);
         return response()->json(['message' => 'Competence delete successfully!'],200);

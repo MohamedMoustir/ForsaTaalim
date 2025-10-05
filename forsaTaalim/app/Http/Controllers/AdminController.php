@@ -14,7 +14,6 @@ class AdminController extends Controller
         $this->adminServices = $adminServices;
     }
 
-    // Gestion user
     public function deleteUser($id)
     {
         $this->adminServices->delete($id);

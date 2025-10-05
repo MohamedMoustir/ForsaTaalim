@@ -30,21 +30,19 @@ class AdminRepositories
     public function suspended($id)
     {
         $user = User::findOrFail($id);
-        
+
         $user->isActive = !$user->isActive;
         $user->save();
-    
+
         return response()->json([
             'success' => true,
             'message' => $user->isActive ? 'Utilisateur activé' : 'Utilisateur suspendu',
             'isActive' => $user->isActive,
         ]);
     }
-    
-
     public function TotalUser()
     {
-        return $this->model->where('role','=','etudiant')->count();
+        return $this->model->where('role', '=', 'etudiant')->count();
     }
     public function TotalAnnonce()
     {
@@ -66,12 +64,13 @@ class AdminRepositories
             ->get();
 
     }
-    public function generateActivityReport(){
-        $totaletudiant = User::where('role','=','etudiant')->count();
-        $totaltuteur= User::where('role','=','tuteur')->count();
+    public function generateActivityReport()
+    {
+        $totaletudiant = User::where('role', '=', 'etudiant')->count();
+        $totaltuteur = User::where('role', '=', 'tuteur')->count();
         $totalAnnouncement = Announcement::count();
         $totalReviews = Comment::count();
-        
+
         return response()->json([
             'totaletudiant' => $totaletudiant,
             'totaltuteur' => $totaltuteur,
@@ -80,17 +79,17 @@ class AdminRepositories
         ]);
     }
 
-    public function Activitehebdomadaire (){
+    public function Activitehebdomadaire()
+    {
         $visits = Visit::selectRaw('DATE(created_at) as day, COUNT(*) as total')->count();
-       $inscriptions = User::selectRaw('DATE(created_at) as day')->count();
-       $cours = Reservation::selectRaw('DATE(created_at) as day')->count();
-       
-        return response()->json(['visits'=>$visits ,'inscriptions'=>$inscriptions,'cours'=>$cours]);
+        $inscriptions = User::selectRaw('DATE(created_at) as day')->count();
+        $cours = Reservation::selectRaw('DATE(created_at) as day')->count();
+
+        return response()->json(['visits' => $visits, 'inscriptions' => $inscriptions, 'cours' => $cours]);
     }
-    
+
 }
 
 
 
 
-  

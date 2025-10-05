@@ -24,7 +24,6 @@ class ChatRepositories
     }
     public function create($data)
     {
-        // Create the Pusher instance
         $pusher = new Pusher(
             env('PUSHER_APP_KEY'),
             env('PUSHER_APP_SECRET'),
@@ -40,8 +39,6 @@ class ChatRepositories
             'sender_id' => Auth::id(),
             'timestamp' => now()->format('h:i A'),
         ]);
-
-  
       $chat = Chat::create([
             'chat_user_id' => $data['chat_user_id'],
             'message' => $data['message'],

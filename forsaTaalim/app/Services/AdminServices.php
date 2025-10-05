@@ -21,15 +21,17 @@ class AdminServices implements CrudInterface
     {
         $this->adminRepositories = $adminRepositories;
     }
-    public function getstudent(){
-        return User::where('role','=','etudiant')->paginate(6);
+    public function getstudent()
+    {
+        return User::where('role', '=', 'etudiant')->paginate(6);
     }
-    public function getTuteur(){
+    public function getTuteur()
+    {
         return DB::table('users')
-        ->join('professeurs','users.id','=','professeurs.user_id')
-        ->join('categorie_matieres','professeurs.categorieMatiere_id','=','categorie_matieres.id')
-        ->select('users.photo','users.prenom','users.email','users.telephone','categorie_matieres.nom','users.isActive','users.*')
-        ->where('users.role','=','tuteur')->paginate(8);
+            ->join('professeurs', 'users.id', '=', 'professeurs.user_id')
+            ->join('categorie_matieres', 'professeurs.categorieMatiere_id', '=', 'categorie_matieres.id')
+            ->select('users.photo', 'users.prenom', 'users.email', 'users.telephone', 'categorie_matieres.nom', 'users.isActive', 'users.*')
+            ->where('users.role', '=', 'tuteur')->paginate(8);
     }
     public function create(array $data)
     {
@@ -55,22 +57,29 @@ class AdminServices implements CrudInterface
     {
         return $this->adminRepositories->suspended($id);
     }
-    public function TotalUser(){
+    public function TotalUser()
+    {
         return $this->adminRepositories->TotalUser();
     }
-    public function TotalAnnonce(){
+    public function TotalAnnonce()
+    {
         return $this->adminRepositories->TotalAnnonce();
     }
-    public function TotalUserActive(){
+    public function TotalUserActive()
+    {
         return $this->adminRepositories->TotalUserActive();
-    } public function TotalUsersuspended(){
+    }
+    public function TotalUsersuspended()
+    {
         return $this->adminRepositories->TotalUsersuspended();
     }
-    public function generateActivityReport(){
+    public function generateActivityReport()
+    {
         return $this->adminRepositories->generateActivityReport();
     }
-    public function Activitehebdomadaire(){
+    public function Activitehebdomadaire()
+    {
         return $this->adminRepositories->Activitehebdomadaire();
     }
-    
+
 }

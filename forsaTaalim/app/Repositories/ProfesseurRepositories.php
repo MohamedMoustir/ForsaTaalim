@@ -123,7 +123,7 @@ class ProfesseurRepositories
                 DB::raw('AVG(comme1.rating) as average_rating'),
 
             )
-            ->orderBy('comme1.rating' ,'asc')
+            ->orderBy('comme1.rating', 'asc')
             ->groupBy(
                 'p.id',
                 'p.diplomes',
@@ -144,7 +144,7 @@ class ProfesseurRepositories
                 'c.nom',
                 'profe_id'
             )
-            ->orderBy('total_ratings' ,'desc')
+            ->orderBy('total_ratings', 'desc')
 
             ->get();
     }
@@ -196,7 +196,7 @@ class ProfesseurRepositories
                 'c.nom',
                 'profe_id',
             )
-            ->orderBy('total_ratings' ,'desc')
+            ->orderBy('total_ratings', 'desc')
             ->paginate(6);
     }
     public function generateActivityReport()
@@ -221,15 +221,15 @@ class ProfesseurRepositories
             ->where('tuteur_id', '=', Auth::id())->count();
 
         $PaymentApproved = DB::table('reservations')
-        ->where('professeur_id', '=', Auth::id())
-        ->where('status', '=', 'approved')
-        ->count();
+            ->where('professeur_id', '=', Auth::id())
+            ->where('status', '=', 'approved')
+            ->count();
 
-        $PaymentRefuser= DB::table('reservations')
-        ->where('professeur_id', '=', Auth::id())
-        ->where('status', '=', 'refuser')
-        ->count();
-        
+        $PaymentRefuser = DB::table('reservations')
+            ->where('professeur_id', '=', Auth::id())
+            ->where('status', '=', 'refuser')
+            ->count();
+
 
         return response()->json([
             'totalUsers' => $totalUsers,
@@ -239,6 +239,6 @@ class ProfesseurRepositories
             'PaymentRefuser' => $PaymentRefuser,
         ]);
     }
-    
+
 
 }

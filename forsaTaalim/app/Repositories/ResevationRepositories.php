@@ -28,7 +28,6 @@ class ResevationRepositories
 
         try {
             $reservation_id = Reservation::where('etudiant_id', '=', Auth::id())->where('professeur_id', '=', $id)->count();
-            //    if ($reservation_id == 0) {
             $reservation = Reservation::create([
                 'professeur_id' => $id,
                 'etudiant_id' => Auth::id(),
@@ -54,10 +53,7 @@ class ResevationRepositories
             } else {
                 return response()->json(['message' => $response->getMessage()], 400);
             }
-            //    }else{
-            //     return response()->json(['message' => 'this reservation found'], 400);
-
-            //    }
+           
 
 
         } catch (Exception $e) {
@@ -263,7 +259,6 @@ class ResevationRepositories
 
             ->get();
     }
-
     public function SendLinkReservations($id, $link)
     {
 

@@ -29,12 +29,10 @@ class DisponibiliteRepositories
         return $this->model->findOrFail($id)->delete();
 
     }
-
     public function getById($id)
     {
         return $this->model->where('tuteur_id', '=', $id)->get();
     }
-
     public function Createavailable_time($data)
     {
         return Available_time::create($data);

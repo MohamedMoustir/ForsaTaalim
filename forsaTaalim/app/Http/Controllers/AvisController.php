@@ -22,13 +22,11 @@ class AvisController extends Controller
         $this->avisServices->create($valadetaData);
         return response()->JSON(['success', 'Post ajouté avec succès']);
     }
-
     public function delete($id)
     {
         $this->avisServices->delete($id);
         return response()->json(['message' => 'comment deleted successfully!'], 200);
     }
-
     public function edit(Request $request, $id)
     {
         $commentsedite = $this->avisServices->update($id , $request->all());
@@ -38,8 +36,6 @@ class AvisController extends Controller
         $comments = $this->avisServices->getById($id);
         return response()->json(['message' => 'comment Ajoute successfully!', 'comments' => $comments], 200);
     }
-
-    
     public function getTopAvies(){
         $comments = $this->avisServices->getTopAvies();
         return response()->json(['message' => 'comment Ajoute successfully!', 'comments' => $comments], 200);

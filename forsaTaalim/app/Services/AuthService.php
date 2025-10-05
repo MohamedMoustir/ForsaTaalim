@@ -25,7 +25,6 @@ class AuthService
         $data['photo'] = $data['photo']->store('images', 'public');
         return $this->AuthRepository->create($data);
     }
-    
     public function login(array $credentials)
     {
         if (Auth::attempt($credentials)) {
@@ -59,7 +58,6 @@ class AuthService
             'message' => 'No user logged in',
         ], 401);
     }
-    
     public function refresh()
     {
         try {
@@ -76,10 +74,6 @@ class AuthService
             return null;
         }
     }
-
-
-
-
     public function resetpassword($token, $password)
     {
         try {
